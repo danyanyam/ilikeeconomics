@@ -4,4 +4,4 @@ My name is Danya and my major is economics, but i don't think i like it, therefo
 
 My completed projects:
 
-- [UCI heart decease problem, kaggle](https://www.kaggle.com/ronitf/heart-disease-uci)
+- [UCI heart decease problem, kaggle](https://www.kaggle.com/ronitf/heart-disease-uci) 88.2% keras
