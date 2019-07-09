@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[8]:
-
 
 import requests
 from urllib.request import urlopen
@@ -86,11 +81,9 @@ parser = Parser(url)
 headings = parser.headings
 links = parser.links
 date = parser.date
-
 print(parser.dataframe)
 
 
-# In[ ]:
 
 
 
