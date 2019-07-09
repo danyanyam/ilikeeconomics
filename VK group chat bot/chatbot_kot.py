@@ -4,8 +4,8 @@ import pandas as pd
 from utilities import random_wall_photo, get_timetable
 
 
-token = 'f0a0d43e603ea40c288a62d0d51052d84cb587e170efbcec960c905e74d7461636695558a46c380a1b9f7'
-tech_token = '67ab4b4067ab4b4067ab4b402e67c03f20667ab67ab4b403ab08188299fc0180eee0b9d'
+token = 'YOUR TOKEN'
+tech_token = 'YOUR APP TOKEN'
 group_id = '97121274'
 url = 'https://api.vk.com/method/'
 v = '5.101'
