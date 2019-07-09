@@ -1,6 +1,6 @@
 import requests
-token = 'f0a0d43e603ea40c288a62d0d51052d84cb587e170efbcec960c905e74d7461636695558a46c380a1b9f7'
-tech_tocken = '67ab4b4067ab4b4067ab4b402e67c03f20667ab67ab4b403ab08188299fc0180eee0b9d'
+token = 'YOUR TOKEN'
+tech_tocken = 'YOUR APP TOKEN'
 
 # print('---- https://api.vk.com/method/METHOD_NAME?PARAMETERS&access_token=ACCESS_TOKEN&v=V ----')
 def random_wall_photo(token):
