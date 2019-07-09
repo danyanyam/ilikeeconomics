@@ -1,0 +1,27 @@
+{
+  "one_time": false,
+  "buttons": [
+    [{
+      "action": {
+        "type": "text",
+        "label": "Посмотреть мем"
+      },
+      "color": "primary"
+    },
+      {
+        "action": {
+          "type": "text",
+          "label": "Посмотреть расписание."
+        },
+        "color": "positive"
+      }],
+    [
+      {
+        "action": {
+          "type": "text",
+          "label": "Вернуться в главное меню"
+      },
+      "color": "negative"
+    }]
+  ]
+}
