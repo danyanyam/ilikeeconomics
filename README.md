@@ -6,3 +6,4 @@ My completed projects:
 
 - [UCI heart decease problem, kaggle](https://www.kaggle.com/ronitf/heart-disease-uci) 88.2% keras
 - [HSE Bulletin Board parser](https://www.hse.ru/ba/economics/students/)
+- [VK chat-bot](https://vk.com/public97121274) bot works only if my computer is turned on, so you have no chance to try it on your own, but maybe you are lucky enough to see bot working in this group.
