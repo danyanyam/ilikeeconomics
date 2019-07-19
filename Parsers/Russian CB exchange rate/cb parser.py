@@ -31,16 +31,9 @@ def get_mean_rate(start, end):
     df = clean_frame(get_values(start, end))
     values = df.values
     new = []
-    for n, i in enumerate(values):
-        new.append(float(i[0].replace(',', '.')))
+    for rate in values:
+        new.append(float(rate[0].replace(',', '.')))
     array = np.array(new).mean()
     return array
 
 get_mean_rate('01.01.2013', '01.01.2014')
-
-
-# In[ ]:
-
-
-
-
