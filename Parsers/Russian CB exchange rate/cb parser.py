@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[41]:
-
-
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -36,4 +33,5 @@ def get_mean_rate(start, end):
     array = np.array(new).mean()
     return array
 
+# Use this function to get mean of rates in given range of time
 get_mean_rate('01.01.2013', '01.01.2014')
