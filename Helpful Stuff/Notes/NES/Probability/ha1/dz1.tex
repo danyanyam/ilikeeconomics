@@ -1,0 +1,493 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Do not alter this block (unless you're familiar with LaTeX
+\documentclass{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{bbm}
+\usetikzlibrary{arrows}
+\usepackage[most]{tcolorbox}
+\usetikzlibrary{patterns}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{fillbetween}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\pagestyle{fancy}
+\pgfplotsset{my style/.append style={axis x line=middle, axis y line=
+		middle, xlabel={$x$}, ylabel={$y$}, axis equal }}
+
+
+\newenvironment{problem}[2][Задача]
+    { \begin{mdframed}[backgroundcolor=gray!20] \textbf{#1 #2.} \\}
+    {  \end{mdframed}}
+
+% Define solution environment
+\newenvironment{solution}{\textbf{Решение:} \\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Fill in the appropriate information below
+\lhead{Даниил Бучко, MAE'23 (B)}
+\rhead{Теория вероятностей - 2021} 
+\chead{\textbf{Домашняя работа №1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+    \begin{problem}{1}
+    $ N $ гостей $ (N\ge 3)  $ случайно рассаживаются вокруг (круглого) стола. Чему равна
+    вероятность того, что гости $ A $ и $ B $ окажутся рядом? Предполагается, что стульев ровно $ N $.
+    \end{problem}
+    
+    \begin{solution}
+	Пусть $ \omega \in \mathbb{R}^2 $ -- элементарное событие, вида $ (a, b) $, где $ a, b $ -- номера стульев, доставшиеся гостям A и B соответственно. Случайное событие состоит в выборе индексов $ a $ и $ b $, причем $ 1  \le a,b \le N $ и $ a \ne b $. Посчитаем количество способов раздать двум гостям стулья, учитывая порядок выдачи. В такой постановке задачи, общее количество возможных элементарных исходов насчитывает:
+	\[
+	A_{N}^{2} = 2!C_{N}^{2} = \frac{N!2!}{(N-2)!2!} = N(N-1)
+	\]
+	Иными словами, мы выбираем стулья $ C_{N}^{2} $ способами, а потом учитываем количество их перестановок внутри каждой пары, домножением на $ 2! $. Теперь посчитаем количество всех исходов, в которых выданные стулья будут находиться рядом друг с другом. Первый стул можно выбрать $ C_{N}^{1} = N $ способами. Второй рядом стоящий стул можно выбрать двумя способами: либо следующий за первым, либо предыдущий первому. Таким образом, общее количество исходов, в которых гостям $ A $ и $ B $ достается место рядом:
+	\[
+	2C_{N}^{1} = 2N
+	\]
+	Исходя из классичесой вероятностной модели, вероятность события $ С $ <<гостям $ A $, $ B $ достаются соседние места>> можно посчитать по следующей формуле: \[
+	\mathbb{P}(C) = \frac{N_c}{N}\] где $ N_c $ -- количество исходов, удовлетворяющих событию $ C $, а $ N $ -- общее количество различных элементарных исходов. Таким образом, подставляя полученные раннее значения, получим: \[\mathbb{P}(C) = \frac{2N}{N(N-1)} = \frac{2}{N-1}\]
+	
+    \end{solution}
+
+\begin{problem}{2}
+	Дано пространство элементарных исходов  $ \Omega $
+	и множество событий $ A_1, A_2, ... $ .  Докажите равенства (формулы де Моргана): 
+\begin{enumerate}
+\item  $\displaystyle\overline{\bigcup^{\infty}_{n=1}A_n} = \bigcap_{n=1}^{\infty}\overline{A_{n}} $
+\item $\displaystyle\overline{\bigcap^{\infty}_{n=1}A_n} = \bigcup_{n=1}^{\infty}\overline{A_{n}} $
+\end{enumerate}
+\end{problem}
+
+\begin{solution}
+	Чтобы доказать равенство двух множеств, рассмотрим включение первого множества (левое) во второе (правое) и включение второго в первое. \\
+	\textbf{Первое равенство: слева направо и справа налево.}
+	
+	\begin{align*}
+		\forall x \in \displaystyle\overline{\bigcup^{\infty}_{n=1}A_n} \implies x\notin \displaystyle\bigcup^{\infty}_{n=1}A_n \implies \forall n: x\notin A_n \implies  \forall n: x\in \overline{A_n} \implies x\in \bigcap_{n=1}^{\infty}\overline{A_{n}} \\
+		\forall x\in\bigcap_{n=1}^{\infty}\overline{A_{n}} \implies  \forall n: x\in \overline{A_n} \implies  \forall n: x\notin A_n \implies x\notin \displaystyle\bigcup^{\infty}_{n=1}A_n \implies x \in \displaystyle\overline{\bigcup^{\infty}_{n=1}A_n}
+	\end{align*}
+	\[\displaystyle\overline{\bigcup^{\infty}_{n=1}A_n} = \bigcap_{n=1}^{\infty}\overline{A_{n}}\]
+		\textbf{Второе равенство: слева направо и справа налево.}
+		\begin{align*}
+			\forall x \in \displaystyle\overline{\bigcap^{\infty}_{n=1}A_n}	\implies x\notin  \displaystyle\bigcap^{\infty}_{n=1}A_n \implies \exists n  : x\notin A_n \implies \exists n : x\in \overline{A_{n}} \implies \bigcup_{n=1}^{\infty}\overline{A_{n}} \\
+			\forall x \in \bigcup_{n=1}^{\infty}\overline{A_{n}}	\implies  \exists n : x\in \overline{A_{n}} \implies \exists n: x\notin A_n \implies  x\notin  \displaystyle\bigcap^{\infty}_{n=1}A_n \implies x\in \displaystyle\overline{\bigcap^{\infty}_{n=1}A_n}
+		\end{align*}
+		
+		\[\displaystyle\overline{\bigcap^{\infty}_{n=1}A_n} = \bigcup_{n=1}^{\infty}\overline{A_{n}}\]
+\end{solution}
+
+\begin{problem}{3}
+(задача кавалера де Мере). Что вероятнее: при бросании четырех игральных костей хотя бы на одной получить единицу или при $ 24 $ бросаниях двух костей хотя бы раз получить две единицы?
+\end{problem}
+
+\begin{solution}
+	Разобьем задачу на два смысловых блока и будем решать её последовательно.\\\\ Экспериментом $ A $ назовем подбрасывание 4-х игральных костей, а благоприятным событием $ \mathcal{A} $ -- получение хотя бы одной единицы на костях. Пространство элементарных событий $ \Omega $ состоит из элементарных исходов вида $ \omega = (a_1, a_2, a_3, a_4) $ где $ a_i $ -- число, выпавшее на кубике с номером $ i $, причем $ a_i \in [1, 6] $. Посчитаем общее количество элементарных исходов: на любом из кубиков может выпасть любое из чисел от 1 до 6. Таким образом, общее количество всевозможных элементарных исходов: \[ |\Omega| = N = 6^4 = 1296 \]
+	Теперь посчитаем количество исходов, при которых хотя бы на одном кубике выпадет единица. Это число легко посчитать через дополнение к противоположному событию $ \bar{\mathcal{A}} $, которое заключается в том, что на всех кубиках одновременно не выпадет единица (таких событий ровно $ N_{\bar{\mathcal{A}}} =  5^4 $). Таким образом, количество событий, удовлетворяющих $ \mathcal{A} $:
+	 \[ N_{\mathcal{A}} = 6^4 - 5^4 = (36-25)(36+25) = 671 \]
+	Исходя из определения вероятности в классической вероятностной модели, получим, что вероятность события $ \mathcal{A} $ -- <<получить хотя бы на одном кубике единицу>> будет равна: 
+	\[\mathbb{P}(\mathcal{A}) = \frac{N_{\mathcal{A}}}{N} = \frac{671}{1296} \sim 0.518\]
+	 \\ Экспериментом $ B $ назовём подбрасывание двух костей 24 раза, а благоприятным событием $ \mathcal{B} $ -- <<получение хотя бы раз двух единиц>>. Элементарным исходом назовем 24-х мерный вектор, состоящий из двухмерных векторов $ \omega_n = (b_{n1}, b_{n2}) $, в котором $ b_{ni} $ -- количество очков, выпавших на $ i $-ом кубике во время $ n $-го подбрасывания. Посчитаем количество возможных исходов эксперимента. При первом броске на первом кубике может выпасть любое из 6 чисел, и любое из 6 чисел на втором. Таким образом, за бросок можно получить 36 различных комбинаций двух кубиков. За 24 броска можно получить $ |\Omega| = N = 36^{24} $ комбинаций. Аналогично первому пункту можно найти количество исходов, в которых не выпало ни одной единицы, таких исходов ровно $ N_{\bar{\mathcal{B}}} =  35^{24} $. Соответственно, исходов, удовлетворяющих благоприятному исходу $ \mathcal{B} $:
+	 \[ N_{\mathcal{B}} = 36^{24} - 35^{24}\]
+	 а вероятность события <<получить хотя бы раз две единицы из 24 бросков пар кубиков>> равна: \[\mathbb{P}(\mathcal{B}) = \frac{N_{\mathcal{B}}}{N} = \frac{36^{24} - 35^{24}}{36^{24}} \sim 0.491\]
+	 Таким образом $ \mathbb{P}(\mathcal{A})  > \mathbb{P}(\mathcal{B}) $,  а значит первый вероятность успеха в первом эксперименте больше, чем вероятность успеха во втором.	
+\end{solution}
+
+\begin{problem}{4}
+	На отрезке $ AB $ длиной $ l $ случайно и независимо выбираются точки $ L $ и $ M $. Найдите вероятность того, что точка $ L $ будет ближе к $ M $, чем к точке $ A $.
+\end{problem}
+
+\begin{solution}
+	Рассматривается эксперимент, в котором элементарный исход $ \omega = (x_1, x_2) $ -- двумерный вектор, отражающий координаты точек $ L $ и $ M $ соответственно, причем $ A \le x_1, x_2 \le B$. Назовем исход $ \mathfrak{A} $ благоприятным, если расстояние от $ L $ до $ M $  будет короче, чем от $ A $ до $ L $. С точки зрения постановки задачи, нам неважно, где именно на прямой лежит отрезок $ AB $, имеет значение лишь то, что он имеет длину $ l $, поэтому, как говорится, без ограничения общности положим, что $ A = 0 $, тогда $ B = l $, а накладываемые ограничения на положения точек в рамках нашей задачи модифицируется следующим образом: $ 0 \le x_1, x_2 \le l$. Заметим, что множество элементарных исходов несчетно, в силу несчетности множества вещественных чисел, на котором определен отрезок $ AB $, однако на множестве вещественных чисел задана мера, которая определяется как длина отрезка. Соответсвенно, можно трактовать вероятность исходов тех или иных событий как отношение длин отрезков, на которых исходы удовлетворяют благоприятным событиям к длине всего отрезка $ l $. Осталось понять, как взаимосвязаны положения точек $ L, M $. Рассмотрим случаи взаимного расположения точек $ L $ и $ M $. 
+	\begin{enumerate}
+		\item $ L < M $
+		\begin{center}
+			\begin{tikzpicture}
+			\draw (0,0) -- (10,0);
+			
+			\filldraw [gray] (3,0) circle (1pt);
+			\draw (3,-0.35) node {$ L $};
+			
+
+			\filldraw [red] (1.75,0.1) -- (1.75,-0.1);
+			\filldraw [red] (3.5,0) circle (1pt);
+			\filldraw [red] (3.5,0.35) node {$ M/2$};
+			\filldraw [red] (5.25,0.1) -- (5.25,-0.1);
+			
+			\filldraw [gray] (7,0) circle (1pt);
+			\draw (7,-0.35) node {$ M $};
+			
+			
+			\draw (0,-0.35) node {$ 0 $};
+			
+			\draw (10,-0.35) node {$ l $};
+			
+			\end{tikzpicture}
+		\end{center}
+	\item $ L > M $
+	\begin{center}
+		\begin{tikzpicture}
+		\draw (0,0) -- (10,0);
+		
+		\filldraw [gray] (3,0) circle (1pt);
+		\draw (3,-0.35) node {$ M $};
+		
+		\filldraw [gray] (7,0) circle (1pt);
+		\draw (7,-0.35) node {$ L $};
+		
+		\filldraw [red] (0.75,0.1) -- (0.75,-0.1);
+		\filldraw [red] (1.5,0) circle (1pt);
+		\filldraw [red] (1.5,0.35) node {$ M/2$};
+		\filldraw [red] (2.25,0.1) -- (2.25,-0.1);
+		
+		
+		\draw (0,-0.35) node {$ 0 $};
+		
+		\draw (10,-0.35) node {$ l $};
+		
+		\end{tikzpicture}
+	\end{center}
+
+	\item $ L = M $
+	\begin{center}
+		\begin{tikzpicture}
+		\draw (0,0) -- (10,0);
+		
+
+		\draw (5,0.35) node {L};
+		
+		\filldraw [gray] (5,0) circle (1pt);
+		\draw (5,-0.35) node {M};
+		
+		\filldraw [red] (1.25,0.1) -- (1.25,-0.1);
+		\filldraw [red] (2.5,0) circle (1pt);
+		\filldraw [red] (2.5,0.35) node {$ M/2$};
+		\filldraw [red] (3.75,0.1) -- (3.75,-0.1);
+		
+		
+		\draw (0,-0.35) node {$ 0 $};
+		
+		\draw (10,-0.35) node {$ l $};
+		
+		\end{tikzpicture}
+	\end{center}
+		
+	\end{enumerate}
+
+	
+%	\begin{center}
+
+\begin{minipage}{0.5\textwidth}
+		Заметим, что во всех случаях, где $ |L - M| < L$,  $ L $ лежало правее точки $ M/2 $. Соответственно вероятность события $ \mathfrak{A} $ можно сформулировать следующим образом: 
+	\[\mathbb{P}(\mathfrak{A}) = \mathbb{P}(L > M/2)\]
+	Геометрически эта вероятность равна отношению площади закрашенной фигуры (рисунок справа) к площади всего квадрата, описывающего вероятностное пространство.  
+	Таким образом:
+	\[\mathbb{P}(\mathfrak{A}) = \mathbb{P}(L> M/2) = \frac{l\left(l + l/2\right)}{2l^2} = \frac{3}{4}\]
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth} 
+		\begin{tikzpicture}
+		\begin{axis}
+		[
+		width=3.5in,
+		clip=false,
+		axis lines=middle,
+		xmin=0,
+		xmax=2,
+		ymin=0,
+		ymax=2,
+		xtick={\empty},
+		ytick={\empty},
+		xlabel=$M$,
+		ylabel=$L$,
+		xlabel style={at={(ticklabel* cs:0.97)},anchor=north west},
+		ylabel style={at={(ticklabel* cs:0.97)},anchor=south west},
+		title=Пространство благоприятных исходов (событие $ \mathfrak{A} $),
+		title style={font=\color{gray}}
+		]
+		\addplot [name path = A,domain = 0:1.5,samples = 2, style={thick}] {x/2} 
+		node [pos=1, right] {$L = M/2$};
+		\addplot [name path = B,domain = 0:1.5,samples = 2,style={thick}] {1.5} 
+		node [pos=1, right] {$L=l$};
+		\addplot [teal!5] fill between [of = A and B, soft clip={domain=0:1.5}];
+		\draw [dashed] (axis cs:{1.5,0}) -- (axis cs:{1.5,1.5});
+	
+		\draw (-0.07,1.5) node {$ l $};
+		\draw (1.5,-0.07) node {$ l $};
+		\draw (-0.07, 0) node {$ 0 $};
+		\draw (0.75, 1.05) node {$ \mathfrak{A} $};
+		\draw (1.05, 0.25) node {$ \bar{\mathfrak{A}} $};
+		\end{axis}
+		\end{tikzpicture}
+	\end{minipage}
+\end{solution}
+
+\begin{problem}{5}
+	Точки $ \xi, \eta $ выбираются случайно и независимо на отрезке $ [-1, 1] $. Найдите вероятность того, что уравнение
+	$ x^2+2\xi x + \xi\eta = 0 $	имеет вещественные корни.
+\end{problem}
+
+\begin{solution}
+	
+
+	
+
+
+\begin{minipage}{0.4\textwidth}
+		Заданное уравнение имеет корни тогда, когда его дискриминант  больше или равен нолю.
+	\[
+	D = 4\xi^2 - 4\xi\eta = 4\xi(\xi - \eta)\ge0
+	\]
+	Соответствующее неравенство разбивается на следующую систему:
+	\begin{align*}
+	D \ge 0 \iff 
+	\begin{cases} \xi \ge \eta, & \mbox{если }\xi\ge 0 \\ 
+	\xi < \eta, & \mbox{если } \xi <0
+	\end{cases}
+	\end{align*}
+	Графическая иллюстрация полученного результата (изображение справа).
+\end{minipage}\hfill
+\begin{minipage}{0.6\textwidth}
+	\begin{tikzpicture}
+	\begin{axis}[
+	width=3.5in,
+	clip=false,
+	axis lines=middle,
+	xmin=-2,
+	xmax=2,
+	ymin=-2,
+	ymax=2,
+	xtick={\empty},
+	ytick={\empty},
+	xlabel=$\eta$,
+	ylabel=$\xi$,
+	xlabel style={at={(ticklabel* cs:0.98)},anchor=north west},
+	ylabel style={at={(ticklabel* cs:0.96)},anchor=south east},
+	title=Пространство благоприятных исходов (событие $ D \ge0 $),
+	title style={font=\color{gray}}
+	]
+	\addplot [name path = A,domain = -1.5:1.5,samples = 2, style={thick}] {x}
+	node [pos=1, right] {$\xi = \eta$};
+	\addplot [name path = B,domain = -1.5:1.5,samples = 2] {1.5};
+	\addplot [name path = C,domain = -1.5:1.5,samples = 2] {-1.5};
+	\addplot [teal!15] fill between [of = A and B, soft clip={domain=0:1.5}];
+	\addplot [teal!15] fill between [of = A and C, soft clip={domain=-1.5:0}];
+	\draw (axis cs:{1.5,1.5}) -- (axis cs:{1.5,-1.5});
+	\draw (axis cs:{-1.5,1.5}) -- (axis cs:{-1.5,-1.5});
+	\draw (-0.1, 0.1) node {$ 0 $};
+	\draw (0.1, 1.7) node {$ 1 $};
+	\draw (0.15, -1.7) node {$ -1 $};
+	\draw (1.7, 0.15) node {$ 1 $};
+	\draw (-1.7, 0.15) node {$ -1 $};
+	\end{axis}
+	\end{tikzpicture}
+\end{minipage}
+
+Таким образом, вероятность благоприятного события ($ D \ge 0 $) равна отношению площадей закрашенных областей к общей площади квадрата:
+\[ \mathbb{P}(D\ge 0) = \frac{1}{4}\]
+\end{solution}
+\begin{problem}{6}
+	 Точка $ (a, b) $ случайно выбирается в квадрате. $ Q = \{(u, v): 0 \le u, v \le 1\} $ Пусть $ Y $ --	число вещественных корней многочлена $ f(x) = \displaystyle\frac{x^3}{3} -a^2x + b $.  Найдите вероятности $ p_1 = P \{Y=1\},  p_3 = P\{Y=3\}$
+\end{problem}
+
+\begin{solution}
+	Начнем решение с рассуждения о смыслах параметров. Разобьем исходную функцию на влияние двух подфункций:
+	\[  f(x) = \underbrace{\displaystyle\frac{x^3}{3} -a^2x}_{g(x)} + \underbrace{b}_{b} \]
+	Из такого разбиения видно, что параметр $ b $ отвечает за параллельный сдвиг графика функции $ g(x) $ относительно оси $ OY $. Теперь рассмотрим на что влияет параметр $ a $. Взглянем на первую и вторую производную функции $ g(x) $:
+	\begin{align*}
+	g'(x) &= x^2 - a^2 = (x-a)(x+a)\\
+	g''(x) &= 2x
+	\end{align*}
+	Из первой производной видно, что параметр $ a $ определяет положение локальных экстремумов на оси $ OX $. Кроме того, $ g''(-a) = -2a < 0,  g''(a) = 2a > 0, \forall a >0$, из чего можно сделать вывод о том, что функция достигает локального максимума в точке $ x = -a $ и локального минимума в точке $ x = a $. Кроме того, рассматривая производную  $ \partial g(x, a)/\partial a  = -2ax$, можно видеть, что с ростом параметра $ a $ значение функции $ g(x, a) $: 
+	\begin{gather*}
+	g(x, a) = 
+	\begin{cases} \text{убывает}, & \mbox{на множестве } $ x > 0 $ \\ 
+	\text{растёт}, & \mbox{на множестве } $ x < 0 $ 
+	\end{cases} 
+	\end{gather*}
+	 Из рассуждений выше, мы определили, что с ростом значения параметра $ a $ положение локальных экстремумов сдвигается относительно оси $ OX $ и вместе с тем значения функции сжимаются и расжимаются на полуосях. Графическое пояснение можно видеть на графике ниже:
+	 \begin{figure}[htb]
+	 	\begin{subfigure}{0.5\textwidth}
+	 		\centering
+	 		\begin{tikzpicture}
+	 		\begin{axis}[
+	 		xmin=-4,xmax=4,
+	 		ymin=-2,ymax=2,
+	 		width=3.5in,
+	 		axis x line=middle,
+	 		axis y line=middle,
+	 		axis line style=<->,
+	 		xlabel={$x$},
+	 		ylabel={$g(x)$},
+	 		title=\text{Увеличение параметра $ a $} 
+	 		]
+	 		\addplot[no marks,blue,<->,style={ultra thick}] expression[domain=-3:3,samples=100]{x^3/3-x};
+	 		\addplot[no marks,blue!40,<->,style={very thick}] expression[domain=-3:3,samples=100]{x^3/3-0.5*x};
+	 		\addplot[no marks,blue!20,<->,style=thick] expression[domain=-3:3,samples=100]{x^3/3};
+	 		
+	 		\filldraw [blue!20] (-3.2, 1.5) node {$ a=0 $};
+	 		\filldraw [blue!40]  (-3.05, 1.25) node {$ a=0.5 $};
+	 		\filldraw [blue] (-3.2, 1) node {$ a=1 $};
+	 		\draw (1.7, 0.15) node {$ 1 $};
+	 		
+	 		\end{axis}
+	 		\end{tikzpicture}
+	 		\end{subfigure}
+ 		\begin{subfigure}{0.5\textwidth}
+ 			\centering
+ 			\begin{tikzpicture}
+ 			\begin{axis}[
+ 			width=3.5in,
+ 			xmin=-4,xmax=4,
+ 			ymin=-2,ymax=2,
+ 			axis x line=middle,
+ 			axis y line=middle,
+ 			axis line style=<->,
+ 			xlabel={$x$},
+ 			ylabel={$g(x)$},
+ 			title=\text{Увеличение сдвига $ b $} 
+ 			]
+ 			\addplot[no marks,blue,<->,style={ultra thick}] expression[domain=-3:3,samples=100]{x^3/3-x+1};
+ 			\addplot[no marks,blue!40,<->,style={very thick}] expression[domain=-3:3,samples=100]{x^3/3-0.5*x+0.5};
+ 			\addplot[no marks,blue!20,<->,style=thick] expression[domain=-3:3,samples=100]{x^3/3};
+
+ 			
+ 			\filldraw [blue!20] (1.5, -1.5) node {$ a,b=0 $};
+ 			\filldraw [blue!40]  (1.65, -1.2) node {$ a,b=0.5 $};
+ 			\filldraw [blue] (1.5, -0.9) node {$ a,b=1 $};
+ 			\draw (1.7, 0.15) node {$ 1 $};
+ 			
+ 			\end{axis}
+ 			\end{tikzpicture}
+ 		\end{subfigure}
+	 
+	 \end{figure}
+	
+	 Получается, что если мы будем рассматривать исходное уравнение, как композицию двух функций ($ g(x) \text{ и сдвига } b  $), то можно построить функциональную связь между значением параметра $ a $ и $ b $. Чтобы функция $ f(x) $ имела ровно один вещественный корень необходимо, чтобы $ b $ <<сдвигало>> функцию $ g(x) $ вверх на величину выше, чем значение функции $ g(x) $ в точке локального минимума $ x = a $. Формализуем все вышесказанное:
+	 \begin{align*}
+	g(a) &= -\frac{a^3}{3} - a^2a = -\frac{2}{3}a^3 \text{ -- значение функции g(x) в точке локального минимума}  \\
+	\forall b \in Q &: b > \frac{2}{3}a^3 \iff f(x, a, b) = 0 \text{ имеет 1 вещественный корень } \\
+	\forall b \in Q &: b = \frac{2}{3}a^3 \iff f(x, a, b) = 0 \text{ имеет 2 различных вещественных корня } \\ 
+	\forall b \in Q &: b < \frac{2}{3}a^3 \iff f(x, a, b) = 0 \text{ имеет 3 различных вещественных корня }
+ 	 \end{align*}
+ 	 
+ 	 
+ 	 
+ 	  \begin{minipage}{0.4\textwidth}
+ 	  	Представим графически взаимосвязь параметров (рисунок справа).
+ 	 	Таким образом соответствующие вероятности равны:
+ 	 	\begin{align*}
+ 	 	\mathbb{P}(Y=1) &= \int_{0}^{1}\left(1 - \frac{2}{3}a^3\right)da &= \frac{5}{6} \\
+ 	 	\mathbb{P}(Y=3) &= \frac{2}{3}\int_{0}^{1}a^3da &= \frac{1}{6}\\
+ 	 	\end{align*}
+ 	 \end{minipage}\hfill
+ 	 	\begin{minipage}{0.5\textwidth}
+ 	 	\begin{tikzpicture}
+ 	 	\begin{axis}
+ 	 	[
+ 	 	width=3.5in,
+ 	 	clip=false,
+ 	 	axis lines=middle,
+ 	 	xmin=0,
+ 	 	xmax=1.3,
+ 	 	ymin=0,
+ 	 	ymax=1.3,
+ 	 	xtick={\empty},
+ 	 	ytick={\empty},
+ 	 	xlabel=$a$,
+ 	 	ylabel=$b$,
+ 	 	xlabel style={at={(ticklabel* cs:0.98)},anchor=north west},
+ 	 	ylabel style={at={(ticklabel* cs:0.98)},anchor=south west},
+ 	 	title=Пространство благоприятных исходов,
+ 	 	title style={font=\color{gray}}
+ 	 	]
+ 	 	\addplot [name path = A,domain = 0:1,samples = 100, style={ultra thick}] {2*x^3/3} 
+ 	 	node [pos=1, right] {$b = \frac{2}{3}a^3$};
+ 	 	\addplot [name path = B,domain = 0:1,samples = 2] {1};
+ 	 	\addplot [teal!5] fill between [of = A and B, soft clip={domain=0:1}];
+ 	 	\draw  (axis cs:{1,0}) -- (axis cs:{1,1});
+ 	 	
+ 	 	\draw (-0.05,1) node {$ 1 $};
+ 	 	\draw (1,-0.09) node {$ 1 $};
+
+ 	 	\draw (-0.05, -0.09) node {$ 0 $};
+ 	 	\draw (0.5, 0.65) node {$Y=1 $};
+ 	 	\draw (0.85, 0.15) node {$Y=3 $}; 	 	
+ 	 	\end{axis}
+ 	 	\end{tikzpicture}
+ 	 \end{minipage}
+\end{solution}
+\begin{problem}{7}
+	 Пусть $ \Omega = \{\omega_1, \omega_2, ...\} $ -- счетное пространство элементарных исходов и пусть $ p_{i} = P(\{\omega_i\}, i=1,2,\dots) $ -- распределение на нем. Для любого $ A \subset \Omega $ вероятность $ P(A) $ определяется равенством $ P(A) = \sum_{i, \omega_{i}\in A}p_{i} $ (дискретная схема, см. лекцию 1). Докажите, что эта вероятность сигма-аддитивна.
+\end{problem}
+
+\begin{solution}
+	Сигма аддитивность вероятности состоит в следующем свойстве:
+	\begin{equation}\label{s}
+	\mathbb{P}\left(\bigcup_{i=1}^{\infty}A_{i}\right) = \sum_{i=1}^{\infty}\mathbb{P}(A_{i})
+	\end{equation}
+
+	Введем функцию--индикатор на множестве элементарных исходов $ \left( \mathbbm{1}\left[\text{моё утверждение}\right] : \Omega \to \{1, 0\} \right) $, принимающую значение 1, если \textit{моё утверждение} истинно и 0, если оно ложно. К примеру:
+	\begin{align*}
+		\mathbbm{1}\left[w_{i}\in A\right] = 
+		\begin{cases} 1, & \mbox{если } w_{i} \in A \\ 
+		0, & \mbox{если }w_{i} \notin A
+		\end{cases}
+	\end{align*}
+	Также переопределим вероятность элементарного исхода $ \omega $ обозначением $ p_{\omega} $. Для начала, поймем, как выглядит вероятность события в терминах функции индикатора:
+	\begin{align*}
+		\mathbb{P}(A_1) = \sum_{\omega\in\Omega} \mathbbm{1}\left[\omega\in A_1\right]p_{\omega}
+	\end{align*}
+	Таким образом, левая часть уравнения $ \ref{s} $ будет выглядеть следующим образом: 
+	\begin{align}
+		\mathbb{P}\left(\bigcup_{i=1}^{\infty}A_{i}\right)  = \sum_{\omega\in\Omega} \mathbbm{1}\left[\omega\in A_{1} \cup A_{2} \cup \dots \right]p_{\omega} = \sum_{\omega\in\Omega} \mathbbm{1}\left[\omega\in \bigcup_{i=1}^{\infty}A_{i}\right]p_{\omega}
+	\end{align}
+	В то же время, правая часть уравнения $ \ref{s} $ выглядит следующим образом:
+	\begin{gather}
+	\sum_{i=1}^{\infty}\mathbb{P}(A_{i}) = \sum_{\omega\in\Omega}\mathbbm{1}\left[\omega \in A_{1}\right]p_{\omega} +
+	\sum_{\omega\in\Omega}\mathbbm{1}\left[\omega \in A_{2}\right]p_{\omega} + \dots = \nonumber\\
+	 \sum_{\omega\in\Omega}\left(\mathbbm{1}\left[\omega \in A_{1}\right] + \mathbbm{1}\left[\omega \in A_{2}\right] + \mathbbm{1}\left[\omega \in A_{3 }\right] + \dots\right)p_{\omega} = \nonumber \\
+	 \sum_{\omega\in\Omega}p_{\omega}\sum_{i=1}^{\infty} \mathbbm{1}\left[w\in A_{i}\right] 
+	\end{gather}
+	Сравним полученные результаты переходов левой и правой части:
+	\begin{gather}\label{f}
+		\sum_{\omega\in\Omega}p_{\omega} \mathbbm{1}\left[\omega\in \bigcup_{i=1}^{\infty}A_{i}\right] \quad\wedge\quad \sum_{\omega\in\Omega}p_{\omega}\sum_{i=1}^{\infty} \mathbbm{1}\left[w\in A_{i}\right] 
+	\end{gather}
+Для того, чтобы выражение \ref{f} превращалось в тождество, необходимо, чтобы индикаторы левой и правой части принимали одинаковые значения для каждого элементарного исхода $ \omega\in\Omega $, а именно выполнялось следующее равенство (перенесли правую часть выражения \ref{f} влево и приравняли к нолю):
+\begin{equation} 	\sum_{\omega\in\Omega}p_{\omega} \left(\mathbbm{1}\left[\omega\in \bigcup_{i=1}^{\infty}A_{i}\right] - \sum_{i=1}^{\infty} \mathbbm{1}\left[w\in A_{i}\right]\right) = 0
+\end{equation}
+Таким образом, осталось доказать, что $ \forall \omega\in\Omega $ одновременно выполняется следующее равенство: 
+\begin{gather}\label{2}  \mathbbm{1}\left[\omega\in \bigcup_{i=1}^{\infty}A_{i}\right] = \sum_{i=1}^{\infty} \mathbbm{1}\left[w\in A_{i}\right]  \end{gather}
+Заметим, что сигма-аддитивность предполагает, что события -- это непересекающиеся множества, то есть $ A_iA_{j} = \emptyset \quad \forall i,j: i\ne j $. Отсюда следует, что если $ \omega\in A_{i} $, то $ \omega \notin A_{j}, \forall j = 1\dots\infty $ и $ j\ne i $.  Рассмотрим несколько случаев:
+
+\begin{enumerate}
+	\item $ \omega\in\bigcup_{i=1}^{\infty}A_{i} $
+	
+	 Левый индикатор выражения \ref{2} превратится в единицу, а сумма правых будет не больше одного, поскольку множества $ A_i $ не пересекаются.
+	\item $ \omega\notin\bigcup_{i=1}^{\infty}A_{i} $
+	
+	Левый индикатор выражения  \ref{2} превратится в ноль, а сумма правых будет не больше 0, потому что ни одно из множеств событий не содержит рассматриваемое $ \omega $.
+\end{enumerate} 
+Таким образом, мы доказали равенство \ref{2}, из которого следует равенство левой и правой части выражения \ref{f}, из которого, в свою очередь, следует свойство сигма--аддитивности.
+\end{solution}
+
+
+\end{document}

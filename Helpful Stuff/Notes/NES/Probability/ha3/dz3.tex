@@ -1,0 +1,236 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Do not alter this block (unless you're familiar with LaTeX
+\documentclass{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{bbm}
+\usepackage{fouriernc} % Use the New Century Schoolbook font
+\usepackage{hyperref}
+\usepackage{mathtools, nccmath}
+
+\DeclarePairedDelimiter{\nint}\lfloor\rceil
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+
+\pagestyle{fancy}
+
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\P}{\mathbb{P}}
+\newenvironment{problem}[2][Задание]
+    { \begin{mdframed}[backgroundcolor=gray!20] \textbf{#1 #2} \\}
+    {  \end{mdframed}}
+
+% Define solution environment
+\newenvironment{solution}{\textbf{Решение}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Fill in the appropriate information below
+\lhead{Даниил Бучко}
+\rhead{Теория Вероятностей'21} 
+\chead{\textbf{Домашняя работа №3}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+	 \begin{problem}{1}
+	 	Пусть на вероятностном пространстве $ (\Omega, \mathcal{F}, \mathbb{P}) $ задана случайная величина $ \xi $, и пусть $ f: R \to R $ -- непрерывная числовая функция числового аргумента. Докажите, что функция $ \eta(\omega) = f(\xi(\omega)) $ является случайной величиной.
+	\end{problem}
+
+\begin{solution}
+	(По мотивам Теория Вероятностей. Ширяев.)
+%	Поскольку $ f : \mathbb{R} \to \mathbb{R} $ необходимо для начала сказать пару слов о том, что борелевская сигма алгебра может быть построена на множестве вещественных чисел при помощи бесконечных полу-интервалов или полу-отрезков, таких например, как:
+%	\[
+%	\{(-\infty, b): b\in\mathbb{R}\} \quad 	\{(-\infty, b]: b\in\mathbb{R}\}\quad 	\{(a, \infty): a\in\mathbb{R}\}\quad 	\{[a, \infty): a\in\mathbb{R}\}
+%	\]
+%	Доказательство: сигма-алгебра, создаваемая бесконечными полу-интервалами типа $ (-\infty, b) $ содержится в Борелевской сигма-алгебре $ \mathcal{B}(\mathbb{R}) $ поскольку интервалы -- это открытые множества, а значит эта сигма алгебра содержит закрытые полуинтервалы $ [a, \infty) $, полуоткрытые множества $ [a, b) $ и счетные пересечения полуоткрытых множеств:
+%	\[
+%	[a,b] = \bigcap_{n=1}^{\infty}\left[a, b + \frac{1}{n}\right)
+%	\]
+%	Поскольку до этого мы говорили, что Борелевская сигма алгебра $ \mathcal{B}(\mathbb{R}) $ создается отрезками $ [a, b] $, то: 
+%	\[
+%	\sigma (\{(-\infty, b) : b\in \mathbb{R}\}) = \mathcal{B}(\mathbb{R})
+%	\]
+%	
+
+Функция $ f $ будет являться случайной величиной в том случае, если $ f $ -- измерима. Нетрудно поверить в измеримость $ f $, поскольку измеримость по определению: $ \forall B \in \mathcal{B}(\mathbb{R}) ~\{\omega : f(\omega) \in B\} \in \mathcal{F}$. По сути, это значит, что какое бы мы подмножество вещественной прямой (порожденное теоретико-множественными операциями над произвольными отрезками) бы ни взяли, то прообраз этого множества будет принадлежать вероятностной сигма-алгебре. А поскольку наша функция является непрерывной, то прообраз любого элемента борелевской сигма-алгебры будет принадлежать вероятностной сигма-алгебре.
+%
+	Аккуратно распишем то, что нам дано:
+\begin{align*}
+	\xi &: (\Omega, \mathcal{F}) \to (\mathbb{R}, \mathcal{B}(\mathbb{R})) \\
+	f &: (\mathbb{R}, \mathcal{B}(\mathbb{R})) \to (\mathbb{R}, \mathcal{B}(\mathbb{R}))
+\end{align*}
+	Рассмотрим $ B \in \mathcal{B}(\mathbb{R}) $. Для всех таких элементов борелевской сигма алгебры выполняется следующее равенство
+	\[
+	\{\omega : f(\omega) \in B)\} = \{\omega: f(\xi(\omega))\in B\} = \{\omega: \xi(\omega)\in f^{-1}(B)\} \in \mathcal{F}
+	\]
+	Последнее утверждение верно, поскольку $ f^{-1}(B)\in \mathcal{B}(\mathbb{R}) $ (поскольку операция взятия прообраза сохраняет теоретико-множественные операции)
+\end{solution}
+
+    \begin{problem}{2}
+    Докажите пуассоновское приближение для биномиального распределения: пусть $ X_{n} $ -- биномиальная случайная величина с параметрами $ (n, p_{n}) $ и пусть $ \lim_{n\to\infty} (np_{n}) = \lambda, \lambda > 0$. Тогда: 
+    \[
+    \lim_{n\to\infty} P(X_{n} = k) = e^{-\lambda}\frac{\lambda^{k}}{k!} \quad \forall k =0,1\dots
+    \]
+    \end{problem}
+    
+    \begin{solution}
+	\begin{align*}
+		 &\lim_{n\to\infty} \P(X_{n} = k) =  \lim_{n\to\infty} C_{n}^{k}p^{k}q^{n-k} =  \\
+		  &\lim_{n\to\infty}C_{n}^{k}\left( \frac{\lambda}{n}\right)^{k}\left(1 - \frac{\lambda}{n}\right)^{n - k} = \\
+		   &\lim_{n\to\infty} \frac{n!}{k!(n-k)!} \frac{\lambda^{k}}{n^{k}}\left(1 - \frac{\lambda}{n}\right)^{n}\left(1 - \frac{\lambda}{n}\right)^{- k} =  \\
+		    &\lim_{n\to\infty} \frac{n(n-1)\dots(n-k+1)}{k!}\frac{\lambda^{k}}{n^{k}}\left(1 - \frac{\lambda}{n}\right)^{n}\left(1 - \frac{\lambda}{n}\right)^{- k} = \\
+		     &\lim_{n\to\infty} \underbrace{\frac{n(n-1)\dots(n-k+1)}{n^k}}_{ 1}\frac{\lambda^{k}}{k!}\underbrace{\left(1 - \frac{\lambda}{n}\right)^{n}}_{e^{-\lambda}}\underbrace{\left(1 - \frac{\lambda}{n}\right)^{- k}}_{1} = e^{-\lambda}\frac{\lambda^{k}}{k!}
+	\end{align*}
+    \end{solution}
+
+  \begin{problem}{3}
+Последовательно, один за другим, тестируются пять приборов. Каждый последующий прибор тестируется только тогда, когда предыдущий прибор оказался неисправным. Найдите распределение числа протестированных приборов, если каждый прибор независимо от других несправен с вероятностью $ 0.1 $.
+	\end{problem}
+	
+	\begin{solution}
+	В задаче описывается последовательность испытаний, которые выполняются поочередно. В случае неудачи, наступающей с вероятностью $ 0.1 $ эксперимент продолжается. В случае удачи, с вероятностью $ 0.9 $ эксперимент прекращается. Необходимо найти распределение числа испытаний. Определим случайное событие $ Y $ как количество протестированных приборов. Соответсвующие вероятности для каждого из исходов строятся по схеме геометрического распределения: 
+\[	
+ \mathbb{P}(\xi = i)  =  \begin{cases} q^{i-1}p, & i = 1\dots 4 \\ 
+ q^{i-1}(q + p), & i = 5 
+	\end{cases}
+	\]
+Кратко поясним происхождение этих формул. По условию задачи, вероятности приборов оказаться сломанными и работающими являются независимыми. Кроме этого, последовательность экспериментов имеет четкий порядок. Значит, вероятность того, что будет проведено $ i $  испытаний можно найти по формуле $ q^{i-1}p $, где $ q $ -- вероятность неудачи, а $ p $ -- вероятность удачи. В случае, когда проводится последний 5-ый эксперимент, испытываемый прибор может оказаться как исправным, так и неисправным, но эксперимент в любом случае прекратится, поэтому вероятность того, что всего будет 5 тестирований включает в себя оба случая. Соответсвующее распределение эксперимента в терминах чисел имеет следующий вид:
+	\begin{center}
+		\begin{tabular}{ || c | c | c | c | c | c ||}
+		\hline
+		$ \xi $ & 1 & 2 & 3 & 4 & 5 \\ \hline
+		$ \mathbb{P} $ & $ 0.9 $ & $ 0.1\cdot0.9 $ & $ 0.1^{2}\cdot0.9 $ &$ 0.1^{3}\cdot0.9 $ &$ 0.1^{4}\cdot(0.9 + 0.1) $ \\
+		\hline
+	\end{tabular}
+	\end{center}
+
+	\end{solution}
+ \begin{problem}{4}
+Число $ x_{j} $ (из множества значений случайной величины $ X $) называется модой случайной величины $ X $ (модой распределения), если $ p_{j} = \max \{p_{i}, ~i =1,2\dots\} $. Иными словами, мода -- это значение, принимаемое с максимальной вероятностью. Найдите моду
+\begin{enumerate}
+	\item биномиальной случайной величины с параметрами $ (n, p) $
+	\item пуассоновской случайной величины с параметром $ \lambda $
+\end{enumerate} 
+\end{problem}
+\begin{solution}
+	
+	Для биномиального распределения $ a_{k} = \P(X=k) = C_{n}^{k}p^{k}q^{n-k}  $ рассмотрим соотношение 
+	 \begin{gather*}
+	 	\frac{a_{k+1}}{a_{k}} = \frac{n!p^{k+1}q^{n-k-1}}{(n-k-1)!(k+1)!} \frac{(n-k)!k!}{n!p^{k}q^{n-k}} = \frac{p(n-k)}{q(k+1)} \\
+	 	\frac{p(n-k)}{q(k+1)} \lor 1 \\ 
+	 	\frac{p(n-k) - (1-p)(k+1)}{q(k+1)} \lor 0
+	 \end{gather*}
+	 Знаменатель всегда больше ноля, рассмотрим при каких значениях параметров числитель меняет знак.
+	 \begin{align*}
+	 p(n-k) - (1-p)(k+1) &\lor 0 \\
+	 p(n-k) - k - 1 +pk + p &\lor 0 \\
+	 pn - k - 1 + p &\lor 0 \\
+	  p(n+1) - 1  &\lor k 
+	 \end{align*}
+	 Из рассуждений выше видно, что если правая часть больше левой, то увеличивая $ k $ по индукции, биномиальная вероятность уменьшается. Значит, по идее, если правая часть равна левой, то при этом $ k $ достигается наибольшее значение вероятности, и как следствие, $ k $ отражает моду распределения. Но также сложно поспорить с тем, что $ p(n+1) - 1 $ может оказаться как целым, так и дробным числом. Рассмотрим крайние случаи. Пусть $ p(n+1) - 1 \in \mathbb{Z} $:
+	 \begin{enumerate}
+	 	\item 	Пусть $ p = 0 $. Тогда $ p(n+1) - 1 = -1 < k,~ \forall k >0$, из чего следует, что мода распределения достигается при $ k = 0 $. 
+	 	\item Пусть $ p = 1 $. Тогда мода распределения достигается при $ k=n $
+	 \end{enumerate}
+ Если же $ p(n+1) - 1 \notin \mathbb{Z} $, то мода достигается при $ \lfloor{p(n+1)}\rfloor $
+ \\\\
+ Теперь рассмотрим распределение пуассона с параметром $ \lambda $. Пусть $ \displaystyle{a_{k} = e^{-\lambda}\frac{\lambda^{k}}{k!}}$. Как и в прошлом пункте рассмотрим соотношение $ \displaystyle\frac{a_{k}}{a_{k-1}} $:
+ \begin{align*}
+ 	\frac{a_{k}}{a_{k-1}} = e^{-\lambda}\frac{\lambda^{k}}{k!}\cdot\frac{1}{e^{-\lambda}}\frac{(k-1)!}{\lambda^{k-1}} = \frac{\lambda}{k}
+ \end{align*}
+ Проанализируем полученный результат:
+ \begin{enumerate}
+ 	\item  Если $ \forall k, ~k > \lambda$, то вероятности уменьшаются по индукции, а значит мода достигается при $ k  = 0 $.
+ 	\item Если $ k  \notin \mathbb{Z} $ и $ k > 1 $, то мода распределения совпадает с $ \lfloor \lambda \rfloor $
+ \end{enumerate}
+
+
+\end{solution}
+
+ \begin{problem}{5}
+	На отрезке $ [0, 1] $ оси $ Ox $ случайным образом выбирается точка. Пусть $ X $ --  расстояние от этой точки до $ (0, 1) $. Требуется найти плотность распределения случайной величины $ X $.
+\end{problem}
+
+\begin{solution}	
+	
+	Пусть $ Y \sim U[0, 1]$, то есть $ Y $ равномерно распределенная случайная величина на отрезке $ [0, 1] $. Эта с.в. характеризует положение случайно выбираемой точки на оси $OX $. Мы делаем предположение о равномерном распределении $ Y $ на основании случайности выбора точки с координатами $ (y, 0) $. Тогда, можно выразить функцию $ F_{X}(x) $ через $ F_{Y}(x) $. 
+	
+	По определению, $ F_{Y}(x) = \P (Y\le x)$. В то же время, $ F_{X}(x) = \P(X \le x) $, причем, поскольку $ X $ -- расстояние от точки $ (0, 1) $ до случайно выбираемой точки $ (y, 0) $, а расстояние подразумевается в смысле евклидовой метрики, то
+	\[ \P (X \le x) = \P (\sqrt{y^2 + 1 } \le x)\]
+	где $ y $ -- координата случайно выбираемой точка на $ [0, 1] $, с распределением $ Y\sim U[0, 1]$. Тогда:
+	\begin{align*}
+		\P (X \le x) = \P (\sqrt{y^2 + 1 } \le x) = \P(y^2 + 1 \le x^2) = \P(y^2 \le x^2 - 1) = \P(y \le \sqrt{x^2 - 1}), \quad \forall x\in [1, \sqrt{2}]
+	\end{align*}
+	или в терминах функций распределения:
+	\begin{align*}
+		\mathbb{P}(Y \le \sqrt{x^2 - 1})  =  \begin{cases} 0, &\sqrt{x^2 - 1} \le 0  \\ 
+		\sqrt{x^2 - 1}, &  \sqrt{x^2 - 1} \in (0, 1]\\
+		1, & \sqrt{x^2 - 1} > 1
+		\end{cases}
+	\end{align*}
+	или что то же самое:
+	\begin{align*}
+	F_{X}(x) = \mathbb{P}(Y \le \sqrt{x^2 - 1})  =  \begin{cases} 0, &x \le 1  \\ 
+	\sqrt{x^2 - 1}, &  x \in \left(1, \sqrt{2}\right]\\
+	1, & x > \sqrt{2}
+	\end{cases}
+	\end{align*}
+	Тогда функция плотности $ f_{X}(x) = F_{X}'(x)$:
+	\begin{align*}
+	f_{X}(x) =F_{X}'(x)  =  \begin{cases} 0, &x \le 1  \\ 
+	x/\sqrt{x^2 - 1}, &  x \in \left(1, \sqrt{2}\right)\\
+	0, & x \ge \sqrt{2}
+	\end{cases}
+	\end{align*}
+\end{solution}
+ \begin{problem}{6}
+	В коробке две батареи. Время работы каждой из них является показательным с параметрами $ \lambda_{i}, i=1,2 $. С вероятностью $ p_{i} $ извлекается $ i $-ая батарея. Известно, что она проработала $ t $ часов. Чему равна вероятность того, что она проработает еще $ s $ часов?
+\end{problem}
+\begin{solution}
+	Пусть $ X_{i} \sim exp(\lambda_{i})$ -- время работы $ i $-ой батареи. Тогда время работы случайно взятой батареи: $ Y = p_{1}X_{1} + p_{2}X_{2} $. Искомая вероятность по условию задачи выглядит следующим образом: 
+	\[
+	\P (Y \ge s + t ~|~ Y \ge t) = \frac{\P(Y \ge s + t \land Y \ge t)}{\P(Y \ge t)}  = \frac{\P(Y\ge s + t)}{\P(Y\ge t)} = \frac{1 - \P(Y < s + t)}{1 - \P(Y < t)}
+	\]
+	Учитывая, что:
+	\begin{align*}
+		\P (Y < s + t) &= p_{1} \left( 1 - e^{-\lambda_{1} (s+t)} \right) + p_{2} \left( 1 - e^{-\lambda_{2} (s+t)} \right) \\
+		 \P(Y < t) &=  p_{1} \left( 1 - e^{-\lambda_{1}t} \right) + p_{2} \left( 1 - e^{-\lambda_{2}t} \right) 
+	\end{align*}
+	Тогда
+	\begin{gather*}
+	\frac{1 - \P(Y < s + t)}{1 - \P(Y < t)} = \frac{1- \left[p_{1} \left( 1 - e^{-\lambda_{1} (s+t)} \right) + p_{2} \left( 1 - e^{-\lambda_{2} (s+t)} \right)\right]}{1-\left[p_{1} \left( 1 - e^{-\lambda_{1}t} \right) + p_{2} \left( 1 - e^{-\lambda_{2}t} \right)\right]} = 
+	 \frac{e^{-\lambda_{1} (s+t)}+ e^{-\lambda_{2} (s+t)}}{ e^{-\lambda_{1}t}+ e^{-\lambda_{2}t}} \\ 
+	 \frac{1 / e^{\lambda_{1} (s+t) }+ 1/e^{\lambda_{2}(s+t)}}{1/e^{\lambda_{1}t} + 1/e^{\lambda_{2}t}} = \frac{e^{\lambda_{2}(s+t)}+e^{\lambda_{1}(s+t)}}{e^{\lambda_{1}(s+t)}e^{\lambda_{2}(s+t)}}\cdot\frac{e^{\lambda_{1}t}e^{\lambda_{2}t}}{e^{\lambda_{2}t}+ e^{\lambda_{1}t}} = \frac{e^{\lambda_{2}(s+t)}+e^{\lambda_{1}(s+t)}}{e^{(s+t)(\lambda_{1}+ \lambda_{2})}}
+	\end{gather*}
+\end{solution}
+ \begin{problem}{7}
+	Пусть $ \tau $ -- неотрицательная случайная величина с плотностью $ f_{\tau}(t) $ и функцией распределения $ F_{\tau}(t) $ и пусть $ \kappa(t) = \displaystyle\frac{f_{\tau}(t)}{1 - F_{\tau}(t)} $ -- коэффициент смертности. Покажите, что коэффициент смертности однозначно определяет распределение случайной величины $ \tau $.
+\end{problem}
+\begin{solution}
+	Обозначим $ G_{\tau}(t) = 1 - F_{\tau}(t) $ -- функция распределения хвостов. В силу положительности случайной величины $ \tau $, очевидно, что $ G_{\tau}(0) = 1 $. По определению $ \kappa $: 
+	\[
+	 \kappa(t) = - \frac{G_{\tau}'(t)}{G_{\tau}(t)} = -(\ln G_{\tau}(t))'
+	 \]
+	 Тогда:
+	 \begin{align*}
+	 	(\ln G_{\tau}(t))' &= -\kappa(t) \\
+	 	\ln G_{\tau}(t) &= - \int_{0}^{t}\kappa(t) \\
+	 	 G_{\tau}(t)&= \displaystyle{e^{- \int_{0}^{t}\kappa(t)}}
+ 	 \end{align*}
+ 	 В силу того, что функция распределения однозначно задает распределение хвостов искомого распределения, значит что она определяет распределение самой случайной величины. Или говоря иначе:
+ 	 \[
+ 	 F_{\tau}(t) = 1 - G_{\tau}(t) = \left[1 -e^{- \int_{0}^{t}\kappa(t)} \right] \mathbbm{1}_{t \ge 0}
+ 	 \]
+\end{solution}
+\end{document}

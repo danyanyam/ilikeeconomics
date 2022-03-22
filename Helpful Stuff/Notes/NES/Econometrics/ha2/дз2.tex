@@ -1,0 +1,439 @@
+
+\documentclass[12pt,reqno]{amsart}
+
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsthm}
+\theoremstyle{plain}
+\renewcommand*{\proofname}{Solution}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\s}{\sum_{i=1}^{n}}
+\newcommand{\Ve}{V^{e}}
+\newcommand{\Vu}{V^{u}}
+\newcommand{\hb}{\hat\beta}
+\newcommand{\tb}{\tilde\beta}
+\newtheorem*{theorem*}{Question}
+%% this allows for theorems which are not automatically numbered
+\usepackage{lineno}
+
+%% The above lines are for formatting.  In general, you will not want to change these.
+\title{Home Assignment 2}
+\author{Daniil Buchko}
+\begin{document}
+\maketitle
+\begin{theorem*}[1]
+    \normalfont
+    Suppose that the population model determining $ y $ is
+    \[
+        y = \beta_0 + \beta_{1} x_{1} + \beta_{2}x_{2} + \beta_{3}x_{3} + u
+    \]
+    and this model satisfies the Gauss-Markov assumptions. However, we estimate the model that
+    omits $ x_{3} $. Let $ \tilde\beta_{0}, \tb_{1}, \tb_{2} $ be the OLS estimators from the regression of
+    $ y $ on $ x_{1} $ and $ x_{2} $. Show that the expected value of $ \tb_{1} $  (given the values
+    of the independent variables in the sample) is
+    \[
+        \E ( \tb_1 ) = \beta_{1} + \beta_{3}\frac{\sum_{i=1}^{n}\hat{r}_{i1}x_{i3}}{\sum_{i=1}\hat{r}_{i1}^{2}  }
+    \]
+    where the $ \hat{r}_{i1} $  are the OLS residuals from the regression of $ x_{1} $ on $ x_{2} $.
+\end{theorem*}
+\begin{proof}
+    \begin{gather*}
+        \tb_{1} = \frac{\sum_{i=1}^{n} \hat{r}_{1i}(\beta_{0} + \beta_{1}x_{1i} + \beta_{2}x_{2i}+ \beta_{3}x_{3i} + u_{i})}{\sum_{i=1}^{n} \hat{r}^{2}_{1i}} =
+    \end{gather*}
+    \begin{align*}
+        = \underbracket{\beta_{0}\frac{\sum_{i=1}^{n} \hat{r}_{1i}}{\sum_{i=1}^{n} \hat{r}^{2}_{1i}}}_{\text{0 (from FOC)}}
+        + \beta_{1}\frac{\sum_{i=1}^{n} \hat{r}_{1i}x_{1i}}{\sum_{i=1}^{n} \hat{r}^{2}_{1i}}
+        +  \beta_{2}\underbracket{\frac{\sum_{i=1}^{n} \hat{r}_{1i}x_{2i}}{\sum_{i=1}^{n} \hat{r}^{2}_{1i}}}_{\text{0 (from FOC)}}
+         & +\beta_{3}\frac{\sum_{i=1}^{n} \hat{r}_{1i}x_{3i}}{\sum_{i=1}^{n} \hat{r}^{2}_{1i}} \\
+         & +\frac{\sum_{i=1}^{n} \hat{r}_{1i}u_{i}}{\sum_{i=1}^{n} \hat{r}^{2}_{1i}} =
+    \end{align*}
+    \[=\beta_{1}\frac{\sum_{i=1}^{n} \hat{r}_{1i}x_{1i}}{\sum_{i=1}^{n} \hat{r}^{2}_{1i}} + \beta_{3}\frac{\sum_{i=1}^{n} \hat{r}_{1i}x_{3i}}{\sum_{i=1}^{n} \hat{r}^{2}_{1i}} + \frac{\sum_{i=1}^{n} \hat{r}_{1i}u_{i}}{\sum_{i=1}^{n} \hat{r}^{2}_{1i}}\]
+    Now, by using LIME we obtain the following:
+    \begin{gather*}
+        \E(\tb_{1}) = \beta_{1}\underbracket{\frac{\sum_{i=1}^{n} \hat{r}_{1i}x_{1i}}{\sum_{i=1}^{n} \hat{r}^{2}_{1i} }}_{\text{cant prove it is 1 :(}}
+        +  \beta_{3}\frac{\sum_{i=1}^{n} \hat{r}_{1i}x_{3i}}{\sum_{i=1}^{n} \hat{r}^{2}_{1i}}
+    \end{gather*}
+\end{proof}
+\begin{theorem*}[2]
+    \normalfont
+    Consider the simple regression model $ y =  \beta_{0} + \beta_{1}x + u $ under the first four
+    Gauss-Markov assumptions. For some function $ g(x) $, for example $ g(x) =x^{2} $ or $ g(x) = \ln(1+x^{2}) $
+    define $ z_{i} = g(x_{i}) $. Define slope as follows:
+    \[
+        \tb_{1} = \frac{\sum_{i=1}^{n} (z_{i} - \bar{z})y_{i}}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}}
+    \]
+    Show that $ \tb_{1} $ is linear and unbiased. Remember, because $ \E(u|x) = 0 $, you can treat
+    both $ x_i $ and $ z_i $ as nonrandom in your derivation.
+    \\\\
+    (ii) Add the homoskedasticity assumption, MLR.5. Show that
+    \[
+        \text{Var}(\tb_{1})= \sigma^{2}\frac{\sum_{i=1}^{n} (z_{i} - \bar{z})^{2}}{\left( \sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}  \right)^{2}}
+    \]
+    \\
+    (iii) Show directly that, under the Gauss-Markov assumptions, $ \text{Var}(\hb_{1}) \le  \text{Var}(\tb_{1})$,
+    where $ \hb_{1} $ is the OLS estimator.
+\end{theorem*}
+\begin{proof}
+    (i)
+    \begin{align*}
+        \tb_1 = \frac{\sum_{i=1}^{n} (z_{i} - \bar{z})y_{i}}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}} & =
+        \frac{\sum_{i=1}^{n} (z_{i} - \bar{z})(\beta_{0} + \beta_{1}x_i + u_i)}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}} =                                                                                         \\
+                                                                                                    & = \beta_{1} + \frac{\sum_{i=1}^{n} (z_{i} - \bar{z})u_{i}}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}} \implies
+    \end{align*}
+    \begin{align*}
+        \E(\tb_{1}) = \beta_{1} + \E \left[ \E \left[\left. \frac{\sum_{i=1}^{n} (z_{i} - \bar{z})u_{i}}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}}  \right\vert x \right] \right] & =           \\
+        \beta_{1} + \E \left[  \frac{\sum_{i=1}^{n} (z_{i} - \bar{z})\E \left[\left.u_{i}\right\vert x \right]}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}}   \right]               & = \beta_{1}
+    \end{align*}
+    \\\\
+    (ii)
+    \begin{align*}
+        \text{Var}(\tb_{1}) = \E \left[ \tb^{2}_1 \right] - \underbracket{\E^{2} \left[ \tb_1 \right]}_{\text{calculated}} \implies
+    \end{align*}
+    \begin{gather*}
+        \tb_1^{2} =  \left( \frac{\sum_{i=1}^{n} (z_{i} - \bar{z})y_{i}}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}}\right)^{2} =
+        \left( \frac{\sum_{i=1}^{n} (z_{i} - \bar{z})(\beta_{0} + \beta_{1}x_{i} + u_{i})}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}}\right)^{2} = \\
+        \left( \frac{\sum_{i=1}^{n} (z_{i} - \bar{z})(\beta_{1}x_{i} + u_{i})}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}}\right)^{2} =
+        \left( \beta_{1} + \frac{\sum_{i=1}^{n} (z_{i} - \bar{z})u_{i}}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}} \right)^{2} =                   \\
+        \beta_{1}^{2} + 2\beta_{1}\frac{\sum_{i=1}^{n} (z_{i} - \bar{z})u_{i}}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}} + \underbracket{\left(\frac{\sum_{i=1}^{n} (z_{i} - \bar{z})u_{i}}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}} \right)^{2}}_{\textbf{(*)}}
+    \end{gather*}
+    \begin{gather*}
+        \left(\frac{\sum_{i=1}^{n} (z_{i} - \bar{z})u_{i}}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}} \right)^{2} =
+        \frac{\left(\sum_{i=1}^{n} (z_{i} - \bar{z})u_{i}\right)^{2}}{\left(\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}\right)^{2}} =\\
+        \frac{
+        \sum_{i=1}^{n} \sum_{m=1}^{n} (z_{i} - \bar{z})u_{i}(z_{m} - \bar{z})u_{m}
+        }{\left(\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}\right)^{2}} = \\
+        \frac{
+        \sum_{i=1}^{n} (z_{i} - \bar{z})^{2}u_{i}^{2} + \sum_{i=1}^{n} \sum_{m=1, m\ne i}^{n} (z_{i} - \bar{z})u_{i}(z_{m} - \bar{z})u_{m}
+        }{\left(\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}\right)^{2}} = \textbf{(*)}
+    \end{gather*}
+    Thus:
+    \begin{align*}
+        \tb_1^{2} = \beta_{1}^{2} & + 2\beta_{1}\frac{\sum_{i=1}^{n} (z_{i} - \bar{z})u_{i}}{\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}} + \\
+                                  & +\frac{
+        \sum_{i=1}^{n} (z_{i} - \bar{z})^{2}u_{i}^{2} + \sum_{i=1}^{n} \sum_{m=1, m\ne i}^{n} (z_{i} - \bar{z})u_{i}(z_{m} - \bar{z})u_{m}
+        }{\left(\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}\right)^{2}}
+    \end{align*}
+    Incorporating the fact that $ \E\left[ u_i u_m \right] = 0 $ for $ m\ne i $ and taking use of LIME
+    we get that:
+    \begin{gather*}
+        \E \left[ \tb_1^{2} \right] = \beta_{1}^{2} +
+        \E \left[
+            \frac{
+                \sum_{i=1}^{n} (z_{i} - \bar{z})^{2}\E \left[   u_{i}^{2} | x\right]
+            }{\left(\sum_{i=1}^{n} (z_{i} - \bar{z})x_{i}\right)^{2}} \right] = \\
+        \beta_{1}^{2} + \sigma^{2}_{u} \frac{\sum_{i=1}^{n} (z_i - \bar{z})^{2}}{\sum_{i=1}^{n} ((z_i - \bar{z})x_i)^{2}}
+    \end{gather*}
+    and finally using the formula for $ \text{Var}(\tilde\beta_{1}) = \E[\tilde\beta_{1}^{2}] - \E^{2}[\tilde\beta_{1}] $:
+    \[
+        \text{Var}(\tb_{1}) = \beta_{1}^{2} + \sigma^{2}_{u} \frac{\sum_{i=1}^{n} (z_i - \bar{z})^{2}}{\sum_{i=1}^{n} ((z_i - \bar{z})x_i)^{2}}
+        - \beta_1^{2} =\sigma^{2}_{u} \frac{\sum_{i=1}^{n} (z_i - \bar{z})^{2}}{\sum_{i=1}^{n} ((z_i - \bar{z})x_i)^{2}}
+    \]
+\end{proof}
+\begin{theorem*}[3]
+    \normalfont
+    Consider the standard linear multivariate regression model under the Gauss-Markov assumptions:
+    \[y = \beta_0 + \beta_1 x_{1} + \beta_{2}x_{2} + u \]
+    \begin{enumerate}
+        \item Derive the OLS estimate $ \hb_{2} $ in terms of sample variances and sample covariances of
+              random variables $ x_{1}, x_{2}, y $.
+        \item How would you get the OLS estimates $ \hb_{1} $ and $ \hb_{2} $ by computing a series of OLS estimates
+              from simple regressions only?
+        \item Suppose you have decided to get OLS estimates for $ \gamma_{0}, \gamma_{1}, \gamma_{2} $ from
+              \[x_{2} = \gamma_{0} +\gamma_{1}x_{1} + \gamma_{2}y + v\]
+              Is $ \tb_{2} = 1/\hat\gamma_{2} $ an unbiased estimator of $ \beta_{2} $?
+    \end{enumerate}
+\end{theorem*}
+\begin{proof}
+    \begin{enumerate}
+        \item
+        \item I would use the Frisch-Waugh theorem in the following setup:
+              \begin{enumerate}
+                  \item Step 1. Estimate $ x_1 = \alpha_0 + \alpha_{1}x_2 + r_1 $ and collect residuals $ \hat{r}_{1} $
+                  \item Step 2. Estimate $ x_2 = \alpha_0 + \alpha_{1}x_1 + r_2 $ and collect residuals $ \hat{r}_{2} $
+                  \item Step 3. Estimate $ y = \lambda_{0} + \lambda_{1}\hat{r}_{1} + \varepsilon $ and $ y = \lambda_{0} + \lambda_{2}\hat{r}_{2} + \varepsilon $.
+                  Coefficients $ \hat\lambda_{1} $ will be an estimator of $ \beta_{1} $ and $ \hat\lambda_{2} $ for $ \beta_{2} $
+              \end{enumerate}
+        \item
+    \end{enumerate}
+
+\end{proof}
+\begin{theorem*}[4]
+    \normalfont
+    Consider a simple regression model through the origin under the Gauss-Markov assumptions
+    \[
+        y = \gamma x + \varepsilon
+    \]
+    and let
+    \[
+        \tilde{\gamma} = \frac{\sum_{i=1}^{n} y_i x_i^{3}}{\sum_{i=1}^{n} x_{i}^{4}}
+    \]
+    be an estimator of the slope parameter $ \gamma $.
+    \begin{enumerate}
+        \item Under what condition this estimator is well defined?
+        \item Show conditional unbiasness of $ \tilde\gamma $
+        \item Derive conditional variance of the estimator.
+    \end{enumerate}
+\end{theorem*}
+\begin{proof}
+    (1)\\
+    Estimator is considered good under conditional unbiasness and consistency. Also we can see that estimator is well defined everywhere under the Gauss-Markov assumptions since the
+    $ \text{Var}(X) \ne 0 $,  therefore $ \tilde\gamma < \infty $.
+    \\\\(2) Conditional unbiasness:
+    \begin{gather*}
+        \tilde{\gamma} = \frac{\sum_{i=1}^{n} y_i x_i^{3}}{\sum_{i=1}^{n} x_{i}^{4}} =
+        \frac{\sum_{i=1}^{n} (\gamma x_{i} + \varepsilon_{i}) x_i^{3}}{\sum_{i=1}^{n} x_{i}^{4}} =
+        \gamma + \frac{\sum_{i=1}^{n} \varepsilon_i x_i^{3}}{\sum_{i=1}^{n} x_{i}^{4}}
+    \end{gather*}
+    Using LIME we obtain that:
+    \begin{gather*}
+        \E (\tilde{\gamma}) = \E \left[  \gamma + \frac{\sum_{i=1}^{n} x_i^{3} \E \left[ \varepsilon_i | x \right] }{\sum_{i=1}^{n} x_{i}^{4}}\right] = \gamma
+    \end{gather*}
+    \\\\(3) Conditional variance:
+    \[\text{Var}(\tilde{\gamma}|x) = \E \left[\tilde\gamma^{2}|x\right] - \underbracket{\E\left[\tilde{\gamma}| x\right]^{2}}_{\text{calculated}}\]
+    \begin{gather*}
+        \tilde{\gamma}^{2} = \left( \gamma + \frac{\sum_{i=1}^{n} \varepsilon_i x_i^{3}}{\sum_{i=1}^{n} x_{i}^{4}} \right)^{2} = \gamma^{2} + 2\gamma \frac{\sum_{i=1}^{n} \varepsilon_i x_i^{3}}{\sum_{i=1}^{n} x_{i}^{4}} + \underbracket{\left( \frac{\sum_{i=1}^{n} \varepsilon_i x_i^{3}}{\sum_{i=1}^{n} x_{i}^{4}} \right)^{2}}_{\textbf{(*)}}
+    \end{gather*}
+    Firstly lets do some algebra with \textbf{(*)}:
+    \begin{gather*}
+        \left( \frac{\sum_{i=1}^{n} \varepsilon_i x_i^{3}}{\sum_{i=1}^{n} x_{i}^{4}} \right)^{2} =
+        \left( \frac{\sum_{i=1}^{n} \varepsilon_i x_i^{3}}{\sum_{i=1}^{n} x_{i}^{4}} \right)\left( \frac{\sum_{i=1}^{n} \varepsilon_i x_i^{3}}{\sum_{i=1}^{n} x_{i}^{4}} \right) = \\
+        \frac{\sum_{i=1}^{n} \varepsilon_i x_i^{3} \sum_{i=1}^{n} \varepsilon_i x_i^{3}}{\left(\sum_{i=1}^{n} x_{i}^{4}\right)^{2}} =
+        \frac{\sum_{i=1}^{n}\sum_{m=1}^{n}  \varepsilon_i \varepsilon_m x_i^{3} x_m^{3}  }{\left(\sum_{i=1}^{n} x_{i}^{4}\right)^{2}} = \\
+        \frac{\sum_{i=1}^{n} \varepsilon_i^{2} x_i^{6} + \sum_{i=1}^{n} \sum_{m=1, m\ne i}^{n} \varepsilon_i \varepsilon_m x_i^{3}x_m^{3}}{\left(\sum_{i=1}^{n} x_{i}^{4}\right)^{2}} = \textbf{(*)}
+    \end{gather*}
+    Inserting back and taking mathematical expectation keeping in mind that $ \E (\varepsilon_{i}, \varepsilon_{j}) = 0 $
+    as a consequence of i.i.d yields:
+    \begin{gather*}
+        \E \left[ \tilde{\gamma}^{2} \right] = \E \left[ \gamma^{2} + \frac{\sum_{i=1}^{n} x_i^{6} \E \left[ \varepsilon_{i}^{2} | x \right]}{\left( \sum_{i=1}^{n} x_{i}^{4} \right)^{2} } \right] =
+        \gamma^{2} + \sigma^{2}_{\varepsilon} \frac{\sum_{i=1}^{n} x_i^{6} }{\left( \sum_{i=1}^{n} x_{i}^{4} \right)^{2} }
+    \end{gather*}
+    Thus conditional variance is the following:
+    \[
+        \text{Var}(\tilde\gamma | x) = \gamma^{2} + \sigma^{2}_{\varepsilon} \frac{\sum_{i=1}^{n} x_i^{6} }{\left( \sum_{i=1}^{n} x_{i}^{4} \right)^{2} } - \gamma^{2}  = \sigma^{2}_{\varepsilon} \frac{\sum_{i=1}^{n} x_i^{6} }{\left( \sum_{i=1}^{n} x_{i}^{4} \right)^{2} }
+    \]
+\end{proof}
+\begin{theorem*}[5]
+    \normalfont
+    Use the data in \texttt{hprice1.csv} to estimate the model
+    \[
+        \text{price} = \beta_{0} + \beta_{1}\text{sqrtf} + \beta_{2}\text{bdrms} + u
+    \]
+    where \text{price} is the house price measured in thousands of dollars.
+    \begin{enumerate}
+        \item Write out the results in equation form.
+        \item What is the estimated increase in price for a house with one more bedroom, holding square footage constant?
+        \item What is the estimated increase in price for a house with an additional bedroom that is $ 140$ square feet in size? Compare this to your answer in part (ii).
+        \item What percentage of the variation in price is explained by square footage and number of bedrooms?
+        \item The first house in the sample has sqrft $ =2,438 $ and bdrms $ = 4 $. Find the predicted selling price for this house from the OLS regression line
+        \item The actual selling price of the first house in the sample was $ \$300,000 $ (so price $ =300 $). Find the residual for this house. Does it suggest that the buyer underpaid or overpaid for the house?
+    \end{enumerate}
+
+\end{theorem*}
+\begin{proof}
+    (1) Regression result:
+    \[
+        \text{price} = -19.31 + 0.13 \times \text{sqrtf} + 15.19\times\text{bdrms}
+    \]
+    \\(2)
+    \[\Delta\text{price} = \hat\beta_{1}\Delta\text{sqrtf} + \hat\beta_{2}\Delta\text{bdrms}\]
+    Since $ \hat\beta_{2} = 15.19 $ thus each additional bedroom increases price by $ \$15k $
+    (if we accept significance at 10\% level).
+    \\\\(3)
+    \[\Delta\text{price} = \hat\beta_{1}140 + \hat\beta_{2} = 0.13 \times 140 + 15.19 = 33,200 \]
+    \\\\(4)
+    Since reporting adjusted $ R^{2} = 0.6233 $ that means that roughly $ 62\% $ of variation in prices
+    is explained by factors.
+    \\\\(5)
+    Using function \texttt{predict} we get that predicted selling price for this house should be $ \$354.6052 $ thousands.
+    \\\\(6)
+    Actual price was lower than predicted, thus it suggests that buyer underpaid for the house.
+    Residuals for this house are:
+    \[
+        300 - 354.6 = -54.6
+    \]
+\end{proof}
+\begin{theorem*}[6]
+    \normalfont
+    In this problem set you continue to explore the returns to education and the gender gap in earnings.
+    The data set is the same as for problem set 1 (\texttt{cps99\_ps1.csv}; see problem set 1 for a description
+    of the variables). Consider the regression of average hourly earnings (\textit{ahe}) on years of
+    education (\textit{yrseduc}). Consider the following three variables that have been omitted from
+    the regression:
+    \begin{enumerate}
+        \item \textit{gender}
+        \item a binary variable that $= 1  $ if the worker’s last name falls in the first half of
+              the alphabet, and $ = 0 $ if it falls in the second half.
+        \item the worker’s native ability (for example \textit{IQ} or some better measure)
+    \end{enumerate}
+    For each: Will this omission arguably lead to omitted variable bias? Why or why not? If your
+    answer is that it will, state the sign of the bias (is the effect of a year of education
+    overestimated or underestimated?). Explain.
+\end{theorem*}
+\begin{proof}
+    Remembering formula for omitted variable bias from lecture:
+    \[\hb_1 \to \beta_{1} + \left( \frac{\sigma_u}{\sigma_x} \right)\rho_{xu} \]
+    To create bias, omitted variable must be correlated with the \texttt{yrseduc}. If correlation is positive then bias would be positive and the effect of \texttt{yrseduc}
+    will be overestimated. Vice versa is true: if correlation with omitted variable is negative then
+    bias will be negative and the variable will be underestimated.
+    \begin{enumerate}
+        \item Starting with \texttt{gender}. There is column \texttt{female} in data which is slightly
+              correlated with \texttt{yrseduc} (coef is 0.028). Other factors fixed such correlation creates
+              overstimation of \texttt{yrseduc}.
+        \item Unfortunately no data for workers names is provided but probably there is no correlation
+              between the years of education and the family name of the person. Thus omitting such factor
+              will not create bias.
+        \item Worker's \texttt{IQ} is probably to be correlated positively with years of education
+              which implies existence of positive bias in $ \beta_{1} $ estimation and thus overstimation.
+    \end{enumerate}
+\end{proof}
+\begin{theorem*}[7]
+    \normalfont
+    Consider an experimental approach to estimation of the effect on earnings of education.
+    \begin{enumerate}
+        \item Describe an experimental protocol for an idealized randomized controlled experiment that
+              would permit unbiased estimation of the effect on earnings of an additional year of education
+              at a typical US educational institution. (Ignore practical and ethical issues.)
+        \item Explain why, precisely, your experimental protocol would eliminate omitted variable bias
+              arising from omission of the variables in question $ 1 $ (or any other variables).
+    \end{enumerate}
+\end{theorem*}
+\begin{proof}
+    \begin{enumerate}
+        \item Idealized controlled experiment's aim is to separate education effect on earnings from all
+              other possible effets, which may be correlated with education. In order to measure influence of
+              years of education only we need to collect all the data of personality of students and make sure
+              our sample is as representative as possible. By representiveness i mean that we need to select
+              students for model from all possible social groups: students from rich/middle/poor families,
+              representatives of different minorities, students ambitions and everything that can contribute
+              to the level of earnings through years of education.
+        \item This approach is indeed going to eliminate omitted variable bias, since we clean
+              unexplained part of the model from all possible factors, which could influence the earnings through
+              years of education.
+    \end{enumerate}
+\end{proof}
+\begin{theorem*}[8]
+    \normalfont
+    Estimate two regressions: (i) \texttt{ahe} on \texttt{yrseduc} and (ii) \texttt{ahe} on \texttt{yrseduc} and \texttt{female}.
+    \begin{enumerate}
+        \item  In regression (ii), what is the coefficient on \texttt{yrseduc}? Explain what this means.
+        \item  In regression (ii), test the hypothesis that the population coefficient on \texttt{female}
+              in specification (ii) is zero, against the hypothesis that it is nonzero, at the $ 5\% $ significance
+              level. In everyday words (not statistical terms), what precisely is the hypothesis is that you are testing?
+        \item  Does the coefficient on \texttt{yrseduc} change from regressions (i) to (ii) in a
+              substantively important way, that is, is the difference between the two estimates large in a
+              real--world sense? What is the reason that including \texttt{female} in the regression
+              results in a large (or only a small) change in the coefficient on \texttt{yrseduc}?
+              (Hint: what is the correlation between \texttt{yrseduc} and \texttt{female}?)
+
+    \end{enumerate}
+\end{theorem*}
+\begin{proof}
+    \begin{enumerate}
+        \item We can see in the table below that coefficient on \texttt{yrseduc} is $ 1.341 $. It means
+              that growth of years of education is positively correlated with the average hourly earnings.
+              Each additional year of education was correlated with the earnings growth by $ \$ 1.341 $
+              \begin{table}[!htbp] \centering
+                  \caption{}
+                  \label{}
+                  \begin{tabular}{@{\extracolsep{5pt}}lc}
+                      \\[-1.8ex]\hline
+                      \hline                                                                                     \\[-1.8ex]
+                                          & \multicolumn{1}{c}{\textit{Dependent variable:}}                     \\
+                      \cline{2-2}
+                      \\[-1.8ex] & ahe \\
+                      \hline                                                                                     \\[-1.8ex]
+                      yrseduc             & 1.341$^{***}$                                                        \\
+                                          & (0.047)                                                              \\
+                                          &                                                                      \\
+                      female              & $-$3.396$^{***}$                                                     \\
+                                          & (0.234)                                                              \\
+                                          &                                                                      \\
+                      Constant            & $-$1.384$^{**}$                                                      \\
+                                          & (0.646)                                                              \\
+                                          &                                                                      \\
+                      \hline                                                                                     \\[-1.8ex]
+                      Observations        & 3,781                                                                \\
+                      R$^{2}$             & 0.211                                                                \\
+                      Adjusted R$^{2}$    & 0.210                                                                \\
+                      Residual Std. Error & 7.133 (df = 3778)                                                    \\
+                      F Statistic         & 504.501$^{***}$ (df = 2; 3778)                                       \\
+                      \hline
+                      \hline                                                                                     \\[-1.8ex]
+                      \textit{Note:}      & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+                  \end{tabular}
+              \end{table}
+        \item From the table we can see that coefficient value is $ -3.396 $ which is quite
+              higher than its standart deviation $ 0.234 $. So coefficient is statistically different from
+              zero, which implies that men and women have different weekly earnings, having excluded influence
+              of years of education.
+        \item Different models provided insignificantly different estimations of \texttt{yrseduc} influence
+              on \texttt{ahe} ($ 1.32186 $ vs $ 1.34147 $). Since correlation between \texttt{female} and \texttt{yrseduc} is relatively small ($ 0.028 $) we
+              didnt notice change in coefficient after estimating model (ii). Small insignificant correlation
+              doesnt contribute to omitted variable bias and thus coefficients didnt change.
+    \end{enumerate}
+\end{proof}
+\clearpage\begin{theorem*}[9]
+    \normalfont
+    Use multiple linear regression of \texttt{ahe} on \texttt{yrseduc} and \texttt{ba} (a binary variable
+    equaling one for those who attained a bachelor’s degree) to estimate the marginal value of a
+    bachelor’s degree, more specifically, the value of going to school for $ 16 $ years and
+    receiving a bachelor’s degree, relative to going to school for $ 16 $ years but not receiving
+    a bachelor’s degree. Construct a $ 95\% $ confidence interval for the marginal value of a bachelor’s degree.
+\end{theorem*}
+\begin{proof}
+    After estimation we get the following table:
+    \begin{table}[!htbp] \centering
+        \caption{}
+        \label{}
+        \begin{tabular}{@{\extracolsep{5pt}}lc}
+            \\[-1.8ex]\hline
+            \hline                                                                                \\[-1.8ex]
+                           & \multicolumn{1}{c}{\textit{Dependent variable:}}                     \\
+            \cline{2-2}
+            \\[-1.8ex] &   \\
+            \hline                                                                                \\[-1.8ex]
+            yrseduc        & 1.204$^{***}$                                                        \\
+                           & (0.075)                                                              \\
+                           &                                                                      \\
+            ba             & 0.786$^{*}$                                                          \\
+                           & (0.466)                                                              \\
+                           &                                                                      \\
+            Constant       & $-$1.246                                                             \\
+                           & (0.894)                                                              \\
+                           &                                                                      \\
+            \hline                                                                                \\[-1.8ex]
+            \hline
+            \hline                                                                                \\[-1.8ex]
+            \textit{Note:} & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+        \end{tabular}
+    \end{table}
+
+    We can see that marginal effect of having bachelor degree is $ \$0.786 $. Having robust estimations
+    of std for this coefficient we can construct $ 95\% $ interval of this coefficient, namely:
+    \begin{table}[!htbp] \centering
+        \caption{}
+        \label{}
+        \begin{tabular}{@{\extracolsep{5pt}} ccc}
+            \\[-1.8ex]\hline
+            \hline                             \\[-1.8ex]
+                        & 2.5 \%     & 97.5 \% \\
+            \hline                             \\[-1.8ex]
+            (Intercept) & $$-$3.297$ & $0.806$ \\
+            yrseduc     & $1.037$    & $1.371$ \\
+            ba          & $$-$0.133$ & $1.705$ \\
+            \hline                             \\[-1.8ex]
+        \end{tabular}
+    \end{table}
+
+    Since \texttt{yrseduc} has interval of $ (1.037, 1.371) $ we can calculate the interval for value
+    of going to school 16 years as follows:
+    \[16  \times (1.037, 1.371) = (16.592, 21.936)\]
+    and thus if we add having bachelor degree then resulting intervals will be:
+    \[(16.592, 21.936) + (-0.133, 1.705) = (16.459, 23.641)\]
+    Interval for relative marginal value of receiving bachelor degree is simply then:
+    \[(0.99, 1.078)\]
+\end{proof}
+\end{document}

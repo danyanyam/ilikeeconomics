@@ -1,0 +1,138 @@
+
+\documentclass[12pt,reqno]{amsart}
+
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsthm}
+\theoremstyle{plain}
+\renewcommand*{\proofname}{Solution}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Ve}{V^{e}}
+\newcommand{\Vu}{V^{u}}
+\newtheorem*{theorem*}{Question}
+%% this allows for theorems which are not automatically numbered
+\usepackage{lineno}
+
+%% The above lines are for formatting.  In general, you will not want to change these.
+\title{Home Assignment 3}
+\author{Daniil Buchko}
+\begin{document}
+\maketitle
+
+\begin{theorem*}[1]
+    \normalfont
+    An unemployed agent is looking for a job. Regardless of whether the agent is employed or not,
+    wage offers on the market follow a Markov process $ x_t $ that is governed by a Markov chain
+    with the transition matrix
+    \[
+        P = \begin{pmatrix}
+            0.5 & 0   & 0.5 \\
+            0.9 & 0.1 & 0   \\
+            0.2 & 0   & 0.8
+        \end{pmatrix}
+    \]
+    and numeric values of the wages are given by the vector $ W = \left( 15 ~ 12 ~ 2\right)^{T} $.
+    If the agent is unemployed and accepts the current offer, he earns that wage starting from the
+    current period and until he departs.
+    \\\\
+    The employer cannot terminate the worker; however, the worker can quit with a one-period
+    advance notice. That is, in any period $ t $ in which he has a job, after learning $ x_t $ and
+    getting paid for the current period, the worker may give his employer a notice, and in this case
+    he enters the job market in period $ t+1 $ -- draws an offer and decides whether to accept it or
+    stay unemployed and try his luck in the period/periods. The agent’s objective is to maximize
+    $ \E \left[ \sum_{t=0}^{\infty} \beta^{t}y_{t} \right] $, where $ y_{t} $ is her income -- either
+    $ \omega $ if she is employed with the wage $ \omega $, or $ c $ if she is uemployed in period
+    $ t $.  The discount factor $ \beta=4/5 $ and the unemployment compensation $ c = 3 $.
+    \begin{enumerate}
+        \item Write the problem recursively (the Bellman equation). Be careful and detailed in how
+              you define your value function -- ambiguity and omissions at this stage will be
+              explicitly penalized.
+        \item Find the optimal strategy of the worker and expected discounted present value of his
+              income stream as functions of the state of the Markov process.
+    \end{enumerate}
+\end{theorem*}
+
+\begin{proof}
+    Let $ V_{i} $, $ V_{ij}^{e} $ and $ \Vu_{i} $ be components of the agent’s value function
+    defined as follows: each of these scalar variables is the maximum of agent’s objective function
+    at the beginning of the current period if he observes the curret state $ i\in\{1, 2, 3\} $ and:
+    \begin{enumerate}
+        \item $ V_i $ -- the agent is about to decide whether to accept the offer (continue working)
+              or reject the wage offer (leave the job) at wage $ W_{i} $
+        \item  $ \Ve_{ij} $-- the agent is employed at wage $ W_{j} $
+        \item $ \Vu_{i} $ -- agent has just rejected the offer $ W_j $
+    \end{enumerate}
+    Let $ V = \left( V_1 ~ V_{2}~V_{3} \right)^{T} $ and
+    $\Ve_{j} = \left( \Ve_{1j}~\Ve_{2j}~\Ve_{3j} \right)^{T}$. Then $ V_{i} $, $ \Ve_{ij} $ and
+    $ \Vu_{i} $ should satisfy the following Bellman equation system:
+    \[
+        \begin{dcases}
+            V_i = \max \{\Ve_{ii}, \Vu_{i}\}                                           \\
+            \Ve_{ij} = \max \{ W_{j} + \beta P_{i}V^{e}_{j}, ~W_{j} + \beta P_{i}V  \} \\
+            \Vu_i = c + \beta P_{i}V
+        \end{dcases}
+    \]
+    Firstly lets notice that, because $ W_{1} = 15 $ is the highest salary possible, than at state
+    $x_{t} = 1$ agent will choose employment:
+    \begin{gather}
+        V_1 = \max \{ V_{11}^{e}, V_{1}^{u} \} \implies V_{1} = \frac{15}{1 - 4/5} = 75
+    \end{gather}
+    By the same logic since $ 2 =: W_{3} < c := 3 $ we can state that $ V_3 = V_{3}^{u} $ and as a
+    result:
+    \[
+        V_3 = \max \{V_{33}^{e}, V_{3}^{u} \} = V_{3}^{u} = c + \beta \left( \sum_{i=1}^{3}P_{3i}V_i \right)
+        = c + \beta \left( 0.2V_{1} + 0.8 V_{3} \right)
+    \]
+    Therefore we can derive the value for $ V_{3} $ numerically:
+    \[
+        V_3 = c + \beta \left( 0.2V_{1} + 0.8 V_{3} \right) =  \frac{1}{1 - 0.8\beta} \left( c + 0.2\beta V_1  \right)
+    \]
+    Substituting values for parameters and $ V_{1} $:
+    \begin{gather}
+        V_3 = \frac{1}{0.36}\left( 3 + 12  \right) \sim 41.66
+    \end{gather}
+    The last thing to understand is the value for $ V_2 $:
+    \[
+        \begin{dcases*}
+            V_2 = \max \{ V_{22}^{e}, V_{2}^{u} \} \\
+            V_{22}^{e} = \max \{ W_{2} + \beta P_{2}V^{e}_{2}, ~W_{2} + \beta P_{2}V  \} \\
+            V_{2}^{u} = c + \beta P_{2}V
+        \end{dcases*}
+    \]
+    Incorporating everything to the first equation yields:
+    \begin{gather*}
+        V_2 = \max\{V_{22}^{e}, V_{2}^{u} \} = \max\{\max \{ \underbrace{W_{2} + \beta P_{2}V^{e}_{2}}_{A}, ~\underbrace{W_{2} + \beta P_{2}V  \}}_{B} , \underbrace{c + \beta P_{2}V}_{C} \}
+    \end{gather*}
+    Lets calculate every value separately:
+    \begin{enumerate}[(A)]
+        \item
+              \[
+                  W_{2} + \beta P_{2}V^{e}_{2} = 12 + \frac{4}{5} \left( \sum_{i=1}^{3}P_{2i}V_{i2}^{e}
+                  \right) = 12 + \frac{4}{5} \left(  0.9 V_{12}^{e} + 0.1 V_{22}^{e} \right)
+              \]
+        \item
+              \[
+                  W_{2} + \beta P_{2}V = 12 + \frac{4}{5}\left( 0.9\underbrace{V_{1}}_{75} + 0.1V_2 \right) =
+                  12 + \frac{4}{5}\left( 67.5 + 0.1 V_2 \right)
+              \]
+        \item
+              \begin{gather*}
+                  c + \beta P_{2}V = 3 + \frac{4}{5} \left( \sum_{i=1}^{3}P_{2i}V_{i} \right) = 3 +
+                  \frac{4}{5} \left( 0.9 V_1 + 0.1 V_2 \right)\\ = 3 + \frac{4}{5}\left( 67.5 + 0.1V_2 \right)
+              \end{gather*}
+    \end{enumerate}
+    Lets assume first that $ B > A $, then:
+    \begin{gather}
+        V_2 = B = 12 + \frac{4}{5} \left( 67.5 + 0.1V_2\right) \implies V_2 = 71.7
+    \end{gather}
+    If we assumed the opposite, namely $ B < A $ then:
+    \[V_2 = 12 + \frac{4}{5} \left(  0.9 V_{12}^{e} + 0.1 V_{22}^{e} \right)\]
+
+
+\end{proof}
+
+
+\end{document}

@@ -1,0 +1,476 @@
+\documentclass[11pt, oneside]{article}
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+\usepackage[parfill]{parskip}    			% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{width=10cm,compat=1.9}
+
+\usetikzlibrary{arrows}
+
+\def\firstcircle{(90:1.75cm) circle (2.5cm)}
+\def\secondcircle{(210:1.75cm) circle (2.5cm)}
+\def\thirdcircle{(330:1.75cm) circle (2.5cm)}
+\graphicspath{ {img/} }
+
+
+%SetFonts
+
+
+\title{Macroeconomics-2 - Assignment \#1}
+\author{Daniil Buchko - \texttt{dbuchko@nes.ru}}
+\date{November 11, 2021}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 1}
+
+\subsection*{Question 1}
+\fbox{\begin{minipage}{40em}
+Go to Wikipedia and read about the Hodrick-Prescott decomposition. Write down the
+main formula and briefly explain in your own words the idea behind it. What happens if the value of
+parameter $ \lambda $ is too large? What happens if it is too small?
+\end{minipage}}
+
+\begin{enumerate}[(a)]
+	\item It is assumed that $ y_{t} $ is log of time-series for each period and $ y_{t} $ is made of trend component $ \tau_{t} $, cyclical component $ c_{t} $ and error component $ \varepsilon_{t} $ such that:
+	\[y_{t} = \tau_{t} + c_{t} + \varepsilon_{t}\]
+	 Main formula for decomposition is:
+	\[
+	\min_{\tau} \left( \sum_{t=1}^{T} (y_{t} - \tau_{t})^{2} + \lambda \sum_{t=2}^{T-1} [(\tau_{t+1} - \tau_{t}) - (\tau_{t} - \tau_{t-1}) ]^{2} \right)
+	\]
+	\item In simple terms this decomposition is used to clean raw time-series data from cyclical component in data. We select such value of trend, that would minimise the distance from the $ y_{t} $ and would be as smooth as we desire by ranging the value for $ \lambda $. The higher value for $ \lambda $ the more straightforward (less cyclical) would be our trend line. If $ \lambda $ is too high, minimisation problem would select $ \tau_{t} $ being straight horizontal line. If $ \lambda  $ equals to zero we minimise the following value:
+	\[
+	\sum_{t=1}^{T} (y_{t} - \tau_{t})^{2}
+	\]
+	which leads us to solution where $ y_{t} = \tau_{t} $ and therefore our trend component will perfectly repeat the dependable variable.
+\end{enumerate}
+	
+
+\subsection*{Question 2}
+\fbox{\begin{minipage}{40em}
+		Take levels and logs of each of the series and plots them (one graph for levels and one
+		for logs). Compare shapes of their graphs, think what is better to use in practical analysis and why (any
+		reasonable ideas would be graded). Perform questions 2-4 with both \textbf{logs} and \textbf{levels}.
+\end{minipage}}
+
+\begin{figure}[!htbp]
+	\centering
+	\begin{minipage}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{vars.png}
+		\caption{Variables.}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{logs.png}
+		\caption{Logarithms.}
+	\end{minipage}
+\end{figure}
+As we can see, the shapes of RGDP and Real Personal Consumption Expenditures are highly correlated. It is also obvious that values for levels were rising extremely which would be inappropriate for some models because some of them using numerical optimization tools to find own parameters. Therefore logarithm transformation is more applicable in practical analysis.
+
+
+\subsection*{Question 3}
+\fbox{\begin{minipage}{40em}
+Use Hodrick-Prescott filter to smooth time series. Use $ \lambda = 1600 $ (default value). Extract
+residuals (original time series minus smoothed ones). Plot residuals for three time series on the same graph.
+\end{minipage}}
+
+\begin{figure}[!htbp]
+	\centering
+	\begin{minipage}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{hp_vars.png}
+		\caption{Residuals for levels.}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{hp_log.png}
+		\caption{Residuals for logarithms.}
+	\end{minipage}
+\end{figure}
+	
+
+\subsection*{Question 4}
+\fbox{\begin{minipage}{40em}
+Plot the trends on the same graph. Describe the results.
+\end{minipage}}	
+\begin{figure}[!hbtp]
+	\centering
+	\begin{minipage}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{hp_trends_levels.png}
+		\caption{Trends for levels.}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{hp_trends_logs.png}
+		\caption{Trends for logarithms.}
+	\end{minipage}
+\end{figure}
+
+As we may see, the trend variables clearly illustrate trends for both levels and logarithms. Those trend lines are smooth and are merely fluctuating.
+
+\subsection*{Question 5}
+\fbox{\begin{minipage}{40em}
+Find the variance of cyclical components (residuals) of these three time series. Make a
+guess based on the data, which of the three time series had larger fluctuations.
+\end{minipage}}
+\begin{center}
+Descriptional statistics for data 1960:1--2021:3\\
+	\vspace{8pt}
+	\begin{tabular}{lr@{.}lr@{.}lr@{.}lr@{.}lr@{.}l}
+		Var & \multicolumn{2}{c}{Avg}
+		& \multicolumn{2}{c}{Median}
+		& \multicolumn{2}{c}{Var.}
+		& \multicolumn{2}{c}{min.}
+		& \multicolumn{2}{c}{max.} \\[1ex]
+		hp\_GDPC1 & $-$8&04\textrm{e--12} & $-$6&41 & 30,450& 0& $-$1&64\textrm{e+03} & 424&0\\
+		hp\_PCECC96 & $-$4&96\textrm{e--12} & $-$0&360 & 14,568&49 & $-$1&34\textrm{e+03} & 345&0\\
+		hp\_GPDIC1 & $-$1&13\textrm{e--12} & 6&78 & 10,547&29 & $-$559&0 & 228&0\\
+		hp\_l\_GDPC1 & 0&00 & $-$0&000472 & 0&00024336 & $-$0&0906 & 0&0373\\
+		hp\_l\_PCECC96 & 0&00 & 0&000143 & 0&000196 & $-$0&108 & 0&0370\\
+		hp\_l\_GPDIC1 & 0&00 & 0&00789 & 0&004225 & $-$0&227 & 0&153\\
+	\end{tabular}
+\end{center}
+
+From the table above we can see that the GDPC1 had larger fluctuations among level variables and GPDIC1 -- among log variables.
+
+
+\subsection*{Question 6}
+\fbox{\begin{minipage}{40em}
+Find the correlation between cyclical components of GDP and consumption. Are the results you’ve received consistent with Keynesian consumption function ($ C = a + bY  $)?
+\end{minipage}}
+
+We get the following correlation matrix: 
+\begin{center}
+	Correlation matrix
+	 1960:1--2021:3\\
+	\vspace{8pt}
+	\begin{tabular}{rrl}
+		hp\_GDPC1 & hp\_PCECC96 &\\
+		$1.0000$ & $0.9177$ & hp\_GDPC1\\
+		& $1.0000$ & hp\_PCECC96\\
+	\end{tabular}
+	
+\end{center}
+
+Which means that correlation between GDP residuals and consumption expenditures significant and \textit{positive} and is around $ 0.9177 $ which coincides with Keynesian consumption function.
+
+
+\subsection*{Question 7}
+\fbox{\begin{minipage}{40em}
+Plot the histogram of each residual. Are they close to normal distribution? Compare distribution of levels and logs.
+\end{minipage}}
+
+From the distribution pictures below we can see, that they look close to normal distribution, but actual statisticial test says they are not normally distributed. Statistics for normality presented in the upper left corner of each picture (zero hypothesis is such that there is normal distribution). We can also outline, that log residuals are more normal-looking than level residuals.
+
+\begin{figure}[!hbtp]
+	\centering
+	\begin{minipage}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{d_gdpc1.png}
+		\caption{Level GDPC.}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{d_l_gdpc1.png}
+		\caption{Log GDPC.}
+	\end{minipage}
+	\begin{minipage}[b]{0.48\textwidth}
+	\includegraphics[width=\textwidth]{d_gpdic1.png}
+	\caption{Level for GPDIC.}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.48\textwidth}
+	\includegraphics[width=\textwidth]{d_l_gpdic1.png}
+	\caption{Log for GPDIC.}
+\end{minipage}
+
+		\centering 
+\begin{minipage}[b]{0.48\textwidth}
+	\includegraphics[width=\textwidth]{d_pcecc96.png}
+	\caption{Level for PCECC.}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.48\textwidth}
+	\includegraphics[width=\textwidth]{d_l_pcecc96.png}
+	\caption{Log for PCECC.}
+\end{minipage}
+\end{figure}
+
+\clearpage
+\section*{Problem 2}
+Consider an continuation of Two-Period Model: a Three-Period Model. In this model the household
+receives income stream $ Q_{1}, Q_{2}, Q_{3} $. One-period interest rate is $ r $. Household can consume in each period.
+Denote the consumption stream as $ C_{1}, C_{2}, C_{3} $.
+\subsection*{Question 1}
+\fbox{\begin{minipage}{40em}
+Write down the intertemporal budget constraint. Discuss also the following possible cases: how the
+budget constraint will change if the household receives bequest $ b_{0} $ in period $ 0 $ or leaves bequest $ b_{3} $ in
+period $ 3 $?
+\end{minipage}}
+
+Intertemporal budget constraint:
+\[
+\begin{cases}
+C_{1} + s_{1} \le Q_{1}  &\implies s_{1} \le Q_{1} - C_{1}\\
+C_{2} + s_{2} \le Q_{2} + (1+r) s_{1} &\implies s_{1} \ge \frac{C_{2} -Q_{2}}{1+r} + \frac{s_{2}}{1+r}\\
+C_{3} \le Q_{3} + (1+r)s_{2}&\implies \frac{s_{2}}{1+r} \ge \frac{C_{3} - Q_{3}}{(1+r)^{2}}
+\end{cases} \implies \frac{C_{3} - Q_{3}}{(1+r)^{2}} \le Q_{1} - C_{1} + \frac{Q_{2}-C_{2}}{1 + r}
+\]
+Or more familiar:
+\[
+C_{1} + \frac{C_{2}}{1+r} +\frac{C_{3}}{(1+r)^{2}} \le Q_{1} + \frac{Q_{2}}{1+r} + \frac{Q_{3}}{(1+r)^{2}}
+\]
+If household receives bequest $ b_{0} $, that means he will have more income, threrefore Intertemporal budget constraint will change:
+\[
+\begin{cases}
+C_{1} + s_{1} \le Q_{1} + b_{0}  &\implies s_{1} \le Q_{1} - C_{1} + b_{0}\\
+C_{2} + s_{2} \le Q_{2} + (1+r) S_{1} &\implies s_{1} \ge \frac{C_{2} -Q_{2}}{1+r} + \frac{s_{2}}{1+r}\\
+C_{3} \le Q_{3} + (1+r)s_{2}&\implies \frac{s_{2}}{1+r} \ge \frac{C_{3} - Q_{3}}{(1+r)^{2}}
+\end{cases} \implies \frac{C_{3} - Q_{3}}{(1+r)^{2}} \le Q_{1} - C_{1} + \frac{Q_{2}-C_{2}}{1 + r}
+\]
+Or more familiar:
+\[
+C_{1} + \frac{C_{2}}{1+r} +\frac{C_{3}}{(1+r)^{2}} \le Q_{1} + b_{0} + \frac{Q_{2}}{1+r} + \frac{Q_{3}}{(1+r)^{2}}
+\]
+If household leaves bequest $ b_{3} $, that means he will have less income in the last period, threrefore Intertemporal budget constraint will change:
+\[
+\begin{cases}
+C_{1} + s_{1} \le Q_{1}  &\implies S_{1} \le Q_{1} - C_{1} \\
+C_{2} + s_{2} \le Q_{2} + (1+r) s_{1} &\implies s_{1} \ge \frac{C_{2} -Q_{2}}{1+r} + \frac{s_{2}}{1+r}\\
+C_{3} \le Q_{3} - b_{3} + (1+r)s_{2}&\implies \frac{s_{2}}{1+r} \ge \frac{C_{3} - Q_{3}+b_{3}}{(1+r)^{2}}
+\end{cases} \implies \frac{C_{3} - Q_{3} + b_{3}}{(1+r)^{2}} \le Q_{1} - C_{1} + \frac{Q_{2}-C_{2}}{1 + r}
+\]
+Or more familiar:
+\[
+C_{1} + \frac{C_{2}}{1+r} +\frac{C_{3}}{(1+r)^{2}} \le Q_{1}  + \frac{Q_{2}}{1+r} + \frac{Q_{3} - b_{3}}{(1+r)^{2}}
+\]
+If we havent assumed for the presence of $ s_{i} $, then the intertemporal constraints would be:
+\begin{enumerate}[(1)]
+	\item No bequests:
+	\[
+	\begin{cases}
+	C_{1}  \le Q_{1}  \\
+	C_{2}  \le Q_{2}  \\
+	C_{3} \le Q_{3} 
+	\end{cases}
+	\]
+	\item Received bequest $ b_{0} $:
+	\[
+	\begin{cases}
+	C_{1}  \le Q_{1} + b_{0}  \\
+	C_{2}  \le Q_{2}  \\
+	C_{3} \le Q_{3} 
+	\end{cases}
+	\]
+	\item Left bequest $ b_{3} $:
+	\[
+	\begin{cases}
+	C_{1}  \le Q_{1}  \\
+	C_{2}  \le Q_{2}  \\
+	C_{3} + b_{3} \le Q_{3} 
+	\end{cases}
+	\]
+\end{enumerate}
+
+\subsection*{Question 2}
+\fbox{\begin{minipage}{40em}
+Assume that household has following utility function
+\[U(C_{1}, C_{2}, C_{3})= \sqrt{C_{1}} + \frac{\sqrt{C_{2}}}{1+r} + \frac{\sqrt{C_{3}}}{(1+r)^{2}}\]
+Formulate the problem of the household and find its FOCs.
+\end{minipage}}
+
+\begin{enumerate}[(1)]
+	\item First case, no assumption about presence of savings:
+	household solves the following optimisation problem. Notice that we turned the ineqaulities constraints into equations since constraints bind ($ \partial U/ \partial C_{i} > 0 $)
+	\begin{gather*}
+	U(C_{1}, C_{2}, C_{3}) =  \sqrt{C_{1}} + \frac{\sqrt{C_{2}}}{1+r} + \frac{\sqrt{C_{3}}}{(1+r)^{2}} \to \max_{C_{1}, C_{2}, C_{3}}\\
+	s.t. \quad C_{1} =Q_{1}  \quad C_{2} = Q_{2} \quad C_{3} = Q_{3}	
+	\end{gather*}
+	So lagrangian and the FOCs are the following:
+	\[
+	\mathcal{L} = \sqrt{C_{1}} + \frac{\sqrt{C_{2}}}{1+r} + \frac{\sqrt{C_{3}}}{(1+r)^{2}} + \lambda_{1} ( Q_{1} - C_{1}) + \lambda_{2} (Q_{2} - C_{2}) + \lambda_{3} (Q_{3} - C_{3} )
+	\]
+	\begin{align*}
+	&\frac{\partial \mathcal{L}}{\partial C_{1}} = 0 \implies \quad \frac{1}{2\sqrt{C_{1}}} - \lambda_{1} = 0\\
+	&\frac{\partial \mathcal{L}}{\partial C_{2}} = 0 \implies \quad \frac{1}{2\sqrt{C_{2}}} - \lambda_{2} = 0 \\
+	&\frac{\partial \mathcal{L}}{\partial C_{3}} = 0 \implies \quad \frac{1}{2\sqrt{C_{3}}} - \lambda_{3} = 0 \\
+	&\frac{\partial \mathcal{L}}{\partial \lambda_{i}} = 0 \implies \quad \lambda_{i} (Q_{i} - C_{i})  = 0, \quad \lambda_{i} \ge 0
+	\end{align*}
+	
+
+\item Second case, assuming presence of savings $ s_{i} $
+Household solves the following optimisation problem:
+\begin{align*}
+&U(C_{1}, C_{2}, C_{3}) =  \sqrt{C_{1}} + \frac{\sqrt{C_{2}}}{1+r} + \frac{\sqrt{C_{3}}}{(1+r)^{2}} \to \max_{C_{1}, C_{2}, C_{3}}\\
+&s.t. \quad C_{1} + \frac{C_{2}}{1+r} +\frac{C_{3}}{(1+r)^{2}} \le Q_{1} + \frac{Q_{2}}{1+r} + \frac{Q_{3}}{(1+r)^{2}}
+\end{align*}
+
+So lagrangian and the FOCs are the following:
+\[
+\mathcal{L} = \sqrt{C_{1}} + \frac{\sqrt{C_{2}}}{1+r} + \frac{\sqrt{C_{3}}}{(1+r)^{2}} + \lambda \left( Q_{1} + \frac{Q_{2}}{1+r} + \frac{Q_{3}}{(1+r)^{2}} - C_{1} - \frac{C_{2}}{1+r} -\frac{C_{3}}{(1+r)^{2}} \right)
+\]
+\begin{align*}
+&\frac{\partial \mathcal{L}}{\partial C_{1}} = 0 \implies \quad \frac{1}{2\sqrt{C_{1}}} - \lambda = 0\\
+&\frac{\partial \mathcal{L}}{\partial C_{2}} = 0 \implies \quad \frac{1}{2\sqrt{C_{2}}} - \lambda = 0 \\
+&\frac{\partial \mathcal{L}}{\partial C_{3}} = 0 \implies \quad \frac{1}{2\sqrt{C_{3}}} - \lambda = 0 \\
+&\frac{\partial \mathcal{L}}{\partial \lambda} = 0 \implies \quad \lambda \left( Q_{1} + \frac{Q_{2}}{1+r} + \frac{Q_{3}}{(1+r)^{2}} - C_{1} - \frac{C_{2}}{1+r} -\frac{C_{3}}{(1+r)^{2}} \right) = 0, \quad \lambda \ge 0
+\end{align*}
+FOCs says that agent selects the same amount of consumption each period. This was predictable since his utility discount factor equals to amount of money he receives from savings. We should also notice that budget constraint binds, since utility function increases monotonically for each $ C_{i} $. We therefore can calculate amount of good being consumed each period:
+\[
+C_{i}^{*} = \frac{(1 +r)^{2}}{(2+r)(1+r) + 1} \left( Q_{1}  + \frac{Q_{2}}{1+r} + \frac{Q_{3}}{(1+r)^{2}} \right)
+\]
+\end{enumerate}
+\subsection*{Question 3}
+\fbox{\begin{minipage}{40em}
+Assume that household makes savings in each period, denote them $ s_{1}, s_{2}, s_{3} $. What is the optimal level of $ s_{3} $?
+\end{minipage}}
+
+Its obvious that agent lives only for 3 periods and his utility function doesnt include any bequests, so he has no incentives to save in the last period of his life $ \implies s^{*}_{3} = 0$. 
+
+\subsection*{Question 4}
+\fbox{\begin{minipage}{40em}
+	Express consumption in period $ 3 $ in terms of $ Q_3 $ and $ s_2 $. Find $ s_2 $ from this equation.
+\end{minipage}}
+\begin{gather*}
+C_{3}  = Q_{3} + (1+r)s_{2} \implies s_{2} = \frac{C_{3} - Q_{3}}{1 + r} = \frac{C_3}{1 + r} - \frac{Q_{3}}{1 + r} 
+\end{gather*}
+\subsection*{Question 5}
+\fbox{\begin{minipage}{40em}
+		Write down the second period budget constraint. Plug the expression for $ s_2 $ into this constraint and
+		find $ s_1 $ from this equation.
+\end{minipage}}
+\begin{gather*}
+C_{2} + s_{2}  = Q_{2} + (1+r)s_{1} \implies  C_{2} + \frac{C_3}{1 + r} - \frac{Q_{3}}{1 + r}  = Q_{2} + (1+r)s_{1}\\
+s_{1} = \frac{C_{2} - Q_{2}}{1+r} +  \frac{C_{3} - Q_{3}}{(1+r)^{2}}
+\end{gather*}
+\subsection*{Question 6}
+\fbox{\begin{minipage}{40em}
+	Repeat the same procedure as in previous question for the first period budget constraint. Does it
+	look similar to what you found above?
+\end{minipage}}
+\begin{gather*}
+C_{1} + s_{1}  = Q_{1} \implies  s_{1} = Q_{1} - C_{1}\\
+s_{1} = \frac{C_{2} - Q_{2}}{1+r} +  \frac{C_{3} - Q_{3}}{(1+r)^{2}} \implies Q_{1} - C_{1} = \frac{C_{2} - Q_{2}}{1+r} +  \frac{C_{3} - Q_{3}}{(1+r)^{2}}
+\end{gather*}
+Yes, it is exactly the intertemporal constraint:
+\[
+C_{1} + \frac{C_{2}}{1+r } + \frac{C_{3}}{(1+r)^{2}} = Q_{1} + \frac{Q_{2}}{1+r} + \frac{Q_{3}}{(1+r)^{2}}
+\]
+\clearpage
+\section*{Problem 3}
+Assume the following utility function: 
+\[
+U(C_{1}, C_{2}) = \log C_{1} + \frac{\log C_{2}}{1 + \rho }
+\]
+Assume that share $ \alpha $ of
+consumers receive income only in the first period $ (Y_1) $, while the rest $ 1- \alpha $ share of consumers -- only in
+the second one $ (Y_2) $. Consumers can lend and borrow only from each other.
+\subsection*{Question 6}
+\fbox{\begin{minipage}{40em}
+		Find the supply and demand of loanable funds for the first period. Express it through income,
+		discounting factor and real interest rate $ r $.
+\end{minipage}}
+\clearpage
+\section*{Problem 4}
+Assume that a household has $ Q_1 = 50 $ and $ Q_2 = 100 $. It faces the following taxes: $ T_1 = 20 $, $ T_2 = 30 $. Disposable income equals $ Q_{i} - T_{i} $. The household has utility function $ U (C_1, C_2) = \ln C_1 +\ln C_2 $. The market interest rate is $ r = 0.1 $.
+\subsection*{Question 1}
+\fbox{\begin{minipage}{40em}
+		Show the budget constraint and indifference curve on the diagram. Is the consumer a net borrower or
+		lender? Give a very brief explanation.
+\end{minipage}}
+
+\begin{figure}[!hbtp]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[
+	axis lines = left,
+	xlabel = \(C_{1}\),
+	ylabel = {\(C_{2}\)},
+	]
+	%Below the red BC is defined 
+	\addplot [
+	domain=0:90, 
+	samples=100, 
+	color=red,
+	]
+	{1.1*30 - 1.1*x + 70};
+	\addlegendentry{\(C_{1} + \frac{C_{2}}{1.1} = 30 + \frac{70}{1.1}\)}
+	%Here the blue UF is defined
+	\addplot [
+	domain=25:100, 
+	samples=100, 
+	color=blue,
+	]
+	{exp(7.8)/x};
+	\addlegendentry{\(u^{*} = \ln C_{1} + \ln C_{2}\)}
+	
+	\end{axis}
+	\end{tikzpicture}
+\end{figure}
+
+We can see that consumption $ C_{1}^{*} $ is higher than available disposable income $ C_{1}^{*} > Q_{1} - T_{1} =  30 $, thus agent borrows money and therefore he is net borrower.
+
+\subsection*{Question 2}
+\fbox{\begin{minipage}{40em}
+		Evaluate the following statement: "as the subjective discount factor is one, individuals derive the
+		same utility from any given unit of consumption in both periods. Therefore, $ c_1 = c_2 $ and it is not
+		necessary to solve the maximization problem".
+\end{minipage}}
+
+Well, the statement is latently assuming the fact that discount utility factor equals to $ 1 + r $. Or in other words, solution to the more general task with discount factor $ \beta $ and borrow rate $ r $ and some utility function $ u(.) $ is the \textbf{Euler equation}:
+\[u'(c_{1}) = \beta (1+r)u'(c_{2})\]
+and if the following have been true $ \beta = (1+r)  $ (which is not the case in our task), then the statement would have been true. So statement is false.
+
+\subsection*{Question 3}
+\fbox{\begin{minipage}{40em}
+		Solve the maximization problem of the agent and find $ c_1 $, $ c_2 $. Are they equal? How is the result
+		related to the answer to the previous question?
+\end{minipage}}
+
+Agent's task:
+\begin{gather*}
+	\ln C_{1} + \ln C_{2} \to \max_{C_{1}, C_{2}} \\
+	s.t. \quad C_{1} + \frac{C_{2}}{1.1} = 30 + \frac{70}{1.1}
+\end{gather*}
+Lagrangian and derivatives:
+\[
+\mathcal{L} = 	\ln C_{1} + \ln C_{2} + \lambda \left( 30 + \frac{70}{1.1} - C_{1} - \frac{C_{2}}{1.1} \right)
+\]
+\[
+\begin{cases}
+1/C_{1} = \lambda \\
+1/C_{2} = \lambda / 1.1
+\end{cases} \implies C^{*}_{2} = 1.1C^{*}_{1}
+\]
+We can see clearly consumption is different in different periods.
+
+\subsection*{Question 4}
+\fbox{\begin{minipage}{40em}
+		Now additionally assume that household can not borrow money. Repeat the previous question with
+		this new assumption
+\end{minipage}}
+Agent's task:
+\begin{gather*}
+\ln C_{1} + \ln C_{2} \to \max_{C_{1}, C_{2}} \\
+s.t. \quad C_{1} + \frac{C_{2}}{1.1} = 30 + \frac{70}{1.1} \\
+Y_{1} - T_{1} - C_{1} \ge 0
+\end{gather*}
+Lagrangian and derivatives:
+\[
+\mathcal{L} = 	\ln C_{1} + \ln C_{2} + \lambda_{1} \left( 30 + \frac{70}{1.1} - C_{1} - \frac{C_{2}}{1.1} \right) + \lambda_{2} \left( 30 - C_{1} \right)
+\]
+\[
+\begin{cases}
+1/C_{1} = \lambda_{1} + \lambda_{2} \\
+1/C_{2} = \lambda_{1} / 1.1
+\end{cases} \implies 1/C_{1} = 1.1/C_{2} + \lambda_{2} \implies C_{2} = 1.1C_{1} + \lambda_{2}C_{1}C_{2}
+\]
+If $ Y_{1} - T_{1} - C_{1} \ge 0 $ binds, then we have that $ C_{1} = 30 $, $ C_{2}  = 70$ and $ U = \ln 2100 $. If it doesnt bind, then 
+
+
+\end{document}  

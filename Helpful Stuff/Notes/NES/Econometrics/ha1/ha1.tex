@@ -1,0 +1,328 @@
+
+\documentclass[12pt,reqno]{amsart}
+
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsthm}
+\theoremstyle{plain}
+\renewcommand*{\proofname}{Solution}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\s}{\sum_{i=1}^{n}}
+\newcommand{\Ve}{V^{e}}
+\newcommand{\Vu}{V^{u}}
+\newtheorem*{theorem*}{Question}
+%% this allows for theorems which are not automatically numbered
+\usepackage{lineno}
+
+%% The above lines are for formatting.  In general, you will not want to change these.
+\title{Home Assignment 1}
+\author{Daniil Buchko}
+\begin{document}
+\maketitle
+
+\begin{theorem*}[1]
+    \normalfont
+    Suppose your calculate estimates for $\beta_{0}$ and $\beta_{1}$ by finding the solution to the
+    following minimization problem.
+    \[
+        \min_{b_0, b_1}L = \min_{b_0, b_1} \sum_{i=1}^{n}\text{exp}\left\{ (y_{i} - b_0 - b_1x_i)^{2} \right\}
+    \]
+    Write down first-order conditions for the estimates.
+\end{theorem*}
+
+\begin{proof}
+    \begin{align*}
+         & \frac{\partial L}{\partial b_{0}} =\sum_{i=1}^{n}2(y_{i} - b_0 - b_1x_i)\text{exp}\left\{ (y_{i} - b_0 - b_1x_i)^{2} \right\} = 0      \\
+         & \frac{\partial L}{\partial b_{1}} =\sum_{i=1}^{n}2x_{i}(y_{i} - b_0 - b_1x_i)\text{exp}\left\{ (y_{i} - b_0 - b_1x_i)^{2} \right\} = 0
+    \end{align*}
+\end{proof}
+
+\begin{theorem*}[2]
+    \normalfont
+    In the simple linear regression model $ y = \beta_{0} +\beta_{1}x + u $, suppose that $ \E (u) \ne 0 $.
+    Letting $ \alpha_{0} = \E (u) $, show that the model can always be rewritten with the same slope, but a new
+    intercept and error, where the new error has a zero expected value.
+\end{theorem*}
+\begin{proof}
+    Let $ \varepsilon = u - \alpha_{0} $, then model can be rewritten as follows:
+    \[
+        y = \underbrace{\beta_{0} - \alpha_{0}}_{\beta_0^{'}} + \beta_{1}x + u = \beta_{0}^{'} + \beta_{1}x + \varepsilon
+    \]
+    Where $ \E [\varepsilon] = \E [u - \alpha_{0}] = 0 $
+\end{proof}
+\begin{theorem*}[3]
+    \normalfont
+    Consider the standard simple linear regression model:
+    \[
+        y = \beta_{0} +\beta_{1}x + u
+    \]
+    When $ n = 3 $, is it possible that the data point with maximal value of $ y $ is located below
+    the OLS regression line? If answer is yes, provide an example, if no, provide a proof.
+\end{theorem*}
+\begin{proof}
+    Lets assume that there exists pair $ (x_{m}, y_{m}) $ such that
+    \[
+        \begin{cases}
+            y_{m} < \hat{\beta}_{0} + \hat{\beta}_{1}x_{m} \\
+            y_m = \max\{y_1 \dots y_n\}
+        \end{cases}
+    \]
+    From the FOCs we know that:
+    \[
+        \begin{dcases}
+            \hat{\beta}_{0} = \bar{y} - \hat{\beta}_{1} \bar{x} \\
+            \hat{\beta}_{1} = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}
+        \end{dcases}
+    \]
+    Inserting those values to initial statement yields:
+    \begin{align*}
+        y_{m}                                             & < \bar{y} - \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2} \bar{x}
+        + \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2} x_{m}                                                                 \\
+        y_{m}\sum_{i=1}^{n} (x_i - \bar{x})^2             & < \bar{y}\sum_{i=1}^{n} (x_i - \bar{x})^2 + (x_{m} - \bar{x})\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}) \\
+        (y_{m} - \bar{y})\sum_{i=1}^{n} (x_i - \bar{x})^2 & <(x_{m} - \bar{x})\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})
+    \end{align*}
+    Next lets assume that $ x_{m} - \bar{x} \ne 0 $ and $ \sum_{i=1}^{n} (x_i - \bar{x})^2 \ne 0 $ and reformat both
+    sides of inequality above slightly:
+    \[
+        \frac{y_{m} - \bar{y}}{x_{m} - \bar{x}} < \underbrace{\frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}}_{\hat{\beta}_1}
+    \]
+    Thus, we got conditions for which OLS regression of $ y = \{ y_i\}_{i=1}^{n} $ on $ x = \{x_i\}_{i=1}^{n} $
+    with $ y_m = \max\{y\} $ lying under regression line. For $ n = 3 $ points are namely:
+    \[
+        \begin{dcases}
+            x = [1, 2, 3] \\
+            y = [1, 3, 4]
+        \end{dcases}
+    \]
+\end{proof}
+\begin{theorem*}[4]
+    \normalfont
+    Consider the following relation:
+    \[y = \sqrt{x} + u\]
+    where $ x $ is uniformly distributed uniformly on segment $ [0, 1] $ and error term $ u $ has zero
+    mean conditional on $ x $. A random sample of size $ n $ is collected: $ \{ y_i, x_i\}_{i=1}^{n} $.
+    Some econometrician performs OLS estimation based on a simple linear model
+    \[ y = \beta_0 + \beta_1x+ e\]
+    Based on her estimates $ \hat{\beta}_0 $ and $ \hat{\beta}_1 $ the econometrician constructs the
+    predictor for the conditional mean of the dependent variable, i.e for $ \E(y|x) $ as
+    $ \hat{\E (y|x)} = \hat\beta_0 + \hat\beta_1x $
+    \begin{enumerate}
+        \item Calculate the expected value of $ y $.
+        \item Find the expected values of $ \hat{\beta}_{0} $ and $ \hat{\beta}_{1} $ conditional
+              on realized values of $ x $.
+    \end{enumerate}
+\end{theorem*}
+\begin{proof}
+    The expected value of $ y $ is the following:
+    \[\E(y) = \E(\E(y|x)) = \E(\sqrt{x}) = \int_{0}^{1}\sqrt{t}dt = \frac{2}{3}\]
+    Lets now calculate expected values of $ \hat{\beta}_{0} $ and $ \hat{\beta}_{1} $. First of all
+    lets notice that:
+    \begin{align*}
+        y_i    & = \beta_{0} + \beta_{1}x_{i} + e_i       \\
+        \bar y & = \beta_{0} + \beta_{1}\bar{x} + \bar{e}
+    \end{align*}
+    then $ y_i - \bar{y} = \beta_{1}(x_{i} - \bar{x}) + (e_{i} - \bar{e}) $. We will insert this result
+    in the OLS estimation:
+    \begin{align*}
+        \hat{\beta}_{1} = \frac{\s (x_{i} - \bar x)(y_{i} - \bar y)}{\s (x_i - \bar{x})^{2}} & =
+        \frac{\s (x_i-\bar{x})\left[  \beta_{1}(x_{i} - \bar{x}) + (e_{i} - \bar{e})\right]}{\s (x_i - \bar{x})^{2}} =                                            \\
+                                                                                             & = \beta_{1} + \frac{\s (x_i-\bar{x})e_{i}}{\s (x_i - \bar{x})^{2}}
+    \end{align*}
+    Now it is helpful to remember, that
+    \[ e_{i} = y_{i} - \beta_{0} - \beta_{1}x_{i} = \sqrt{x_{i}} + u_{i} - \beta_{0} - \beta_{1}x_{i} \]
+    Finally replacing for $ e_{i} $ yields:
+    \[
+        \hat{\beta}_{1} = \beta_{1} + \frac{\s (x_i-\bar{x})(\sqrt{x_{i}} + u_{i} - \beta_{0} - \beta_{1}x_{i})}{\s (x_i - \bar{x})^{2}}
+    \]
+    Calculating conditional expectation for $ \hat\beta_{1} $:
+    \begin{align*}
+        \E(\hat\beta_1 |X) & = \beta_{1} + \frac{\s (x_i-\bar{x})\E(\sqrt{x_{i}} + u_{i} - \beta_{0} - \beta_{1}x_{i} | X)}{\s (x_i - \bar{x})^{2}} \\
+                           & = \beta_{1} + \frac{\s (x_i-\bar{x})(\sqrt{x_{i}} - \beta_{0} - \beta_{1}x_{i})}{\s (x_i - \bar{x})^{2}}
+    \end{align*}
+    \\\\
+    Now lets move on to calculating the conditional expectation for $ \hat\beta_{0} $. From FOCs it
+    follows that $ \hat{\beta}_{0} = \bar{y}-\hat{\beta}_{1} \bar{x} $. Therefore:
+    \[
+        \E[\hat{\beta}_{0} | X] =  \E [\bar{y} | X] - \underbrace{\E[\hat\beta_1 |X]}_{\text{calculated}}
+    \]
+    What we left to do is to find $ \E [\bar{y} | X] $:
+    \[\E [\bar{y} | X] = \E [\beta_{0} + \beta_{1}\bar{x} + \bar{e} | X] = \beta_{0} + \beta_{1}\bar{x} + \E[\bar{e}| X]
+    \]
+    where
+    \[
+        \E[\bar{e}|X] = \frac{\E[ \s \sqrt{x_i} + u_i - \beta_0 - \beta_{1}x_i|X]}{n} = \frac{\s \left(\sqrt{x_i} -\beta_1x_i\right)}{n} - \beta_0
+    \]
+    Inserting back to $ \E[\bar{y}|X] $:
+    \[
+        \E[\bar{y} | X] = \beta_{0} + \beta_{1}\bar{x} + \frac{\s \left(\sqrt{x_i} -\beta_1x_i\right)}{n} - \beta_0 = \frac{\s \sqrt{x_i}}{n}
+    \]
+    Now we have everything to calculate $ \E[\hat{\beta}_{0} |X] $:
+    \[
+        \E[\hat{\beta}_{0} | X] =  \frac{\s \sqrt{x_i}}{n} - \beta_{1} - \frac{\s (x_i-\bar{x})(\sqrt{x_{i}} - \beta_{0} - \beta_{1}x_{i})}{\s (x_i - \bar{x})^{2}}
+    \]
+\end{proof}
+\begin{theorem*}[5]
+    \normalfont
+    Using R, compute the sample mean and standard deviation of ahe (average hourly earnings), yrseduc (years of education), and female.
+\end{theorem*}
+\begin{proof}
+    Standard deviations:
+    ahe $= 8.028319  $, yrseduc $= 2.48002 $, female $= 0.4963357 $\\\\
+    Means: \\
+    ahe $= 15.19042  $, yrseduc $= 13.46549 $, female $= 0.4385083 $
+\end{proof}
+\begin{theorem*}[6]
+    \normalfont
+    Estimate a regression of ahe on yrseduc.
+    \begin{enumerate}
+        \item What is the coefficient on yrseduc? Explain in words what it means. Is the numerical
+              value of your estimate large or small in an economic (real-world) sense?
+        \item Graph the data points and the estimated regression line.
+        \item Is the slope coefficient statistically significantly different from zero? Show how you
+              reach this conclusion. Use heteroskedasticity robust standard errors to answer this question.
+        \item Report the $ 95\% $ confidence interval for $ \beta_{1} $, the slope of the population regression line. Use heteroskedasticity-robust standard errors to answer this question.
+        \item What is the $ R^{2} $ of this regression? What does this mean?
+        \item Compute the correlation coefficient between ahe and yrseduc, and compare its square to
+              the $ R^{2} $. How are the correlation coefficient and the $ R^{2} $ related?
+        \item What is the root mean squared error of the regression? What does this mean?
+        \item Based on your graph from (b), does the error term appear to be homoskedastic or heteroskedastic?
+    \end{enumerate}
+\end{theorem*}
+\begin{proof}
+    \begin{enumerate}
+        \item Coefficient is $1.32186$. It means that one additional year of education
+              on average increases average hourly earnings for $1.32186$ dollars.
+              It means that each additional year of education increases daily earnings by
+              $1.32186 * 8 = 10$ dollars and monthly earnings by $10 * 30 = 300$ dollars.
+              Therefore, starting from $6$th class of school, each additional year gives us
+              approximately $20$k rubles. By now i have studied for $9$ years which would
+              promise me a salary of $180$k rubles. For my opinion it is quite a lot in
+              real-world Russian situation.
+        \item \begin{figure}[!htbp]
+                  \centering
+                  \includegraphics[scale=0.3]{Rplot02.png}
+                  \caption{data points and the estimated regression line}
+                  \label{<label>}
+              \end{figure}
+        \item
+              \begin{table}[!htbp] \centering
+                  \caption{}
+                  \label{}
+                  \begin{tabular}{@{\extracolsep{5pt}}lc}
+                      \\[-1.8ex]\hline
+                      \hline                                                                                \\[-1.8ex]
+                                     & \multicolumn{1}{c}{\textit{Dependent variable:}}                     \\
+                      \cline{2-2}
+                      \\[-1.8ex] &   \\
+                      \hline                                                                                \\[-1.8ex]
+                      yrseduc        & 1.322$^{***}$                                                        \\
+                                     & (0.050)                                                              \\
+                                     &                                                                      \\
+                      Constant       & $-$2.609$^{***}$                                                     \\
+                                     & (0.647)                                                              \\
+                                     &                                                                      \\
+                      \hline                                                                                \\[-1.8ex]
+                      \hline
+                      \hline                                                                                \\[-1.8ex]
+                      \textit{Note:} & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+                  \end{tabular}
+              \end{table}
+              Since P-value is far below 0.05, that means that the probability of obtaining
+              the same value for coefficient yrseduc assuming zero hypothesis relevance
+              (coeff equals to zero) is very low. Therefore the slope is statistically
+              significantly different from zero.
+        \item \begin{table}[!htbp] \centering
+                  \caption{Confidence intervals for $ \beta_0 $ and $ \beta_{1} $}
+                  \label{}
+                  \begin{tabular}{@{\extracolsep{5pt}} ccc}
+                      \\[-1.8ex]\hline
+                      \hline                                \\[-1.8ex]
+                                  & 2.5 \%     & 97.5 \%    \\
+                      \hline                                \\[-1.8ex]
+                      (Intercept) & $$-$3.899$ & $$-$1.319$ \\
+                      yrseduc     & $1.228$    & $1.416$    \\
+                      \hline                                \\[-1.8ex]
+                  \end{tabular}
+              \end{table}
+        \item Multiple R-squared: $0.1667$. It means that years of education explain earnings
+              varinace by fraction of $0.1667$. It also means that correlation between
+              years of education and hourly earnings is $0.16^2 = 0.4$.
+        \item We see that correlation is very close to the square root of $R^2$:
+              $0.4082891$ vs $0.4083341$
+        \item RMSE is $7.326572$ which means that on average hourly earnings deviate from predicted
+              expectation for $ 7\$ $. RMSE represents standart deviation of sample error.
+        \item Seems like the average hourly earnings distribution becomes more
+              heavy tailed with each additional year of education. It implies that variance
+              of ahe depends on yrseduc and therefore the error term appear to be
+              heteroskedastic.
+    \end{enumerate}
+\end{proof}
+\begin{theorem*}[7]
+    \normalfont
+    Estimate a regression of ahe on female.
+    \begin{enumerate}
+        \item What is the coefficient on female? Explain in words what this means. Is the numerical
+              value of your estimate large or small in an economic (real-world) sense?
+        \item Test the hypothesis that average hourly earnings are the same for male and female
+              workers, against the alternative that they differ, at the $ 5\% $  significance level.
+              Make sure to use heteroskedasticity robust standard errors to answer this question.
+        \item Compute the sample average of ahe for women, and the sample average of ahe for men;
+              from this compute an estimate of the “gender gap” in earnings; and construct the t-statistic
+              testing the hypothesis that the gender gap is zero. Make sure to use heteroskedasticity-robust
+              standard errors to answer this question. Compare your results to those in parts (a) and (b).
+    \end{enumerate}
+\end{theorem*}
+\begin{proof}
+    \begin{enumerate}
+        \item Coefficient on female is $-3.2026$. It means that women on average
+              receive hourly by $3.2026$ less dollars. It means that women receive (other
+              factors excluded) by $3.2026 * 8 * 30 = 768.6$ dollars less monthly than men.
+              In terms of rubles it would be around $50$k per month. Honestly, it is difficult
+              to say, whether women in Russia receive so much less compared to men, because
+              a lot of factors (such as education for example) are not taken into
+              consideration.
+        \item
+        Lets look at result of regressing \textit{ahe} on \textit{female} factor, using robust standart errors.
+        One can see that slope coefficient on \textit{female} variable is statistically different from zero,
+        which means that average hourly earnings are different for men and women.
+        \begin{table}[!htbp] \centering
+            \caption{}
+            \label{}
+          \begin{tabular}{@{\extracolsep{5pt}}lc}
+          \\[-1.8ex]\hline
+          \hline \\[-1.8ex]
+           & \multicolumn{1}{c}{\textit{Dependent variable:}} \\
+          \cline{2-2}
+          \\[-1.8ex] &   \\
+          \hline \\[-1.8ex]
+           female & $-$3.203$^{***}$ \\
+            & (0.251) \\
+            & \\
+           Constant & 16.595$^{***}$ \\
+            & (0.185) \\
+            & \\
+          \hline \\[-1.8ex]
+          \hline
+          \hline \\[-1.8ex]
+          \textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+          \end{tabular}
+          \end{table}
+        \item Average \textit{ahe} for women is $ \textbf{13.392} $ and average \textit{ahe} for
+        men is $ \textbf{16.595} $. Estimate for gender gap is then: $ 16.595 - 13.392  =3.203$.
+        Standart error for gender gap is the following:
+        \[
+            \sqrt{\frac{s^2_f}{n_f} + \frac{s^2_m}{n_m}} = \sqrt{\frac{s^2_f}{n_f} + \frac{s^2_m}{n_m}}
+            = 0.25
+        \]
+        and finally constructing the t-statistic:
+        \[
+            t = \frac{3.203}{0.25} = 12.8 > 1.96
+        \]
+        which implies that difference in means is significantly different from zero, which coincides
+        with the results from points (a) and (b)
+    \end{enumerate}
+\end{proof}
+\end{document}

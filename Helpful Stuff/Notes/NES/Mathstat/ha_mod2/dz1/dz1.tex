@@ -1,0 +1,251 @@
+\documentclass[11pt, oneside]{article}
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+\usepackage[parfill]{parskip}    			% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdftitle={Overleaf Example},
+	pdfpagemode=FullScreen,
+}
+\pgfplotsset{width=10cm,compat=1.9}
+
+\usetikzlibrary{arrows}
+
+\def\firstcircle{(90:1.75cm) circle (2.5cm)}
+\def\secondcircle{(210:1.75cm) circle (2.5cm)}
+\def\thirdcircle{(330:1.75cm) circle (2.5cm)}
+\graphicspath{ {img/} }
+\newcommand{\E}{\mathbb{E}}
+\usepackage{bbm}
+\usepackage{caption,subcaption}
+
+
+%SetFonts
+
+
+\title{Macroeconomics-2 - Assignment \#1}
+\author{Daniil Buchko - \texttt{dbuchko@nes.ru}}
+\date{November 11, 2021}
+
+\begin{document}
+
+\maketitle
+
+
+
+\section*{Question 1}
+\fbox{\begin{minipage}{40em}
+For the random sample from the Poisson distribution
+\[
+12 \quad 12 \quad 6 \quad 7 \quad 8 \quad 10 \quad 12 \quad 10 \quad 8 \quad 6 \quad 8 \quad 6 \quad 14 \quad 8 \quad 5 \quad 12
+\]
+ construct an asymptotic 95\% confidence interval for the mean of the distribution. Give a numeric answer.
+\end{minipage}}
+
+Theoretical reminder: central limit theorem says that if $ X_{1}, \dots, X_{n} $ -- i.i.d and $ \E X_{i} = \mu $, $ D(X_{i}) = \sigma^{2} < \infty $, then:
+\[
+\sqrt{n}\frac{\overline{X} - \mu}{\sigma} \sim \mathcal{N} (0, 1)
+\]
+We have that $ \E X = \lambda $ and $ D(X)  = \lambda $ and using CLT:
+\[
+\sqrt{n}\frac{\overline{X} - \lambda}{\sqrt{\lambda}} \sim \mathcal{N} (0, 1)
+\]
+Which means the following:
+\begin{gather*}
+	P \left( z_{1 - \alpha} < \sqrt{n}\frac{\overline{X} - \lambda}{\sqrt{\lambda}} < z_{\alpha} \right) = P \left( z_{1-\alpha}\sqrt{\frac{\lambda }{n}} + \lambda  < \overline{X} < z_{\alpha}\sqrt{\frac{\lambda }{n}} + \lambda \right) \to 0.95
+\end{gather*}
+Lets look at inequalities separately:
+
+\[
+\begin{cases}
+ z_{1-\alpha}\sqrt{\frac{\lambda }{n}} + \lambda  < \overline{X} \\
+z_{\alpha}\sqrt{\frac{\lambda }{n}} + \lambda > \overline{X} 
+\end{cases}
+\]
+
+\begin{enumerate}
+	\item Starting with the first one:
+	\[
+	z_{1-\alpha}\sqrt{\frac{\lambda }{n}} + \lambda - \overline{X} < 0
+	\]
+	solving for $ \lambda $ we get:
+	
+	\[
+	\sqrt{\lambda} < \frac{-z_{1-\alpha} / \sqrt{n} + \sqrt{z^{2}_{1-\alpha} / n + 4\overline{X}} }{2}
+	\]
+	\item Solving for lambda for the second inequality yields:
+	\[
+	\sqrt{\lambda} > \frac{-z_{\alpha} / \sqrt{n} + \sqrt{z^{2}_{\alpha} / n + 4\overline{X}} }{2}
+	\]	
+\end{enumerate}
+Combining two cases we obtain:
+\[
+\left( \frac{-z_{\alpha} / \sqrt{n} + \sqrt{z^{2}_{\alpha} / n + 4\overline{X}} }{2} \right)^{2} < \lambda < \left( \frac{-z_{1-\alpha} / \sqrt{n} + \sqrt{z^{2}_{1-\alpha} / n + 4\overline{X}} }{2} \right)^{2}
+\]
+Inserting $ n =  16$, $ \overline{X}  = 9 $, $ z_{\alpha} = z_{0.025} = 1.96 $, $ z_{1-\alpha} = z_{0.975} = -1.96 $:
+\[
+\left( \frac{-1.96 / 4 + \sqrt{1.96^{2} / 16 + 36} }{2} \right)^{2} < \lambda < \left( \frac{1.96 / 4 + \sqrt{1.96^{2} / 16 + 36} }{2} \right)^{2}
+\]
+Final result:
+\[
+7.645156 < \lambda < 10.59494
+\]
+
+\clearpage
+\section*{Question 2}
+\fbox{\begin{minipage}{40em}
+	Let $ X_{1}, \dots, X_{n} $ be a random sample from a uniform distribution on an interval $ [\theta, 3\theta] $, where $ \theta >0 $ is an unknown parameter.
+	\begin{enumerate}[(a)]
+		\item Construct an estimator using the Method of Moments
+		\item Construct the Maximum Likelihood estimator
+	\end{enumerate}
+\end{minipage}}
+\begin{enumerate}[(a)]
+	\item Using method of moments:
+	\begin{gather*}
+		\E X_{i} = 2\theta \quad\quad\quad \E X_{i}^{2} = D(X_{i}) + \E^{2}X_{i} = \frac{\theta^{2}}{3} + 4\theta^{2} = \frac{13\theta^{2}}{3}
+	\end{gather*}
+	\[
+	\begin{cases}
+	\overline{X} = 2\hat\theta\\ \frac{n-1}{n}S^{2} + \overline{X}^{2} = \frac{13\hat\theta^{2}}{3}
+	\end{cases} \implies \frac{3(n-1)}{n}S^{2} = \hat\theta^{2} \implies \hat\theta = S \sqrt{\frac{3n - 3}{n}}
+	\]
+	\item Using Maximum Likelihood estimator.
+	The density function for uniform distribution is the following:
+	\[
+	f_{X}(\theta, x) = \frac{1}{2\theta}\mathbbm{1}_{x\in[\theta, 3\theta]}
+	\]
+	Firstly constructing likelihood function:
+	\[
+	L(\theta, X) = \prod_{i=1}^{n}  \frac{1}{2\theta}\mathbbm{1}_{x\in[\theta, 3\theta]} = \frac{1}{(2\theta)^{n}}\prod_{i=1}^{n} \mathbbm{1}_{x\in[\theta, 3\theta]}
+	\]
+	By looking at the function, we can see, that $ L(\theta, X) $ is decreasing in $ \theta $, wherenever $ x\in[\theta, 3\theta] $.  Thus the solution is the following:
+	\[
+	\begin{cases}
+		\theta \le \min \{X_{1}, \dots, X_{n}\}\\
+		3\theta \ge \max \{X_{1}, \dots, X_{n}\}
+	\end{cases} \implies \min \{X_{1}, \dots, X_{n}\}  \ge \theta \ge \frac{\max \{X_{1}, \dots, X_{n}\}}{3}
+	\]
+	Therefore the highest value for likelihood function is at the point
+	
+	\[
+	\hat\theta^{ML} = \frac{\max\{X_{1}, \dots, X_{n}\}}{3}
+	\] 
+	
+\end{enumerate}
+\clearpage
+\section*{Question 3}
+\fbox{\begin{minipage}{40em}
+	You are given two random samples, $ X_{1}, \dots, X_{100} \sim \mathcal{N}(\mu ,\sigma^{2})$ and $ Y_{1}, \dots, Y_{10} \sim \mathcal{N}(\mu, 2\sigma^{2})$ that are independent from each other, but their distributions have common parameters $ \mu $ and $ \sigma^{2} $.
+	\begin{enumerate}[(a)]
+		\item Construct estimators for these two parameters.
+		\item Is your estimator for $ \mu $ consistent? Provide a brief argument.
+		\item Propose a confidence interval for $ \mu $ with the confidence level $ 1-\alpha $
+	\end{enumerate}
+\end{minipage}}
+\begin{enumerate}[(a)]
+	\item We will use maximum likelihood estimation:
+	\[
+	L(\mu, \sigma, X) = \prod_{i=1}^{10}\frac{1}{\sqrt{4\sigma^{2}\pi}}e^{-\frac{\left(y_{i}-\mu\right)^{2}}{4\sigma^{2}}} \prod_{i=1}^{100}\frac{1}{\sqrt{2\sigma^{2}\pi}}e^{-\frac{\left(x_{i}-\mu\right)^{2}}{2\sigma^{2}}}
+	\]
+	Rewriting log likelihood:
+	\[
+	l(\mu, \sigma^{2}, X) = \sum_{i=1}^{10}\left( -\frac{\left(y_{i}-\mu\right)^{2}}{4\sigma^{2}} - \frac{\ln 4\sigma^{2}\pi}{2}\right) + \sum_{i=1}^{100}\left( -\frac{\left(x_{i}-\mu\right)^{2}}{2\sigma^{2}}- \frac{\ln 2\sigma^{2} \pi }{2} \right)
+	\]
+\begin{gather*}
+\frac{\partial l}{\partial \mu} = \sum_{i=1}^{10} \frac{y_{i}-\hat\mu}{2\hat\sigma^{2}} + \sum_{i=1}^{100} \frac{x_{i}-\hat\mu}{\hat\sigma^{2}} = \sum_{i=1}^{10}\frac{y_{i}}{2\hat\sigma^{2}} + \sum_{i=1}^{100}\frac{x_{i}}{\hat\sigma^{2}}  - \frac{105\hat\mu}{\sigma^{2}}  = 0 \implies \hat\mu = \frac{1}{105}\left(\frac{1}{2}\sum_{i=1}^{10}y_{i} + \sum_{i=1}^{100} x_{i}\right) \\
+\frac{\partial l}{\partial \sigma^{2}} = \sum_{i=1}^{10}\left( \frac{\left(y_{i}-\hat\mu\right)^{2}}{2\hat\sigma^{4}} - \frac{1}{\hat\sigma^{2}}\right) + \sum_{i=1}^{100}\left( \frac{\left(x_{i}-\hat\mu\right)^{2}}{\hat\sigma^{4}}- \frac{1}{\hat\sigma^{2}} \right) =  \\
+= \sum_{i=1}^{10} \frac{\left(y_{i}-\hat\mu\right)^{2}}{2\hat\sigma^{4}} - \frac{10}{\hat\sigma^{2}} + \sum_{i=1}^{100} \frac{\left(x_{i}-\hat\mu\right)^{2}}{\hat\sigma^{4}}- \frac{100}{\hat\sigma^{2}} = \\
+\sum_{i=1}^{10} \frac{\left(y_{i}-\hat\mu\right)^{2}}{2}  + \sum_{i=1}^{100} \left(x_{i}-\hat\mu\right)^{2} = 110\hat\sigma^{2} \implies \hat\sigma^{2} = \frac{1}{110}\left(  \sum_{i=1}^{10} \frac{\left(y_{i}-\hat\mu\right)^{2}}{2}  + \sum_{i=1}^{100} \left(x_{i}-\hat\mu\right)^{2}\right)
+\end{gather*}
+\item 
+\begin{gather*}
+\mathbb{E} \hat\mu= \frac{1}{105}\left(5\mu + 100 \mu\right)  = \mu \implies \text{ unbiased } \\
+D(\hat\mu) = \frac{1}{105^{2}}\left(\frac{20\sigma^{2}}{4} + 100\sigma^{2} \mu\right)  = \frac{\sigma^{2}}{105}
+\end{gather*}
+We can use Chebyshev inequality:
+\[
+P\left( | \mu - \hat{\mu}| \ge \varepsilon \right) \le \frac{\sigma^{2}}{105\varepsilon^{2}}
+\]
+As we see, the more $ n $ is getting, the lower will be probability for $ \mu $ to differ from $ \hat\mu $
+\item We will make use of asymptotic normality of MLE:
+\[
+\frac{\mu - \hat\mu}{\sqrt{D(\hat\mu)}} \sim \mathcal{N} (0, 1)
+\]
+\begin{gather*}
+	\left( \hat\mu - z_{\alpha / 2}\sqrt{D\hat\mu} < \mu < \hat\mu + z_{\alpha / 2}\sqrt{D\hat\mu}\right) = \\
+	\left( \frac{1}{105}\left(\frac{1}{2}\sum_{i=1}^{10}y_{i} + \sum_{i=1}^{100} x_{i}\right) - 1.96\sqrt{ \frac{\sigma^{2}}{105}} < \mu < \frac{1}{105}\left(\frac{1}{2}\sum_{i=1}^{10}y_{i} + \sum_{i=1}^{100} x_{i}\right) + 1.96\sqrt{ \frac{\sigma^{2}}{105}}\right)
+\end{gather*}
+\end{enumerate}
+
+\clearpage
+\section*{Question 4}
+\fbox{\begin{minipage}{40em}
+	On \texttt{my.nes}, there is a random sample from $ \mathcal{N}(\mu, \sigma^{2}) $, where $ \mu $ and $ \sigma^{2} $ are unknown. Construct an exact 95\% confidence interval for $ \mu $. Compare it with an asymptotic confidence interval that uses quantiles of a normal distribution.
+\end{minipage}}
+
+Assuming that 
+\[
+\hat{\sigma}^{2} = \frac{1}{n-1} \sum_{i=1}^{n}\left( X_{i} - \overline{X} \right)^{2} \quad\quad \overline{X} = \frac{1}{n} \sum_{i=1}^{n}X_{i}
+\]
+
+Asymptotic $ 95\% $ confidence interval would look like the following:
+
+\[
+P\left( \overline{X} - z_{\alpha / 2}\frac{\hat{\sigma}}{\sqrt{n}} < \mu < \overline{X} + z_{\alpha / 2}\frac{\hat{\sigma}}{\sqrt{n}} \right)
+\]
+or 
+\[
+(0.3617267708295418, 0.983006183804052)\]
+
+Exact confidence interval use student distribution, where $ t $ -- Student's distribution with $ n-1 $ degrees of freedom:
+\[
+P\left( \overline{X} - t_{\alpha / 2}\frac{\hat{\sigma}}{\sqrt{n}} < \mu < \overline{X} + t_{\alpha / 2}\frac{\hat{\sigma}}{\sqrt{n}} \right)
+\]
+or
+\[
+(0.3486874383410714, 0.9960455162925224)\]
+
+\clearpage
+\section*{Question 5}
+\fbox{\begin{minipage}{40em}
+	The goal of this practical exercise is to calculate the mean and variance of the returns of financial instruments. A return is defined as
+	 \[
+	 \frac{p_{t} +d_{t} - p_{t-1}}{p_{t-1}}
+	\]
+	 where $ p_t $ is the (closing) value of the price or index for time period $ t $ and $ d_t $ is the dividend accrued in that time period. (It makes more sense to attribute dividends to periods in which it is accrued — look for the so called "ex dividend" date — instead of periods in which it was actually paid.) Returns are usually measured in percentage points.
+	Your goal is to analyze monthly data for S\&P500 index of largest public US companies, the shares of Sberbank (SBER), and the shares of Aeroflot (AFLT) traded on Moscow stock exchange. Find the data for the last $ 60 $ months and report the source. Compute the mean and standard deviation of the returns for these instruments. (Standard deviation is defined as the square root of variance.) To make them comparable, you will need to convert the returns to the same currency. Do the exercise twice, computing doing computations in dollars and in rubles. (In doing all of this, we ignore the issue of taxation.) Give a short comment.
+\end{minipage}}
+
+By calculating returns, charts below has been obtained. Equity data has been downloaded from \href{yahoo.finance}{yahoo}. USD data \href{https://finance.yahoo.com/quote/RUB%3DX/history?period1=1447545600&period2=1636934400&interval=1mo&filter=history&frequency=1mo&includeAdjustedClose=true}{source}. Sberbank dividends and equity \href{https://finance.yahoo.com/quote/SBER.ME/history?period1=1447545600&period2=1636934400&interval=1mo&filter=history&frequency=1mo&includeAdjustedClose=true}{source}. Aeroflot dividends and equity \href{https://finance.yahoo.com/quote/AFLT.ME/history?period1=1479168000&period2=1636934400&interval=1mo&filter=history&frequency=1mo&includeAdjustedClose=true}{source}.
+\\\\
+As a short comment here: returns in dollars seem to be generally more volatile and bigger in value on average.
+
+\begin{figure}[!hbtp]
+	\begin{minipage}[c][11cm][t]{\textwidth}
+		\vspace*{\fill}
+		\centering
+		\includegraphics[scale=0.4]{sber.png}
+		\subcaption{Sberbank equity}
+		\label{fig:test2}\par\vfill
+		\includegraphics[scale=0.4]{aflt.png}
+		\subcaption{Aeroflot rubles returns (blue) and usd (orange)}
+		\label{fig:test3}\par\vfill
+		\includegraphics[scale=0.4]{spy.png}
+		\subcaption{SP500 rubles returns (blue) and usd (orange)}
+		\label{fig:test4}
+	\end{minipage}
+	
+\end{figure}
+
+\end{document}  

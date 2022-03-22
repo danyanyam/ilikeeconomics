@@ -1,0 +1,169 @@
+%--------------------
+% Packages
+% -------------------
+\documentclass[10pt,a4paper]{amsart}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsthm}
+
+%\usepackage{gentium}
+\usepackage{mathptmx} % Use Times Font
+% \usepackage[pdftex]{graphicx} % Required for including pictures
+\usepackage[pdftex,linkcolor=black,pdfborder={0 0 0}]{hyperref} % Format links for pdf
+\usepackage{calc} % To reset the counter in the document after title page
+\usepackage{enumitem} % Includes lists
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\s}{\sum_{i=1}^{n}}
+\newcommand{\Ve}{V^{e}}
+\newcommand{\V}{\text{Var}}
+\newcommand{\C}{\text{Cov}}
+\newcommand{\Vu}{V^{u}}
+\newcommand{\hb}{\hat\beta}
+\newcommand{\tb}{\tilde\beta}
+
+\frenchspacing % No double spacing between sentences
+\linespread{1.2} % Set linespace
+\usepackage[a4paper, lmargin=0.1666\paperwidth, rmargin=0.1666\paperwidth, tmargin=0.1111\paperheight, bmargin=0.1111\paperheight]{geometry} %margins
+
+
+\usepackage[all]{nowidow} % Tries to remove widows
+\usepackage[protrusion=true,expansion=true]{microtype} % Improves typography, load after fontpackage is selected
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+
+%-----------------------
+% Set pdf information and add title, fill in the fields
+%-----------------------
+\hypersetup{ 	
+pdfsubject = {},
+pdftitle = {Home assignment 5},
+pdfauthor = {Daniil Buchko}
+}
+
+%-----------------------
+% Begin document
+%-----------------------
+\usepackage{mathtools}
+\begin{document} %All text i dokumentet hamnar mellan dessa taggar, allt ovanför är formatering av dokumentet
+
+
+\subsection*{Task 1}
+Prove the following results about conditional means, forecasts and forecast errors:
+\begin{enumerate}
+    \item Let $ W $ be a randdom variable with mean $ \mu_W $ and variance $ \sigma_W^{2} $ and let
+          $ c $ be a constant. Show that $ \E \left[ (W - c)^{2} \right] = \sigma^{2} + (\mu_W - c)^{2}$
+    \item  Consider the problem of forecasting $ Y_t $, using data on $ Y_{t-1}, Y_{t-2}, \dots $.
+          Let $ f_{t-1} $ denote some forecast of $ Y_t $, where the subscript $ t-1 $ on $ f_{t-1} $
+          indicates that the forecast is a function of data through date $ t − 1 $. Let
+          $ \E [(Y_{t} − f_{t−1})^{2} ~|~ Y_{t-1}, Y_{t-2}, \dots] $  be the conditional mean squared
+          error of the forecast $ f_{t-1} $, conditional on values of $ Y $ observed through date $ t − 1 $.
+          Show that the conditional mean squared forecast error is minimized when $  f_{t−1} = Y_{t|t−1}$,
+          where $  Y_{t|t−1} = \E (Y_t | ~ Y_{t-1}, Y_{t-2}, \dots )  $
+    \item  Let $ u_t $ denote the error in the equation
+          \[Y_t = \beta_0 +\beta_1Y_{t-1} + \beta_2 Y_{t-2} + \dots + \beta_p Y_{t-p} + u_t\]
+          where $ \E (u_t | Y_{t-1} \dots)  = 0$. Show that $ Cov (u_t, u_{t-j}) = 0 \quad \forall j \ne 0 $
+\end{enumerate}
+
+\subsection*{Solution:}
+Lets \underline{redefine} $ \E(f(Y_t) | Y_{t-1}, Y_{t-2} \dots) $ as $ \E_{t-1}[ f(Y_t) ]$ (not to type a lot)
+\begin{enumerate}
+    \item \begin{gather*}
+              \E \left[ (W - c)^{2} \right] = \E \left[ W^{2} - 2c W + c^{2} \right] = \E \left[ W^{2} \right] - 2c \E \left[ W \right] + c^{2}=  \\
+              =\E \left[ W^{2} \right] - 2c \mu_W + c^{2} = \sigma^{2}_W + \mu_W^{2} - 2c\mu_W +c^{2} = \sigma^{2}_W + \left( \mu_W - c \right)^{2}
+          \end{gather*}
+    \item Keeping in mind that $ \E \left( f_{t-1} | Y_{t-1} \dots \right)  = f_{t-1}$ we may take
+          use of derivations from the previous point, namely:
+          \begin{gather*}
+              \E_{t-1} [(Y_{t} − f_{t−1})^{2}] = \sigma^{2}_{Y_t} + \underbrace{\left(\E_{t-1}[ Y_t] - f_{t-1}\right)}_{\text{We can influence}}
+          \end{gather*}
+          So in order to conditional mean to be the smallest we select $ f_{t-1} = \E_{t-1} [Y_t] $
+          thus:
+          \[
+              \E_{t-1} [(Y_{t} − \E_{t-1} \left[ Y_t \right])^{2}] =  \sigma^{2}_{Y_t}
+          \]
+    \item Lets notice that by LIME: $ \E \left[ u_t \right] = \E \left[ \E_{t-1} \left[ u_t \right] \right]
+              = \E \left[ \E_{t-j-1} \left[ u_{t-j} \right] \right] = 0$ thus
+          \begin{align*}
+              \C (u_t, u_{t-j}) = \E \left[ \left(  u_t - \E\left[ u_t \right] \right) \left(  u_{t-j} - \E\left[ u_{t-j} \right] \right)\right] = \E \left[ u_t u_{t-j} \right]
+              = \E \left[ u_{t-j} \E_{t-1} \left[ u_t \right]  \right] = 0
+          \end{align*}
+\end{enumerate}
+
+\subsection*{Task 2}
+Suppose that $ Y_t $ follows the stationary $ \text{AR}(1) $ model
+\[Y_t = 2.5 + 0.7Y_{t−1} +u_t\] where $ u_t $ is i.i.d. with $ \E(u_t) = 0 $ and $\V(u_t) = 9  $.
+\begin{enumerate}
+    \item Compute the mean and variance of $ Y_t $
+    \item Compute the first two autocovariances of $ Y_t $
+    \item Compute the first two autocorrelations of $ Y_t $
+    \item Suppose that $  Y_T = 102.3 $ Compute $   Y_{T +1|T} = \E_{T}(Y_{T +1}) $
+\end{enumerate}
+
+\subsection*{Solution:}
+\begin{enumerate}
+    \item Stationarity implies that $ \E Y_t = \mu_Y $, and $ \V (Y_t) = \sigma_Y^{2} $ for all $ t $, thus:
+          \begin{gather*}
+              \E Y_t =  2.5 + 0.7 \E Y_{t-1} \implies \mu_Y = 2.5 + 0.7 \mu_Y \implies \mu_Y = \frac{2.5}{0.3} \sim 8.3
+              \\
+              \V \left( Y_t \right) = 0.7^{2} \V (Y_{t-1}) + \V (u_t) \implies \sigma^{2}_Y = \frac{\V(u_t)}{1 - 0.7^{2}} = \frac{9}{0.51} \sim 17.65
+          \end{gather*}
+    \item By definition $ \gamma(2) = \C (Y_t, Y_{t-2}) $:
+          \begin{align*}
+              \C (Y_t, Y_{t-2}) & = \C (2.5 + 0.7(2.5 + 0.7 Y_{t−2} + u_{t-1}) +u_t,~ Y_{t-2})                                                          \\
+                                & = 0.7^{2}\C ( Y_{t-2}, Y_{t-2} ) + 0.7 \underbrace{\C ( u_{t-1}, Y_{t-2})}_{=0} + \underbrace{\C (u_t, Y_{t-2})}_{=0} \\
+                                & = 0.7^{2} \gamma(0)
+          \end{align*}
+          From previous calculations it is obvious that $ \gamma(1) = 0.7 \gamma(0) $
+    \item Autocorrelation by definition is:
+          \[
+              \rho_1 = \frac{\C (Y_t,~ Y_{t-1})}{\sqrt{\V(Y_t) \V (Y_{t-1})}} = \frac{\C (Y_t, ~ Y_{t-1})}{\V (Y_t)} = \frac{0.7\gamma(0)}{\gamma(0)} = 0.7
+          \]
+          \[
+              \rho_2 = \frac{\C (Y_t,~ Y_{t-2})}{\sqrt{\V(Y_t) \V (Y_{t-2})}} = \frac{\C (Y_t, ~ Y_{t-2})}{\V (Y_t)} = \frac{0.7^{2}\gamma(0)}{\gamma(0)} = 0.7^{2}
+          \]
+    \item
+          \[
+              \E_{T} \left[ Y_{T+1} \right] = 2.5 + 0.7 Y_T = 2.5 + 0.7 \times 102.3 = 74.11
+          \]
+\end{enumerate}
+
+\subsection*{Task 3}
+Consider the stationary AR(1) model $ Y_t = \beta_0 + \beta_1 Y_{t-1} + u_t $, where ut is i.i.d.
+with mean $ 0 $ and variance $ \sigma^{2}_u $. The model is estimated using data from time periods
+$ t=1 $ through $ t = T $, yielding the OLS estimators $ \hat\beta_{0} $ and $ \hat\beta_{1} $.
+You are interested in forecasting the value of $ Y $ at time $ T + 1 $  that is, $ Y_{T +1} $.
+Denote the forecast by $ \hat{Y}_{T+1|T} = \hat\beta_0 + \hat\beta_1 Y_T $.
+\begin{enumerate}
+    \item Show that the forecast error is $ Y_{T+1} - \hat{Y}_{T+1 | T} = u_{T+1} - \left[ (\hat\beta_0 - \beta_0) + (\hat\beta_1 - \beta_1)Y_T \right]  $
+    \item Show that $ u_{T+1} $ is independent of $ Y_{T} $
+    \item Show that $ u_{T+1} $ is independent of $ \hat\beta_0 $, $ \hat\beta_1 $
+    \item Show that $ \V(Y_{T+1 | T} - \hat{Y}_{T+1 | T}) = \sigma^{2}_u + \V \left[ (\hat\beta_0 - \beta_0) + (\hat\beta_1 - \beta_1)Y_T  \right] $
+\end{enumerate}
+
+\subsection*{Solution}
+\begin{enumerate}
+    \item
+          \begin{gather*}
+              Y_{T+1} - \hat{Y}_{T+1 | T} = \beta_0 + \beta_1 Y_T + u_{T+1} - \hat{\beta}_0 - \hat{\beta}_1 Y_T
+              = u_{T+1} - \left[ (\hat\beta_0 - \beta_0) + (\hat\beta_1 - \beta_1)Y_T \right]
+          \end{gather*}
+    \item We can try to proof it by calculating covariance $ \C (u_{T+1}, ~ Y_T)$:
+          \[\C (u_{T+1}, ~ Y_T) = \E \left[ u_{T+1} Y_T \right]  = \E \left[ Y_T \E_{T} \left[ u_{T+1} \right] \right] = 0 \]
+    \item 
+    \item 
+    \begin{gather*}
+        \V(Y_{T+1 | T} - \hat{Y}_{T+1 | T})  = \V \left( \beta_0 + \beta_1 Y_T - \hat\beta_0 - \hat\beta_1Y_T \right)
+        = \V \left(
+             (\beta_0 - \hat{\beta}_0) + (\beta_1 - \hat\beta_1)Y_T
+              \right)
+    \end{gather*}
+\end{enumerate}
+\end{document}
+

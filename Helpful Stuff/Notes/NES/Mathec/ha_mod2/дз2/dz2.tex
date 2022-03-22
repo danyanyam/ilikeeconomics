@@ -1,0 +1,273 @@
+\documentclass[11pt, oneside]{article}
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+\usepackage[parfill]{parskip}    			% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdftitle={Overleaf Example},
+	pdfpagemode=FullScreen,
+}
+\pgfplotsset{width=10cm,compat=1.9}
+
+\usetikzlibrary{arrows}
+
+\def\firstcircle{(90:1.75cm) circle (2.5cm)}
+\def\secondcircle{(210:1.75cm) circle (2.5cm)}
+\def\thirdcircle{(330:1.75cm) circle (2.5cm)}
+\graphicspath{ {img/} }
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\usepackage{bbm}
+\usepackage{caption,subcaption}
+\renewcommand{\r}{\rho}
+\renewcommand{\d}{\delta}
+\renewcommand{\b}{\beta}
+\newcommand{\g}{\gamma}
+\renewcommand{\o}{\overline}
+
+
+%SetFonts
+
+
+\title{Math for Economists-2 - Assignment \#2}
+\author{Daniil Buchko - \texttt{dbuchko@nes.ru}}
+\date{November 17, 2021}
+
+\begin{document}
+	
+	\maketitle
+	
+	% ================= QUESTION 1  =================
+	\section*{Question 1}
+	\fbox{\begin{minipage}{40em}
+		Suppose that a woodcutter maximizes $ \sum_{t=0}^{\infty}\b^{t}u(c_{t}) $, where  $ \beta\in (0, 1) $ is his discount factor, $ u $ is his utility function that is strictly increasing, strictly concave, and bounded, and $ c_{t} $ is the amount of timber that he cuts at time $ t $. Trees grow according to the law $ y_{t+1} = K(y_t -c_t) $, where $ K > 1 $, and the agent faces the natural constraints $ c_t \ge 0 $ and $ c_t \le y_t $. Assume for simplicity that $ K = 1/\b $ and suppose that $ y_0 $ is given.
+		\begin{enumerate}[(a)]
+			\item Define the value function and formulate the Bellman equation.
+			\item Analyse if Bellman equation constitutes a problem of finding a fixed point of a contraction mapping. Provide the formula for the operator that you expect to be a contraction, state on what functional space it operates, and analyse whether it is indeed a contraction.
+			\item Guess the value function and show that it is indeed the solution.
+		\end{enumerate}
+	\end{minipage}}
+
+We have an infinite-horizon optimization task of the following form:
+\[
+\begin{dcases}
+	\sum_{t=0}^{\infty} \b^{t}u(c_{t}) \to \max_{\{c_{t}\}_{t=0}^{\infty}, \{y_{t}\}_{t=1}^{\infty}} \\
+	y_{t+1} = \frac{(y_{t} -c_{t})}{\b} \\
+	c_{t} \ge 0 \\
+	c_{t} \le y_{t}
+\end{dcases}
+\]
+\begin{enumerate}[(a)]
+	\item Value function is the value of target function on the optimal path, that starts with $ y_{0} = y $. Bellman equation is the following:
+	\[
+	V(y) = \max_{c\in[0, y]}\left( u(c) + \b V \left(\frac{y-c}{\b}\right)\right)
+	\]
+	\item Our Bellman operator $ T(.) $ operates on the space of bounded functions (thus complete) so that measure of distance is available:
+	\[T: B(X) \to B(X)\]
+	We will use Blackwell's theorem to establish contraction property:
+	\begin{enumerate}[(1)]
+		\item for any $ V $ and $ \tilde{V} \in B(X)$ such that $ \tilde{V}(x) \ge V(x)$ for all $ x\in X $, we have:
+		\[
+		T(\tilde{V})(x)\ge T(V)(x) \quad\quad \forall x\in X
+		\]
+		\textbf{Our case:} since $ \tilde{V}(x) \ge V(x) $ maximum of sum of constant and $ \tilde{V}(x) $ will be obviously more than sum of the same constant and $ V(x) $ $ \forall x\in X$:
+		\[
+		\max_{c\in[0, y]}\left( u(c) + \b \tilde{V} \left(\frac{y-c}{\b}\right)\right) \ge \max_{c\in[0, y]}\left( u(c) + \b V \left(\frac{y-c}{\b}\right)\right)
+		\]
+		\item there exists $ \b \in (0, 1) $ such that for any $ V(x)\in B(x) $ and $ k \in \mathbb{R}_{++} $:
+		\[
+		T(V + k)(x) \le T(V)(x) + \b k \quad\quad \forall x \in X
+		\]
+		\textbf{Our case:}
+		\begin{align*}
+		T(V + k)(x) = &\max_{c\in[0, y]}\left( u(c) + \b V \left(\frac{y-c}{\b}\right) + \b k \right) \\
+		&\max_{c\in[0, y]}\left( u(c) + \b V \left(\frac{y-c}{\b}\right)\right) + \b k =: T(V)(x) + \b k
+		\end{align*}
+	\end{enumerate}
+Therefore we can conclude that by Blackwell's theorem our Bellmans operator is a contraction.
+\item We will start by assuming that $ V_{0} = 0 $:
+\begin{align*}
+	&V_{1}(y) = T(V_{0})(y) = \max_{c\in [0, y]} u(c) \implies c_{1}(y) = y \implies V_{1}(y) = u(y) \\
+	&V_{2}(y) = T(V_{1})\left(\frac{y-c}{\b}\right) = \max_{c\in [0, y]} \left[ u(c) + \b u\left(\frac{y-c}{\b}\right)\right]
+\end{align*}
+Now lets write solution to the optimization task more precisely. Since our $ u(c) $ function is strictly concave and increasing (necessary and sufficient for inner solutions) we can move on to calculating FOCs:
+\begin{align}
+	u'(c) = u'\left(\frac{y-c}{\b}\right) \implies 0 = \frac{y-(1 + \b)c }{\beta} \implies c_{2}(y)= \frac{y}{1+\b}
+\end{align}
+Thus getting back to defining $ T(V_{1})\left( \frac{y-c}{\b} \right) $:
+\[
+V_{2}(y) = u\left( \frac{y}{1+\b} \right) + \b u \left(\frac{y}{1+\b} \right) = (1+ \b) u \left(\frac{y}{1+\b}\right)
+\]
+And calculating the following step:
+\begin{align*}
+	V_{3}(y) = T(V_{2}) \left(\frac{y-c}{\b}\right) = \max_{c\in [0, y]} \left[ u(c) + \b(1+ \b) u\left(\frac{y-c}{(1+\b)\b}\right)\right]
+\end{align*}
+Repeating the same maximization step yields the following:
+\begin{align*}
+	u'(c) = u'\left( \frac{y-c}{(1+\b)\b} \right) \implies c = \frac{y-c}{(1+\b)\b} \implies c &= \frac{y}{(1+\b)\b + 1} \\ V_{3}(y) = u\left(\frac{y}{(1+\b)\b + 1}\right) + \b(1+\b)u\left(\frac{y}{(1+\b)\b + 1}\right) &= (1 + \b(1+\b))u\left(\frac{y}{(1+\b)\b + 1}\right) \\
+	&= (1 + \b + \b^{2})u\left(\frac{y}{1+\b + \b^{2}}\right)
+\end{align*}
+	And hopefully the last step:
+	\[
+	V_{4}(y) = T(V_{3})\left(\frac{y-c}{\b}\right) = \max_{c\in[0, y]} \left[ u(c) + \b (1+\b + \b^{2}) u \left(\frac{y-c}{\b(1+\b + \b^{2})}\right)\right]
+	\]
+	FOCs:
+	\[
+	u'(c) = u'\left(\frac{y-c}{\b(1+\b + \b^{2})}\right) \implies c = \frac{y-c}{\b(1+\b+\b^{2})} \implies c = \frac{y}{\b(1 + \b + \b^{2}) + 1}
+	\]
+	Which implies, that:
+	\begin{align*}
+	V_{4}(y) = u\left(\frac{y}{1 + \b + \b^{2} + \b^{3}}\right) + (\b + \b^{2} + \b^{3})u\left( \frac{y}{1 + \b + \b^{2} + \b^{3}} \right) &= \\
+	= (1 + \b + \b^{2} + \b^{3})u\left(\frac{y}{1+\b+\b^{2} + \b^{3}}\right)&
+	\end{align*}
+By induction it follows that:
+\[
+V_{n}(y) = \frac{\b^{n} - 1}{\b - 1} u \left(\frac{y(\b - 1)}{\b^{n} - 1}\right)
+\]
+Therefore inserting into Bellman operator yields:
+\begin{gather*}
+	T(V_{n})\left(\frac{y-c}{\b}\right) = \max_{c\in[0, y]} \left[ u(c) +  \frac{\b(\b^{n} - 1)}{\b - 1} u \left(\frac{(y-c)(\b - 1)}{(\b^{n} - 1)\b}\right)\right]
+\end{gather*}
+Solving this for $ c_{n}(y) $ yields us the following:
+\[
+u'(c) = u'\left( \frac{(y-c)(\b - 1)}{(\b^{n} - 1) \b} \right) \implies c = \frac{(y-c)(\b - 1)}{(\b^{n} - 1)\b} \implies c_{n}(y) = \frac{y(\b - 1)}{\b^{n+1} - 1}
+\]
+Now lets find out, where do our sequence converges:
+\begin{gather*}
+	\lim_{n\to\infty}V_{n}(y) = \frac{u\left((1-\b)y\right)}{1-\b}
+\end{gather*}
+And finally solving the final Bellman equation:
+\[
+T(V)(y) = \max_{c} \left( u(c) + \frac{\b}{1-\b} u\left( \frac{(1-\b)(y-c)}{\b} \right)\right) \implies
+\]
+\begin{align*}
+	u'(c) = u'\left( \frac{(1-\b)(y-c)}{\b} \right) \implies c = \frac{(1-\b) (y-c)}{\b} = (1-\b)y
+\end{align*}
+In order to show that it is indeed a solution, we will substitute the value of c into bellman operator and expect to obtain a fixed point:
+\begin{align*}
+	 \frac{u\left((1-\b)y\right)}{1-\b} = u((1-\b)y) + \frac{\b}{1-\b}u\left( \frac{(1-\b)(\b)y}{\b}\right) =  \frac{u\left((1-\b)y\right)}{1-\b} 
+\end{align*}
+\end{enumerate}
+\clearpage
+\section*{Question 2}
+\fbox{\begin{minipage}{40em}
+A cell phone producer introduces a new model of its device regularly. Currently, it has a large stock of previous generation devices that it wants to sell. Time is discrete. Before the start of period $ t = 0 $, there was a mass $ m = 1 $ of consumers who may be interested in buying that model. The consumers have the willingness to pay for the device that is uniformly distributed on $ [0, 1] $. The willingness to pay of each individual consumer remains constant over time. However, at the beginning of each period, a fraction $ \g $ of the consumers ceases to be interested in the device and leaves the market, and their decision to leave is independent of their willingness to pay. This fraction $ \g $ is stochastic: it can take the values $ 5\% $ and $ 10\% $ and evolves over time following a Markov chain with the transition matrix:
+\[
+P =\begin{pmatrix}
+	3/4 & 1/4 \\ 3/4 & 1/4
+\end{pmatrix}
+\]
+
+At the beginning of each time period, after a fraction of consumers has left the market and the producer has learned current period's $ \g $ and the mass of consumers who remain in the market, he posts a price $ p_{t} $.  Then, the device is purchased by all consumers who are currently in the market and have the willingness to pay that is above or equal to $ p_t $. In this entire process, each consumer can be interested in buying at most one device, and the consumers are not strategic. They do not think about the possibility of purchasing the devices sometimes later; instead, they buy whenever the device is offered at the price they are willing to pay. The good also cannot be purchased and then re-sold.
+
+
+The producer maximizes its expected discounted revenue -- in each period, the revenue is the price pt multiplied by the mass of consumers who purchase the device, and it discounts future with the rate $ \b = 0.8 $.
+
+\begin{enumerate}[(a)]
+	\item Write the producer’s problem recursively (the Bellman equation) using the numbers pro- vided above. Be careful and detailed in how you define your value function — ambiguity and omissions will be penalized.
+	\item Solve the problem.
+\end{enumerate}
+\end{minipage}}
+
+Lets stick to the following notation. Let $ \o\g_{1} = 0.05$ and $ \o\g_{2} = 0.1 $ -- two possible states of $ \g_{t} $, meaning that if we know, that at the period $ t  $ gamma took value of $ 0.05 $, then we can write it as $ \g_{t} = \o{\g}_{1} = 0.05 $. It is obvious then, that for each each period $ t $, $ \g_{t} $ is either $ \o\g_{1} $ or $ \o\g_{2} $. Lets also establish some properties of process $ \g_{t} $ which will be useful in our consequent logical judgements. First of all we can see that $ P $ is such that:
+\begin{align*}
+\P(\g_{1} = \o\gamma_{i} | \g_{0} = \o\gamma_{1}) =  \underbrace{\begin{pmatrix}
+	3/4 &3/4 \\ 1/4 & 1/4
+\end{pmatrix}}_{P^{T}}\begin{pmatrix}
+	1 \\ 0
+\end{pmatrix} &= \\ 
+= \P(\g_{1} = \o\gamma_{i} | \g_{0} = \o\gamma_{2}) = \underbrace{\begin{pmatrix}
+3/4 &3/4 \\ 1/4 & 1/4
+\end{pmatrix}}_{P^{T}}\begin{pmatrix}
+0 \\ 1
+\end{pmatrix} &=\\
+= \P(\g_{t} = \o\gamma_{i} | \g_{t-1}) =  \underbrace{\begin{pmatrix}
+	3/4 &3/4 \\ 1/4 & 1/4
+\end{pmatrix}}_{P^{T}}\begin{pmatrix}
+3/4 \\ 1/4
+\end{pmatrix} &=\begin{pmatrix}
+3/4 \\ 1/4
+\end{pmatrix}_{i}
+\end{align*}
+Or in other words, the probability of $ \g_{t} $ of each of its realisations is constant over time and doesnt depend on the initial or previous state and equal to:
+\[
+\begin{pmatrix}
+	3/4 \\ 1/4
+\end{pmatrix}
+\]
+This fact will be extremely useful when constructing and solving the Bellman equation.
+
+\begin{enumerate}[(a)]
+	\item Every period $ t $ some people stop willing to buy devices, therefore their overall count is decreasing. We can write down the law of people's dynamic:
+	\[
+	m_{t} = (1-\g_{t})m_{t-1}
+	\]
+	where $ \g_{t} $ is a realization of Markov chain process with a transition matrix $ P $ and $ m_{t-1} $ is amount of people, who were willing to pay for a device the period before.  Knowing amount of people every period, we can proceed to calculating the revenue. Revenue calculation consists of knowing the price and quantity of devices sold. Since the price of the device is our action variable (firm determines its value by maximising the present value of revenue) we must specify amount of devices sold, taking into account amount of people on the market. My suggestion is to use revenue of the following form:
+	\[
+	\text{TR} = \sum_{t=0}^{\infty}\b^{t} p_{t}\underbrace{m_{t}(1-p_{t})}_{\text{quantity}}
+	\]
+	We are using this problem formulation since the amount of people who are ready to buy the device are uniformly distributed, which implies that share of people who are not ready to buy the device for price $ p_{t} $ is clearly a probability of $ X\sim U[0, 1] $ to be lower than $ p_{t} $:
+	\[
+		P(X\le p_{t}) = p_{t} \implies P(X > p_{t}) = 1 - p_{t}
+	\]
+	and therefore $ m_{t}(1-p_{t}) $ is clearly share of people, who are willing to pay more than $ p_{t} $ and didnt ceased to be interested in the purchase. We can notice that the higher $ p_{t} $ the fewer people are willing to buy the device and vice versa.
+	
+	Now we hopefully have everything we need to formulate the firm's problem:
+	\[
+	\begin{dcases}
+		 \sum_{t=0}^{\infty}\b^{t} p_{t}m_{t}(1-p_{t}) \to \max_{\{p_{t}\}_{t=0}^{\infty}, \{m_{t}\}_{t=1}^{\infty} \text{ adapted}} \\
+		 m_{t} = (1-\g_{t})m_{t-1}\\
+		 m_{-1} = 1 \\
+		 \b = 0.8 \\
+		 \g_{t} \text{ is Markov process } (P, \pi_{-1}) 
+	\end{dcases}
+	\]
+	Using the formulated problem above we can construct the Bellman's equation. We now include our findings about Markov process and conclude that probability of gamma realisations dont rely on its initial state and time, therefore we will not include information about this in the value function. Let $ V(m) $ be the conditional expected discounted present value of the firm's revenue stream if the firm chooses optimally, amount of people (who didnt change decision about purchase) was $ m $, firm decides on current price. Bellman equation is the following:
+	\[
+	\begin{dcases}
+			V(m) = \max_{p, m'} \left( p(1-p)m + \b\E\left[ V(m')\right] \right) \\
+			\text{s.t.} \quad m' = (1-\g)m
+	\end{dcases}
+	\]
+	Several comments are required: $ m $ is current (initial) amount of people ready to buy device and we observe this amount whereas $ m' $ we dont;
+	\item We will start solving our task by assuming that $ V_{0} = 0 $:
+	\begin{gather*}
+		V_{1}(m) = T(V_{0})(m) = \max_{p \ge 0} \left( p(1-p)m \right) \implies p^{*} = 1/2 \implies V_{1}(m) = \frac{m}{4} \\
+		V_{2}(m) = T(V_{1})((1-\g)m) = \max_{p\ge 0} \left( p(1-p)m + \b \E \left[ \frac{(1 - \g)m}{4} \right] \right) = \\
+		\max \left( p(1-p)m + \b \left[ \frac{0.95m}{4}\frac{3}{4} + \frac{0.9m}{4}\frac{1}{4} \right] \right) = \\
+		\max \left( p(1-p)m +  \frac{3.75m\b}{16} \right) = \\
+		\max m\left( p(1-p) +  \frac{3.75\b}{16} \right) \implies p^{*} = 1/2 \implies V_{2}(m)= \frac{m(4 + 3.75 \b)}{16}
+	\end{gather*}
+Lets continue iterations:
+\begin{gather*}
+	V_{3}(m) = T(V_{2})((1-\g)m) = \max \left( p(1-p)m + \b \E\left[ \frac{(1-\g)m(4 + 3.75 \b)}{16} \right] \right) = \\
+	\max \left( p(1-p)m + \b \left[ \frac{0.95m(4 + 3.75 \b)}{16}\frac{3}{4} + \frac{0.9m(4 + 3.75 \b)}{16}\frac{1}{4} \right] \right) = \\
+	\max \left( p(1-p)m + \b \left[ \frac{3.75m(4 + 3.75 \b)}{4^{3}} \right] \right) = \frac{m}{4} + \frac{3.75m\b(4+3.75\b)}{4^{3}} = \\
+	= \frac{4^{2}m + 3.75m\b(4 + 3.75\b)}{4^{3}} = \frac{m(4^{2} +4*3.75\b + (3.75\b)^{2})}{4^{3}}
+\end{gather*}
+By induction we can conclude that:
+\begin{gather*}
+V_{n}(m) = m\frac{\sum_{t=0}^{n-1}4^{t}3^{n-1-t}}{4^{n}} = m\frac{3^{n-1}\sum_{t=0}^{n-1} (4/3)^{t}}{4^{n}} = \frac{m3^{n}((4/3)^{n-1} - 1)}{4^{n}} = \\
+= \frac{m(3*4^{n-1} - 3^{n})}{4^{n}} = \frac{m(3/4 - (3/4)^{n})}{1} = m\left( \frac{3}{4} - \left(\frac{3}{4}\right)^{n} \right)
+\end{gather*}
+Finding limit for $ V_{n}(m) $:
+\[
+\lim_{n\to\infty} V_{n}(m) = \lim_{n\to\infty}m\left( \frac{3}{4} - \left(\frac{3}{4}\right)^{n} \right) = \frac{3}{4}m
+\]
+
+\end{enumerate}
+
+	
+
+\end{document}  

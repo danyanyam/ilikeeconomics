@@ -1,0 +1,320 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Do not alter this block (unless you're familiar with LaTeX
+\documentclass{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{fouriernc} % Use the New Century Schoolbook font
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{hyperref}
+\usepackage{amsmath} % some math-related packages, not sure which of them are necessary
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+\DeclareMathOperator{\E}{\mathbb{E}}
+
+
+\pagestyle{fancy}
+
+
+\newenvironment{problem}[2][Problem]
+    { \begin{mdframed}[backgroundcolor=gray!20] \textbf{#1 #2} \\}
+    {  \end{mdframed}}
+
+% Define solution environment
+\newenvironment{solution}{\textbf{Solution}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Fill in the appropriate information below
+\lhead{Daniil Buchko}
+\rhead{Math for economists'21} 
+\chead{\textbf{Home assignment}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+    \begin{problem}{1}
+    There are four seasons in country A: spring, summer, autumn, and winter. Its GDP
+    follows a cyclical pattern: It is equal to $ y_{h} $ in the summer and autumn, and $ y_{l} $ in the winter and spring. The government income constitutes a constant fraction $ g $ of the GDP.\\\\
+    The government maximizes $ \sum_{t=0}^{\infty}\beta^{t}u(c_{t}) $, where $ c_{t} $ is the government spending at date (year-season pair) number $ t $, $ \beta $ is the discount factor, and $ u(x) $ is the utility function that is strictly
+    increasing and strictly concave. The government can also issue bonds (borrow) or invest money
+    in the international market at the gross interest rate (on the seasonal basis) $ R = 1/\beta $. The initial government debt is $ B $.
+    \begin{enumerate}[(a)]
+    	\item  Write down the optimization problem of the government.
+    	\item Propose and justify the condition that you want to impose in the government borrowing at
+    	infinity
+    	\item Solve the problem. Provide a rigorous argument why your solution indeed maximizes the
+    	government’s objective function among all other possible paths that satisfy the first-order
+    	conditions.
+    \end{enumerate}
+    \end{problem}
+    
+    \begin{solution}
+     \begin{enumerate}[(a)]
+    	\item  Originally, government solves the following problem:
+    	\[
+    	\begin{cases}  \sum_{t=0}^{\infty}\beta^{t}u(c_{t}) \to \max_{\{c_{t}\}_{t=0}^{\infty} \{s_{t}\}_{t=0}^{\infty}} \\ 
+    	c_{t} + s_{t} \le gy_{t} + s_{t-1}/\beta  \\
+    	s_{-1} = B
+    	\end{cases}\]
+    	But as we saw in the lecture we need one of the following additional constraints in order to correctly state the problem. It should be either $ \lim \inf_{t\to \infty}s_{t}\ge 0 $ or $  \lim \inf_{t\to\infty}\beta^{t}s_{t} \ge 0 $.
+    	\item As it has been said earlier, we need to impose additional constraint. I would suggest the following: let dicounted value of government savings be positive on the infinite time horizon, or mathematically:
+    	\[
+    	\lim_{t\to\infty} \inf\beta^{t}s_{t} \ge 0
+    	\]
+    	which has the following meaning: we prohibit goverment from issuing the infinite amount of debt. If we dont constraint the problem in this way, our task will not have a solution since government can increase spendings just by borrowing unrealistically huge amounts of money, which implies that every consumption bundle is possible $ \to $ target function is not bounded and thus has no maximum.
+    	\item $ u(.) $ is concave and increasing $ \to $ if optimization task has solutions, they coincide with the F.O.Cs. Let us first write down the Largranginian:
+    	\[
+    	\mathcal{L} =  \sum_{t=0}^{\infty}\beta^{t}\left[u(c_{t}) - \mu_{t}\left(c_{t} + s_{t} -gy_{t} -\frac{s_{t-1}}{\beta}\right) \right] \to \max_{\{c_{t}\}_{t=0}^{\infty} \{s_{t}\}_{t=0}^{\infty}}
+    	\]
+    	By taking derivatives with respect to $ c_{t} $ and $ s_{t} $, we get system of following equations (which is Euler's equation):
+    	\[
+    	\begin{cases}
+    	\partial \mathcal{L} / \partial c_{t} = 0  \\
+    	\partial \mathcal{L} / \partial s_{t} = 0 \\
+    	\mu_{t}(c_{t} + s_{t} -gy_{t} -s_{t-1}/\beta) = 0 \\
+    	\mu_{t} \ge 0 
+    	\end{cases} \implies \begin{cases}
+    	u'(c^{*}_{t}) - \mu_{t} = 0  \\
+    	-\mu_{t} + \mu_{t+1} = 0
+    	\end{cases} \implies u'(c^{*}_{t}) = u'(c^{*}_{t+1}) \implies c^{*}_{t} = c^{*}_{t+1}
+    	\]
+    	So, if our maximization task has a solution, the consumption must be constant throughthout the time in order for the  disctounted sum of utilities to be the maximised. Let us also notice, that our budget constraint binds from the simple logic:
+    	\[
+    		u'(c^{*}_{t}) = \mu_{t} \quad u'(.) > 0 \implies \mu_{t} > 0 \implies \text{in the solution } c_{t} + s_{t} = gy_{t} + s_{t-1}/\beta 
+    	\]
+    	Lets get to the constraints and have a look at how savings change through the time:
+    	\begin{align*}
+    		c + s_{t} &= gy_{t} + \frac{s_{t-1}}{\beta} \\
+    		\beta(c+s_{t}) - \beta gy_{t} &= s_{t-1} \implies s_{t} = \beta(c-gy_{t+1} + s_{t+1})
+    	\end{align*}
+    	iterating it forward we get:
+    	\begin{align*}
+    		s_{t} &= \beta(c-gy_{t+1} + s_{t+1}) \\
+    		&= \beta(c-gy_{t+1} + \beta(c-gy_{t+2}+  s_{t+2})) 
+    		= \beta^{k}s_{t+k} + \sum_{\tau = 1}^{k}\beta^{\tau}(c - gy_{t+\tau})
+    	\end{align*}
+    	We know that at time $ t = 0 $ we have the following:
+    	\begin{gather*}
+    		s_{0} = \beta^{T}s_{T} + \sum_{\tau = 1}^{T}\beta^{\tau}(c - gy_{\tau}) = \beta^{T}s_{T} + c\sum_{\tau =1}^{T}\beta^{\tau} - g\sum_{\tau=1}^{T}\beta^{\tau}y_{\tau} = \beta^{T}s_{T} - g\sum_{\tau=1}^{T}\beta^{\tau}y_{\tau}+ \frac{ c\beta(1 - \beta^{T})}{1-\beta} 
+    	\end{gather*}
+		Implying the fact, that $ s_{-1} = \beta(c - gy_{l} +s_{0}) $ and that $ s_{-1} = B $:
+    	\begin{gather*}
+    		B = \beta \left(c - gy_{l} + \beta^{T}s_{T} - g\sum_{\tau=1}^{T}\beta^{\tau}y_{\tau}+ \frac{ c\beta(1 - \beta^{T})}{1-\beta}   \right) \\
+    		\beta^{T}s_{T} = \frac{B}{\beta} - c + gy_{l} + g\sum_{\tau=1}^{T}\beta^{\tau}y_{\tau}- \frac{ c\beta(1 - \beta^{T})}{1-\beta}
+    	\end{gather*}
+    	and finally taking limit $ T \to \infty $ and applying no Ponzi game restriction:
+    	\begin{gather*}
+	    		\lim_{t\to \infty} \inf \beta^{T}s_{T} = \frac{B}{\beta} - c + gy_{l} + g\sum_{\tau=1}^{\infty}\beta^{\tau}y_{\tau}- \frac{ c\beta}{1-\beta} = \frac{B}{\beta} - \frac{c}{1-\beta} + g \left( \frac{y_{l}(1+\beta) + y_{h}(\beta^{2} + \beta^{3})}{1-\beta^{4}} \right) \ge 0
+    	\end{gather*}
+		or:
+		\[
+			c\le (1-\beta) \left( \frac{B}{\beta} + g \left( \frac{y_{l}(1+\beta) + y_{h}(\beta^{2} + \beta^{3})}{1-\beta^{4}} \right)\right)
+		\]
+		Lets interpretate the results. No Ponzi-game condition restricts government from increasing debt indefinetly. This restriction and results of FOCs introduce together inequality above, meaning, that we should select the highest level of consumption to achieve the highest value of discounted utility function on the restrictions provided. Thus, the optimal consumption level is exactly the equation below. 
+		
+		\[
+			c^{*} = (1-\beta) \left( \frac{B}{\beta} + g \left( \frac{y_{l}(1+\beta) + y_{h}(\beta^{2} + \beta^{3})}{1-\beta^{4}} \right)\right)		
+		\]
+		
+		Now we move on to calculating $ s_{t}^{*} $:
+		\begin{align*}
+			s_{t} &= gy_{t} -c +\frac{s_{t-1}}{\beta} \\
+			s_{t} &= gy_{t} - c + \frac{1}{\beta} \left(gy_{t-1} - c + \frac{s_{t-2}}{\beta}\right)  = \left(\frac{1}{\beta}\right)^{t}s_{0} + \sum_{\tau = 0}^{t} \left(\frac{1}{\beta}\right)^{\tau} \left( gy_{t - \tau} - c \right)
+		\end{align*}
+		And the only thing left to calculate is $ s_0 $:
+		\begin{gather*}
+			s_{0} = gy_{0}- c^{*} + \frac{B}{\beta} =  gy_{l} + \frac{B}{\beta}  - (1-\beta) \left( \frac{B}{\beta} + g \left( \frac{y_{l}(1+\beta) + y_{h}(\beta^{2} + \beta^{3})}{1-\beta^{4}} \right)\right)	
+		\end{gather*}
+		Then optimal $ s_{t}^{*} $ is the following:
+		\begin{gather*}
+			s_{t}^{*} = \left(\frac{1}{\beta}\right)^{t}\left[gy_{l} + \frac{B}{\beta}  - (1-\beta) \left( \frac{B}{\beta} + g \left( \frac{y_{l}(1+\beta) + y_{h}(\beta^{2} + \beta^{3})}{1-\beta^{4}} \right)\right)	\right] + \sum_{\tau = 0}^{t} \left(\frac{1}{\beta}\right)^{\tau} \left( gy_{t - \tau} - c \right)
+		\end{gather*}
+		
+	
+\end{enumerate}
+   \end{solution}
+
+\begin{problem}{2}
+	Vasya lives in a town that has three seasons, cold,
+	warm, and hot (that come cyclically in this order). In each of the seasons, Vasya’s income is
+	$ 18 $. However, in different seasons he has different needs. Let $ \underline{c}_{t} $ denote the subsistence level -- the
+	minimal spendings that are needed to live through the current season. Numerically, assume that
+	$ \underline{c}_{t} $ is $ 12 $ in the cold season, $ 6 $ in the warm season, and $ 1 $ in the hot season. Vasya maximizes
+	\[
+	\sum_{t=0}^{\infty}\beta^{t}\sqrt[3]{c_{t} - \underline{c}_{t}}
+	\] where $ t $ is the time period (counted in seasons), $ c_{t} $ denotes his consumption in
+	period $ t $, and $ \beta = 5/6 $ is the season-to-season discount rate.
+	Despite being poor, Vasya has access to financial services and can borrow or save at the gross
+	interest rate $ R = 1/\beta $
+	(same for both borrowing and saving, also measured on the season basis).
+	Naturally, financial institutions do not allow Vasya to run a Ponzi scheme.
+	\begin{enumerate}[(a)]
+		\item (4 points) Write down Vasya’s optimization problem. Write down an equation that captures
+		the idea of optimality and that you will use to solve the problem
+		\item  (13 points) We are interested in Vasya’s choices starting from the cold season, knowing that
+		he made a deposit of 10 in the preceding hot season. Solve the problem: Give a numeric
+		answer for his consumption and savings at each point in time.
+		\item  (8 points) Given the issues that we discussed in class, provide the most convincing argument
+		why your solution indeed solves the optimization problem.
+	\end{enumerate}
+\end{problem}{2}
+\begin{solution}
+	\begin{enumerate}[(a)]
+		\item Optimization task is the following:
+		\[
+		\begin{cases}  \sum_{t=0}^{\infty}\beta^{t} \sqrt[3]{c_{t} - \underline{c_{t}}} \to \max_{\{c_{t}\}_{t=0}^{\infty} \{s_{t}\}_{t=0}^{\infty}} \\ 
+		c_{t} + s_{t} \le y+ s_{t-1}/\beta  \\
+		c_{t} \ge \underline{c_{t}} \\
+		s_{-1} = 0 \\
+		\lim_{t\to\infty} \inf \beta^{t}s^{t} \ge 0
+		\end{cases}\]
+		Once again, as in the previous task:
+		Let us first write down the Largranginian:
+		\[
+		\mathcal{L} =  \sum_{t=0}^{\infty}\beta^{t}\left[u(c_{t}) - \mu_{t}\left(c_{t} + s_{t} -y -\frac{s_{t-1}}{\beta}\right) \right] \to \max_{\{c_{t}\}_{t=0}^{\infty} \{s_{t}\}_{t=0}^{\infty}}
+		\]
+		Derivatives with respect to $ c_{t} $ and $ s_{t} $:
+		\[
+		\begin{cases}
+		\partial \mathcal{L} / \partial c_{t} = 0  \\
+		\partial \mathcal{L} / \partial s_{t} = 0 \\
+		\mu_{t}(c_{t} + s_{t} -y -s_{t-1}/\beta) = 0 \\
+		\mu_{t} \ge 0 
+		\end{cases} \implies \begin{cases}
+		u'(c^{*}_{t}) - \mu_{t} = 0  \\
+		-\mu_{t} + \mu_{t+1} = 0
+		\end{cases} \implies u'(c^{*}_{t}) = u'(c^{*}_{t+1}) \implies c^{*}_{t} = c^{*}_{t+1}
+		\]
+		So, if our maximization task has a solution, the consumption must be constant throughthout the time in order for the  disctounted sum of utilities to be the maximised. Let us also notice, that our budget constraint binds from the simple logic:
+		\[
+		u'(c^{*}_{t}) = \mu_{t} \quad u'(.) > 0 \implies \mu_{t} > 0 \implies \text{in the solution } c_{t} + s_{t} = y + s_{t-1}/\beta 
+		\]
+		\item Let us first notice, that task looks similar to what we have already seen in the task 1. We can even reformulate it in a way, that they are identical: from now on lets think of income as of variable, which depends on time (in a cold season income is 6, in the warm season it is 12 and in the hot season it is 17). Vasya's optimization task can be rewritten in the following way:
+		\[
+		\begin{cases}  \sum_{t=0}^{\infty}\beta^{t} \sqrt[3]{c_{t}} \to \max_{\{c_{t}\}_{t=0}^{\infty} \{s_{t}\}_{t=0}^{\infty}} \\ 
+		c_{t} + s_{t} \le y_{t}+ s_{t-1}/\beta  \\
+		s_{-1} = 10 \\
+		\lim_{t\to\infty} \inf \beta^{t}s_{t} \ge 0
+		\end{cases}\]
+		Vasya's consumption in the optimum is constant. Also the budget constraint binds as we have just seen. Therefore lest get to the calculating the optimal trajectories:
+		
+		\begin{align*}
+		s_{t-1} &= \beta(s_{t} + c - y_{t}) \\
+		s_{t-1} &= \beta(c - y_{t} + \beta(c - y_{t+1} + s_{t+1})) = \beta^{k}s_{t+k} + \sum_{\tau=1}^{k}\beta^{\tau} (c - y_{t+\tau}) \\
+		s_{0} &= \beta^{T}s_{T} + \sum_{\tau=1}^{T}\beta^{\tau}(c - y_{\tau})  = \beta^{T}s_{T} + \frac{c\beta(1-\beta^{T})}{1-\beta} - \sum_{\tau = 1}^{T} \beta^{\tau}y_{\tau}
+		\end{align*}
+		Applying no ponzi-schema condition and the fact, that $ s_{0} = y_{0} - c + s_{-1}/\beta = 18 - c $:
+		\begin{gather}\label{sol}
+			\lim_{t\to\infty}\inf \beta^{T}s_{T} = 18-c - \frac{c\beta}{1-\beta} + \sum_{\tau = 1}^{\infty} \beta^{\tau}y_{\tau} = 0
+		\end{gather}
+		Firsly lets calculate $ \sum_{\tau = 1}^{\infty} \beta^{\tau}y_{\tau} $. Remember that $ t= 0 $ -- cold season:
+		\begin{gather*}
+			\sum_{\tau = 1}^{\infty} \beta^{\tau}y_{\tau} = 12\beta + 17 \beta^{2} + 6 \beta^{3} + \dots  = 12\sum_{\tau = 0}^{\infty}\beta^{1 + 3\tau} + 17 \sum_{\tau = 0}^{\infty}\beta^{2 + 3\tau} + 6\sum_{\tau = 1}^{\infty}\beta^{3\tau} = \frac{12\beta}{1-\beta^{3}} + \frac{17\beta^{2}}{1-\beta^{3}} + \frac{6\beta^{3}}{1-\beta^{3}} = \\
+			=\frac{12\beta + 17 \beta^{2} + 6\beta^{3}}{1-\beta^{3}}
+		\end{gather*}
+		Inserting into \ref{sol}:
+		\begin{gather*}
+			\lim_{t\to\infty}\inf \beta^{T}s_{T} = 18- \frac{c}{1-\beta} + \frac{12\beta + 17 \beta^{2} + 6\beta^{3}}{1-\beta^{3}} = 0 \implies \\ 
+			c^{*} = (1-\beta) \left( 18 +   \frac{12\beta + 17 \beta^{2} + 6\beta^{3}}{1-\beta^{3}}\right) = 13
+		\end{gather*}
+		Now lets find optimal saving path. 
+		\begin{gather*}
+			s_{t} = \left(\frac{1}{\beta}\right)^{t} s_{0} + \sum_{\tau=0}^{t} \left(\frac{1}{\beta}\right)^{\tau} (y_{t - \tau} - c)
+		\end{gather*}
+		We need to introduce solution for $ s_{0} $:
+		\[
+		s_{0} = 18 -c  = 18 - 13 = 5 \]
+		\[
+		s_{t} = 5\left(\frac{6}{5}\right)^{t} + \sum_{\tau = 0}^{t}\left(\frac{6}{5}\right)^{\tau}\left(y_{t-\tau} - 13\right)
+		\]
+		\item As we can see, our consumption remains constant for all time periods, which coincides with FOCs. We can also see, that we have selected the highest possible consumption level, at which No ponzi scheme restriction holds, meaning that we can not increase consumption of goods, without violeting the optimization constraints.
+	\end{enumerate}
+\end{solution}
+\begin{problem}{3}
+	Consider a consumption-saving problem
+	\begin{gather*}
+		E \sum_{t=0}^{\infty}\beta^{t}\left( c_{t} - \frac{1}{200}c^{2}_{t} \right) \to \max_{\{c_{t}\}_{t=0}^{\infty} \{s_{t}\}_{t=0}^{\infty}\text{ adapted}} \\
+		s.t. \quad c_{t} + s_{t} = y_{t} + \frac{1}{\beta}s_{t-1}
+	\end{gather*}
+	where $ 0 < \beta < 1 $ is the discount factor, and $ s_{-1} $ is given. Assume this time that $ \{y_{t}\}_{t=0}^{\infty} $ is a stochastic process that has the following property:
+	\[
+		y_{t} = \alpha y_{t-2} + (1-\alpha)\varepsilon_{t}
+	\] where $ \alpha \in (0, 1) $ is a known constant, and $ \varepsilon_{t} $ are iid random variables that are uniformly distributed on $ [0, 1] $. The value of $ y_{-1} $ is known. Solve the problem.
+\end{problem}
+
+\begin{solution}
+	Starting from lagrangian:
+	\[
+	\mathcal{L} = E\left[ \sum_{t=0}^{\infty} \beta^{t} \left( c_{t} - \frac{c_{t}^{2}}{200}  -\mu_{t} \left(c_{t} +s_{t} - y_{t} - \frac{s_{t-1}}{\beta}\right)\right)\right]
+	\]
+	Obtaining FOCs:
+	\[
+	\begin{cases}
+	E_{t}\left[ 1 - c_{t}/100 - \mu_{t}\right] = 0 \\
+	E_{t}\left[ - \mu_{t} + \mu_{t+1}\right] = 0 \\
+	\mu_{t}\left( c_{t} + s_{t} - y_{t} - s_{t-1}/\beta \right) = 0 \\
+	\mu_{t} \ge 0
+	\end{cases} \implies c_{t} = E_{t} \left[c_{t+1}\right]
+	\]
+	Now lets solve our budget restriction with respect to $ s_{t} $:
+	\begin{gather*}
+		s_{t} = \beta (c_{t} - y_{t+1} + s_{t+1}) = \beta^{k}s_{t+k} + \sum_{\tau = 1}^{k} \beta^{\tau} (c_{t} - y_{t+\tau}) 
+	\end{gather*}
+	Taking conditional mathematical expectation of expression:
+	\begin{gather*}
+		E_{t} s_{t} =  E_{t} \left[ \beta^{k}s_{t+k} \right] + \sum_{\tau=1}^{k}\beta^{\tau}\left(c_{t} - E_{t}\left[ y_{t+\tau} \right]\right) = E_{t} \left[ \beta^{k}s_{t+k} \right] +  \frac{c_{t}\beta(1-\beta^{k})}{1-\beta} -\sum_{\tau = 1}^{k} \beta^{\tau} E_{t}\left[y_{t+\tau}\right] 
+	\end{gather*}
+	Now lets proceed with forward iteration, taking limit $ k \to \infty $ and considering $ L_{t} := \lim_{k\to\infty} E_{t}\left[ \beta^{k}s_{t+k} \right] $:
+	\[
+	s_{t} = L_{t} +  \frac{\beta c_{t}}{1-\beta}  - \sum_{\tau = 1}^{\infty} \beta^{\tau} E_{t}\left[y_{t+\tau}\right] 
+	\]
+	Assuming that $ L_{t} \to 0 $:
+	\[
+	s_{t} =\frac{\beta c_{t}}{1-\beta}  - \sum_{\tau = 1}^{\infty} \beta^{\tau} E_{t}\left[y_{t+\tau}\right] 
+	\]
+	Lets firstly calculate $ \sum_{\tau = 1}^{\infty} \beta^{\tau} E_{t}\left[y_{t+\tau}\right] $.
+	\begin{align*}
+		y_{t+1} &= \alpha y_{t-1} + (1-\alpha)\varepsilon_{t+1} \implies E_{t} [ y_{t+1}] = \alpha y_{t-1} + \frac{1-\alpha}{2} \\
+		y_{t+2} &= \alpha y_{t} + (1-\alpha)\varepsilon_{t+2} \implies 
+		E_{t} [ y_{t+2}] = \alpha y_{t} + \frac{1-\alpha}{2} \\
+		y_{t+3} &= \alpha y_{t+1} + (1-\alpha)\varepsilon_{t+3} \implies E_{t} [ y_{t+3}] = \alpha E_{t}[y_{t+1}] + \frac{1-\alpha}{2} =  \alpha^{2} y_{t-1} + \frac{\alpha (1-\alpha)}{2}  + \frac{1-\alpha}{2} \\
+		y_{t+4} &= \alpha y_{t+2} + (1-\alpha)\varepsilon_{t+4} \implies E_{t}[ y_{t+4} ] = \alpha E_{t} [y_{t+2}] + \frac{1-\alpha}{2} = \alpha^{2}y_{t} + \frac{\alpha (1-\alpha)}{2} + \frac{1-\alpha}{2}
+	\end{align*}
+	
+	We will find overall sum as sum of odd and even numbers:
+	\begin{gather*}
+	E_{t}[ y_{t + 2\tau}] = \alpha^{\tau}y_{t} + \frac{(1-\alpha)}{2}\sum_{j = 0}^{\tau-1}\alpha^{j} =  \frac{2\alpha^{\tau}y_{t} + 1 - \alpha^{\tau - 1}}{2}  \\ 
+	E_{t}[ y_{t + 2\tau - 1}] = \alpha^{\tau}y_{t-1} + \frac{(1-\alpha)}{2}\sum_{j = 0}^{\tau-1}\alpha^{j} = \frac{2\alpha^{\tau} y_{t-1} + 1 -\alpha^{\tau - 1}}{2}
+	\end{gather*}
+	Then:
+	\begin{gather*}
+		\sum_{\tau = 1}^{\infty} \beta^{\tau} E_{t}\left[y_{t+\tau}\right] = \sum_{\tau = 1}^{\infty}\beta^{2\tau} E_{t}[ y_{t + 2\tau}] + \sum_{\tau = 1}^{\infty} \beta^{2\tau - 1} E_{t}[ y_{t + 2\tau - 1}] = \\
+		= \sum_{\tau = 1}^{\infty} \beta^{2\tau} \left( \frac{2\alpha^{\tau}y_{t} + 1 - \alpha^{\tau - 1}}{2} \right) +  \beta^{2\tau - 1} \left( \frac{2\alpha^{\tau} y_{t-1} + 1 -\alpha^{\tau - 1}}{2} \right)
+	\end{gather*}	
+So:
+\begin{gather*}
+	s_{t} = \frac{\beta c_{t}}{1-\beta} -  \sum_{\tau = 1}^{\infty} \beta^{2\tau} \left( \frac{2\alpha^{\tau}y_{t} + 1 - \alpha^{\tau - 1}}{2} \right) +  \beta^{2\tau - 1} \left( \frac{2\alpha^{\tau} y_{t-1} + 1 -\alpha^{\tau - 1}}{2} \right)
+\end{gather*}
+But this is still not a solution. Our agent must take action about $ s_{t} $ independently from $ c_{t} $. So expression for $ c_{t} $ is the following:
+\begin{gather*}
+	s_{t} = y_{t} - c_{t} + \frac{s_{t-1}}{\beta} \implies \\
+	c_{t} = s_{t} - y_{t} - \frac{s_{t-1}}{\beta} =   \frac{\beta c_{t}}{1-\beta} -  \sum_{\tau = 1}^{\infty} \beta^{2\tau} \left( \frac{2\alpha^{\tau}y_{t} + 1 - \alpha^{\tau - 1}}{2} \right) +  \beta^{2\tau - 1} \left( \frac{2\alpha^{\tau} y_{t-1} + 1 -\alpha^{\tau - 1}}{2} \right) + y_{t} - \frac{s_{t-1}}{\beta} \implies \\
+	c_{t} = \frac{1-\beta}{1-2\beta} \left[
+	 + y_{t} - \frac{s_{t-1}}{\beta} -  \sum_{\tau = 1}^{\infty} \beta^{2\tau} \left( \frac{2\alpha^{\tau}y_{t} + 1 - \alpha^{\tau - 1}}{2} \right) +  \beta^{2\tau - 1} \left( \frac{2\alpha^{\tau} y_{t-1} + 1 -\alpha^{\tau - 1}}{2} \right) 
+	\right]
+\end{gather*}
+
+\end{solution}
+
+
+\end{document}

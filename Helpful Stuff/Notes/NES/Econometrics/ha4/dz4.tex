@@ -1,0 +1,509 @@
+%--------------------
+% Packages
+% -------------------
+\documentclass[10pt,a4paper]{amsart}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsthm}
+
+%\usepackage{gentium}
+\usepackage{mathptmx} % Use Times Font
+% \usepackage[pdftex]{graphicx} % Required for including pictures
+\usepackage[pdftex,linkcolor=black,pdfborder={0 0 0}]{hyperref} % Format links for pdf
+\usepackage{calc} % To reset the counter in the document after title page
+\usepackage{enumitem} % Includes lists
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\s}{\sum_{i=1}^{n}}
+\newcommand{\Ve}{V^{e}}
+\newcommand{\V}{\text{Var}}
+\newcommand{\C}{\text{Cov}}
+\newcommand{\Vu}{V^{u}}
+\newcommand{\hb}{\hat\beta}
+\newcommand{\tb}{\tilde\beta}
+
+\frenchspacing % No double spacing between sentences
+\linespread{1.2} % Set linespace
+\usepackage[a4paper, lmargin=0.1666\paperwidth, rmargin=0.1666\paperwidth, tmargin=0.1111\paperheight, bmargin=0.1111\paperheight]{geometry} %margins
+
+
+\usepackage[all]{nowidow} % Tries to remove widows
+\usepackage[protrusion=true,expansion=true]{microtype} % Improves typography, load after fontpackage is selected
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+
+%-----------------------
+% Set pdf information and add title, fill in the fields
+%-----------------------
+\hypersetup{ 	
+pdfsubject = {},
+pdftitle = {},
+pdfauthor = {}
+}
+
+%-----------------------
+% Begin document
+%-----------------------
+\usepackage{mathtools}
+\begin{document} %All text i dokumentet hamnar mellan dessa taggar, allt ovanför är formatering av dokumentet
+
+
+\subsection*{Task 1}
+
+The following model allows the return to education to depend upon the total amount of
+both parents’ education, called pareduc:
+\[
+      \ln(wage) = \beta_{0} + \beta_{1} educ + \beta_{2}educ \times pareduc +\beta_{3} exper
+      + \beta_{4}tenure + u
+\]
+\begin{enumerate}
+      \item Show that, in decimal form, the return to another year of education in this model is
+            \[\frac{\Delta \ln (wage)}{\Delta educ} = \beta_{1} + \beta_{2} pareduc\]
+            What sign do you expect for $ \beta_{2} $? Why?
+      \item Using the data in \texttt{wage2.csv}, interpret the coefficient on the interaction term.
+            It might help to choose two specific values for pareduc -- for example, $ pareduc = 32 $ if
+            both parents have a college education, or $ pareduc = 24 $ if both parents have a high school
+            education -- and to compare the estimated return to \textit{educ}.
+      \item Does the estimated return to education now depend positively on parent education? Test the
+            null hypothesis that the return to education does not depend on parent education.
+\end{enumerate}
+\subsection*{Solution:}
+\begin{enumerate}
+      \item
+            \begin{align*}
+                  \ln (wage) + \Delta \ln (wage) = \beta_{0} & + \beta_{1} (educ + \Delta educ)               \\
+                  + \beta_{2}(educ                           & + \Delta educ) \times pareduc +\beta_{3} exper
+                  + \beta_{4}tenure + u                                                                       \\
+            \end{align*}
+            \begin{gather*}
+                  \Delta \ln (wage) = \beta_{1} \Delta educ+ \beta_{2}\Delta educ \times pareduc \implies\\
+                  \frac{\Delta \ln (wage)}{\Delta educ} = \beta_1 + \beta_2 pareduc
+            \end{gather*}
+            I expect $ \hat{\beta}_{2} $ to be positive since it is natural that weekly earnings increases
+            faster with each additional year of education, for those, whose parents studied more.
+      \item Lets compare effect of education, assuming that parents have college education versus
+            parents having high school education:
+            \[
+                  \frac{\Delta \ln (wage)}{\Delta educ} = 0.00078 \times (32 - 24) = 0.00624 = 0.62\%
+            \]
+            Interpretation says the following: each additional year of education is associated with
+            $ 0.62\% $ higher earnings if parents get college degree versus parents get only higher
+            school degree.
+      \item After estimation we got the following regression:
+            \begin{align*}
+                  \ln(wage) = & ~ \underbracket{4.94}_{(0.38)} +  \underbracket{0.097}_{(0.027)} educ + \underbracket{0.033}_{(0.017)} pareduc + \underbracket{0.0016}_{(0.0012)} educ \times pareduc + \\
+                              & + \underbracket{0.020}_{(0.004)} exper + \underbracket{0.010}_{(0.003)} tenure
+            \end{align*}
+            Return on education will not depend on parents’ education as long as $ \hat{\beta}_2$ is not
+            statisticallly different from zero. We can use t-statiscs for this coefficient which is:
+            \[t_{\hat{\beta}_2} =  \frac{0.0016}{0.0012} = 1.33 < 1.96 \implies \beta_2 \text{ is insignificant}\]
+            Thus estimated return on education doesnt depend on parents’ education.
+\end{enumerate}
+\subsection*{Task 2}
+A model to explain the standardized outcome on a final exam (\textit{stndfnl}) in terms of percentage of classes
+attended (\textit{atndrte}), prior college grade point average (\textit{priGPA}), and American College Testing score
+(\textit{ACT}) is
+\[
+      stndfnl = \beta_0 + \beta_1 atndrte + \beta_2 priGPA + \beta_3 ACT +\beta_4  GPA^{2} + \beta_5ACT^{2}+
+      \beta_{6}priGPA \times atndrte + u  \]
+Using the 680 observations in \texttt{attend.csv}, for students in microeconomic principles, the esti- mated equation is
+\begin{align*}
+      stndfnl = & ~ 2.05 − 0.0067atndrte − 1.63priGPA − 0.128ACT +        \\
+                & 0.296priGPA^2 +0.0045ACT^2 +0.0056priGPA \times atndrte \\
+\end{align*}
+When $ atndrte^2 $  and \textit{ACT} times atndrte are added to this equation, the R-squared becomes
+$ 0.232 $.  Assuming the error term in the population regression to be homoscedastic, are these
+additional terms jointly significant at the $ 10\% $ level? Would you include them in the model?
+\subsection*{Solution:}
+After using linear hypothesis testing, namely after testing that coefficients before both \textit{atndrte2}
+and \textit{atndrte\_x\_ACR} equal to zero we obtained $ F = 1.2543 $ and p-value of $ 0.2859 $ which implies
+that at $ 10\% $ significance level those terms are not jointly significant. I would not include them
+in the model, since the adjusted r-squared metrics has lowered.
+\subsection*{Task 3}
+Consider the standard linear multivariate regression model:
+\[
+      y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + u
+\]
+The OLS estimation is performed. The sample means of $ x_1 $ and $ x_2 $ are zero. The standard error
+of the regression is $ 3.0 $. The standard error for $ \beta_1 $ is $ 2.0 $; and the standard error
+for $ \beta_2 $ is $ 1.0 $. The number of observations is $ 100 $. Assume that the error term in
+the population regression is homoscedastic.
+\begin{enumerate}
+      \item Is it possible that the sample variance of $ x_1 $ is larger than the sample variance of
+            $ x_2 $? Discuss.
+      \item What is the smallest possible value of $ R^{2} $?
+      \item What is the smallest possible value of the standard error for $ \hat{\beta}_1  + \hat{\beta}_{2}$  ?
+      \item Define $ x_i = (1, x_{1i}, x_{2i})' $. Suppose that $ \sum_{i=1}^{n} x_ix_{i}' $ is diagonal.
+            Find the diagonal of the matrix $ \sum_{i=1}^{n} x_ix_i' $
+\end{enumerate}
+\subsection*{Solution:}
+\begin{enumerate}
+      \item
+            It is possible if the following holds:
+            \begin{gather*}
+                  \sum_{i=1}^{n} (x_{1i} - \bar{x}_1)^{2} > \sum_{i=1}^{n}  (x_{2i} - \bar{x}_2)^{2} \\
+                  \sum_{i=1}^{n} x_{1i}^{2} - 2\bar{x}_1 \sum_{i=1}^{n} x_{1i} + \bar{x}_1^{2} > \sum_{i=1}^{n} x_{2i}^{2} - 2\bar{x}_2 \sum_{i=1}^{n} x_{2i} + \bar{x}_2^{2} \\
+                  \sum_{i=1}^{n} x_{1i}^{2}  > \sum_{i=1}^{n} x_{2i}^{2}
+            \end{gather*}
+            Lets remember that:
+            \begin{gather*}
+                  \hat{\beta}^{\text{OLS}} = (X'X)^{-1} X'y = (X'X)^{-1} X'(X\beta + u) = \beta + (X'X)^{-1} X'u \\
+                  \V (\hat\beta | X) = (X'X)^{-1} X' \V(u|X)((X'X)^{-1} X')' = (X'X)^{-1} X' \V (u | X) X(X'X)^{-1} =\\
+                  = \sigma^{2}_u \left( X'X \right)^{-1} = \sigma^{2}_u\begin{pmatrix*}[l]
+                        \sum_{i=1}^{n} 1^{2} & \sum_{i=1}^{n} x_{1i} & \sum_{i=1}^{n} x_{2i} \\
+                        \sum_{i=1}^{n} x_{1i} & \sum_{i=1}^{n} x_{1i}^{2} & \sum_{i=1}^{n} x_{1i}x_{2i} \\
+                        \sum_{i=1}^{n} x_{2i} & \sum_{i=1}^{n} x_{1i}x_{2i} & \sum_{i=1}^{n} x_{2i}^{2}
+                  \end{pmatrix*}^{-1}
+            \end{gather*}
+            Then it follows that:
+            \[
+                  \V (\hat\beta_1 | X) = \frac{\sigma^{2}_u}{n} \frac{1}{\det (X'X)} \det \begin{bmatrix*}
+                        1 & \frac{1}{n}\sum_{i=1}^{n} x_{2i} \\
+                        \frac{1}{n}\sum_{i=1}^{n} x_{2i} & \frac{1}{n}\sum_{i=1}^{n} x_{2i}^{2} \\
+                  \end{bmatrix*} = \frac{\sigma^{2}_u}{n^{2}} \frac{\sum_{i=1}^{n} x_{2i}^{2}}{\det(X'X)} = 4
+            \]
+            and
+            \[
+                  \V (\hat\beta_2 | X) = \frac{\sigma^{2}_u}{n} \frac{1}{\det (X'X)} \det \begin{bmatrix*}
+                        1 & \frac{1}{n}\sum_{i=1}^{n} x_{1i} \\
+                        \frac{1}{n}\sum_{i=1}^{n} x_{1i} & \frac{1}{n}\sum_{i=1}^{n} x_{1i}^{2} \\
+                  \end{bmatrix*} = \frac{\sigma^{2}_u}{n^{2}} \frac{\sum_{i=1}^{n} x_{1i}^{2}}{\det(X'X)} = 1
+            \]
+            Thus
+            \[
+                  \frac{\V (\hat\beta_2 | X)}{\V (\hat\beta_1 | X)} = \frac{\sum_{i=1}^{n} x_{1i}^{2}}{\sum_{i=1}^{n} x_{2i}^{2}} =
+                  \frac{4}{1}
+            \]
+            and consequently sample variance of $ x_1 $ is higher than sample variance of $ x_2 $.
+      \item By definition:
+            \[
+                  R^{2} = \frac{\text{ESS}}{\text{TSS}} = 1 -  \frac{\sum_{i=1}^{n} \hat{u}_i^{2}}{\sum_{i=1}^{n} (y_i - \bar{y})^{2}}
+            \]
+      \item $ \V (\hat\beta_1 + \hat{\beta}_2) = \V(\hat\beta_1) + 2\C (\hat{\beta}_1, \hat{\beta}_2) + \V(\hat\beta_2) = 5 + \C (\hat{\beta}_1, \hat{\beta}_2)$
+
+            From the first point it follows that:
+            \[
+                  \C (\hat\beta_1, \hat\beta_2) = \frac{\sigma^{2}_u}{n} \frac{1}{\det(X'X)}
+                  \det \begin{bmatrix*}
+                        1 & \frac{1}{n}\sum_{i=1}^{n} x_{1i} \\
+                        \frac{1}{n}\sum_{i=1}^{n} x_{2i} & \frac{1}{n}\sum_{i=1}^{n} x_{2i}x_{1i} \\
+                  \end{bmatrix*} =
+                  \frac{\sigma^{2}_u}{n^{2}} \frac{\sum_{i=1}^{n} x_{1i}x_{2i}}{\det(X'X)}
+            \]
+            the latter term can be rewritten as:
+            \begin{gather*}
+                  \frac{\sigma^{2}_u}{n^{2}} \frac{\sum_{i=1}^{n} x_{1i}x_{2i}}{\det(X'X)}
+                  =\frac{\sigma^{2}_u}{n^{2}} \frac{\sum_{i=1}^{n} x_{1i}x_{2i}}{n(\sum_{i=1}^{n} x_{1i}^{2} \sum_{i=1}^{n} x_{2i}^{2} - (\sum_{i=1}^{n} x_{1i}x_{2i})^{2})}
+            \end{gather*}
+\end{enumerate}
+\subsection*{Task 4}
+Use the housing price data in \texttt{hprice1.csv} for this exercise.
+\begin{enumerate}
+      \item Estimate the model
+            \[price = \beta_0 + \beta_1 lotsize + \beta_2 sqrft + \beta_3 bdrms + u\]
+            where price is the price of a house in thousands of U.S. dollars, \textit{lotsize} is the
+            size of a lot in square feet, \textit{sqrft} is the size of a house in square feet,
+            \textit{bdrms} is the number of bedrooms. Report the results in the usual form, including
+            the standard error of the regression. Obtain predicted price, when we plug in
+            $ lotsize = 10,000 $, $ sqrft = 2,300 $, $ bdrms = 4 $; round this price to the nearest dollar.
+      \item Run a regression that allows you to put a $ 95\% $  confidence interval around the predicted
+            value in part (i). Note that your prediction will differ somewhat due to rounding error.
+      \item Let $ price^{0} $ be the unknown future selling price of the house with the characteristics
+            used in parts (i) and (ii). Find a $ 95\% $  CI for $ price^{0} $ and comment on the width of
+            this confidence interval.
+\end{enumerate}
+\subsection*{Solution:}
+\begin{enumerate}
+      \item After performing OLS estimation assuming heteroscedastic standard errors we got the following
+            results:
+            \begin{table}[!htbp] \centering
+                  \caption{Task 4 regression}
+                  \label{}
+                  \begin{tabular}{@{\extracolsep{5pt}}lc}
+                        \\[-1.8ex]\hline
+                        \hline                                                                                                            \\[-1.8ex]
+                                       & \multicolumn{1}{c}{\textit{Dependent variable:}}                                                 \\
+                        \cline{2-2}
+                        \\[-1.8ex] &  price \\
+                        \hline                                                                                                            \\[-1.8ex]
+                        lotsize        & 0.002                                                                                            \\
+                                       & (0.001)                                                                                          \\
+                                       &                                                                                                  \\
+                        sqrft          & 0.123$^{***}$                                                                                    \\
+                                       & (0.018)                                                                                          \\
+                                       &                                                                                                  \\
+                        bdrms          & 13.853                                                                                           \\
+                                       & (8.479)                                                                                          \\
+                                       &                                                                                                  \\
+                        Constant       & $-$21.770                                                                                        \\
+                                       & (37.138)                                                                                         \\
+                                       &                                                                                                  \\
+                        \hline                                                                                                            \\[-1.8ex]
+                        \hline
+                        \hline                                                                                                            \\[-1.8ex]
+                        \textit{Note:} & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01}; $ \hat{\sigma}_u = 59.83 $ \\
+                  \end{tabular}
+            \end{table}
+            Prediction for $ lotsize = 10000,~ sqrft=2300,~ bdrms = 4 $ is \$337
+      \item We will use the following:
+            \[
+                  \beta_0 + 10000\beta_1 + 2300\beta_2 + 4\beta_3 = 337 \implies \beta_0 = 337 - 10000\beta_1 - 2300\beta_2 -4\beta_3
+            \]
+            and estimate the regression:
+            \[
+                  price = \underbracket{337}_{\tilde\beta_0} + \beta_1 (lotsize - 10000) + \beta_2 (sqrft - 2300) + \beta_3 (bdrms - 4) + u
+            \]
+            where $ \tilde{\beta}_0 $ will represent the predicted value of interest. Estimated value for
+            intercept is $ \$336.7\sim \$337 $
+
+      \item Since standard deviation of intercept is $\sim 7.4 $ we get that estimated house price is
+            within $ ± 1.96 \times 7.4 $ interval, or more precisely:
+
+            \begin{table}[!htbp] \centering
+                  \caption{Confidence interval for value of interest}
+                  \label{}
+                  \begin{tabular}{@{\extracolsep{5pt}} ccc}
+                        \\[-1.8ex]\hline
+                        \hline                              \\[-1.8ex]
+                                    & 2.5 \%    & 97.5 \%   \\
+                        \hline                              \\[-1.8ex]
+                        (Intercept) & $322.042$ & $351.372$ \\
+                        \hline                              \\[-1.8ex]
+                  \end{tabular}
+            \end{table}
+\end{enumerate}
+\subsection*{Task 5}
+Estimate a regression of $ \ln(ahe) $ on \textit{yrseduc}, \textit{female}, and $ female \times yrseduc $.
+(Note: you will need to create a new variable for the interaction term $ female \times yrseduc $)
+\begin{enumerate}
+      \item Explain the meaning of the coefficients on yrseduc and $female \times yrseduc$.
+      \item Plot, on the same graph, the two estimated regression lines describing the relation between
+            $ \ln(ahe) $ and \textit{yrseduc} for men and for women. (You may do this in R, in EXCEL, by
+            hand using graph paper, or by any other method.)
+      \item Test (at the $ 5\% $ significance level) the null hypothesis that the value of an additional
+            year of school is the same for men and women, against the two-sided alternative that it differs.
+      \item Test (at the $ 5\% $  significance level) the null hypothesis that the regression line is
+            the same for men and women, that is, that the population slope and intercept for women are the
+            same as the population slope and intercept for men.
+      \item What do you conclude about any differences between men and women in the value (as measured
+            by log hourly earnings) of an additional year of school? Are these differences, if any, significant
+            or important in a real-world sense?
+\end{enumerate}
+\subsection*{Solution:}
+\begin{enumerate}
+      \item After estimating the model, we obtained following results:
+            \begin{table}[!htbp] \centering
+                  \caption{Task 5 regression}
+                  \label{}
+                  \begin{tabular}{@{\extracolsep{5pt}}lc}
+                        \\[-1.8ex]\hline
+                        \hline                                                                                     \\[-1.8ex]
+                                            & \multicolumn{1}{c}{\textit{Dependent variable:}}                     \\
+                        \cline{2-2}
+                        \\[-1.8ex] & log(ahe) \\
+                        \hline                                                                                     \\[-1.8ex]
+                        yrseduc             & 0.083$^{***}$                                                        \\
+                                            & (0.001)                                                              \\
+                                            &                                                                      \\
+                        female              & $-$0.464$^{***}$                                                     \\
+                                            & (0.027)                                                              \\
+                                            &                                                                      \\
+                        female\_x\_yrseduc  & 0.017$^{***}$                                                        \\
+                                            & (0.002)                                                              \\
+                                            &                                                                      \\
+                        Constant            & 1.588$^{***}$                                                        \\
+                                            & (0.017)                                                              \\
+                                            &                                                                      \\
+                        \hline                                                                                     \\[-1.8ex]
+                        Observations        & 37,810                                                               \\
+                        R$^{2}$             & 0.218                                                                \\
+                        Adjusted R$^{2}$    & 0.218                                                                \\
+                        Residual Std. Error & 0.475 (df = 37806)                                                   \\
+                        F Statistic         & 3,508.517$^{***}$ (df = 3; 37806)                                    \\
+                        \hline
+                        \hline                                                                                     \\[-1.8ex]
+                        \textit{Note:}      & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+                  \end{tabular}
+            \end{table}
+
+            We can see that coefficients with \textit{yrseduc} are positive and significant. That means that
+            each additional year of education was associated with $ 8.3\% +  1.7\% = 10 \%$ increase of earnings for women
+            and $ 8.3\% $ increase for non-women.
+
+      \item Chart is below (sorry latex skills dont allow me to put picture in there)
+            \begin{figure*}[!hbtp]
+                  \centering
+                  \includegraphics[scale=0.5]{Rplot.png}
+            \end{figure*}
+
+      \item We can see that coefficient on interaction term \textit{female\_x\_yrseduc} is significant, thus
+            additional year of school differs for men and women
+
+      \item Once again, the model was:
+            \[\ln(ahe) = \beta_0 + \beta_1 yrseduc + \beta_2 female + \beta_3 female \times yrseduc + u\]
+            Regression lines for men and women will be the same if the following holds:
+            \[\begin{cases}
+                        \beta_0 + \beta_ 2 = \beta_0 \\
+                        \beta_1 + \beta_3 = \beta_1
+                  \end{cases} \implies
+                  \begin{cases}
+                        \beta_ 2 = 0 \\
+                        \beta_3 = 0
+                  \end{cases} \]
+            We will use F statistics for testing restricted model. Results are: $ F= 1192.8$ and p-value is
+            zero, thus regression lines differ for men and women.
+      \item So each additional year of
+            education was associated with earnings by $ 1.7\% $ higher for women than for men. This could
+            be the consequence of women being more diligent and focused during the studies. This increase
+            can hardly be named significant in a real-world sense, since it is only $ 10\% $ of education
+            contribution.
+\end{enumerate}
+\subsection*{Task 6}
+Create the variable \textit{male} that $ =1 $ if the worker is male, and $ =0 $ if female, then create
+the interaction term $ male \times yrseduc $. Estimate a regression of $ \ln(ahe) $ on \textit{yrseduc},
+\textit{female}, $ female \times yrseduc $, and $ male \times yrseduc $. What happens? Why?
+\subsection*{Solution:}
+One interaction term has been omitted by R because together with another interaction term thet created
+perfect multicollinearity. Namely:
+\[
+      yrseduc = male \times yrseduc + female \times yrseduc
+\]
+and R had to drop on of the factors in order to obtain regression estimates, which depends on rank of
+the data matrix. That dependency arises because $ \hat{\beta} = (X'X)^{-1}X'y $ and in order to obtain
+$ (X'X)^{-1} $ matrix $ X $ should have non-zero determinant (i.e no perfect multicollinearity).
+\subsection*{Task 7}
+Norms about women working have evolved greatly over the past thirty years. Women who are $ 60 $ years old
+in the $ 1999 $ CPS started their working lives in very different circumstances than women who are $ 30 $
+years old in the $ 1999 $ CPS. Might it be, then, that the gender gap and the gender difference
+in the value of an additional year of school depend on the age (that is, generation) of the worker?
+To find out, estimate two regressions: (i) ln(\textit{ahe}) on \textit{yrseduc}, \textit{female},
+$ female \times yrseduc $, \textit{age}, $ age^{2} $, and $ age^{3} $; and (ii) ln(\textit{ahe})
+on \textit{yrseduc}, \textit{female}, $ female \times yrseduc $, \textit{age}, $ age^{2} $, $ age^{3} $,
+$ female \times age $, $ female \times age^{2} $, and $ female \times age^{3} $.
+\begin{enumerate}
+      \item Does allowing for the additional interaction in specification (ii) make any difference, in
+            a real-world sense, to your estimate of the value of an additional year of education for men?
+            for women?
+      \item Based on the results for specification (ii), estimate the gender gap in earnings for $ 25 $
+            year old workers with $ 16 $ years of education.
+      \item Based on the results for specification (ii), estimate the gender gap in earnings for $ 55 $
+            year old workers with $ 16 $ years of education.
+      \item Test (at the $ 5\% $ significance level) the hypothesis that the population gender gap
+            in earnings does not depend on age.
+      \item In words, is there evidence that the gender gap is less for younger than older workers?
+\end{enumerate}
+\subsection*{Solution:}
+\begin{enumerate}
+      \item Results of estimation are presented in tables \ref{m1} and \ref{m2}. We can see that allowing for
+            additional factors, they are independently insignificant. In a real-world sense 
+            those variables dont make much sense, since in general everybody receives education at the
+            same age and not a lot of people are trying to pursue higher education in their mid-ages.
+      \item Let gender gap be calculated as follows:
+            \[
+                  \text{gap} = \ln(ahe | female =1) - \ln (ahe | female =0 )
+            \]
+            Using predict function in R we obtain that difference in log earnings is $ 0.084 $
+      \item Using predict function in R we obtain that difference in log earnings is $ 0.226 $.
+
+
+            \begin{table}[!htbp] \centering
+                  \caption{(I) specification}
+                  \label{m1}
+                  \begin{tabular}{@{\extracolsep{5pt}}lc}
+                        \\[-1.8ex]\hline
+                        \hline                                                                                     \\[-1.8ex]
+                                            & \multicolumn{1}{c}{\textit{Dependent variable:}}                     \\
+                        \cline{2-2}
+                        \\[-1.8ex] & log(ahe) \\
+                        \hline                                                                                     \\[-1.8ex]
+                        yrseduc             & 0.081$^{***}$                                                        \\
+                                            & (0.001)                                                              \\
+                                            &                                                                      \\
+                        female              & $-$0.519$^{***}$                                                     \\
+                                            & (0.027)                                                              \\
+                                            &                                                                      \\
+                        age                 & 0.103$^{***}$                                                        \\
+                                            & (0.013)                                                              \\
+                                            &                                                                      \\
+                        age2                & $-$0.002$^{***}$                                                     \\
+                                            & (0.0003)                                                             \\
+                                            &                                                                      \\
+                        age3                & 0.00001$^{***}$                                                      \\
+                                            & (0.00000)                                                            \\
+                                            &                                                                      \\
+                        yrseduc:female      & 0.021$^{***}$                                                        \\
+                                            & (0.002)                                                              \\
+                                            &                                                                      \\
+                        Constant            & $-$0.230                                                             \\
+                                            & (0.175)                                                              \\
+                                            &                                                                      \\
+                        \hline                                                                                     \\[-1.8ex]
+                        Observations        & 37,810                                                               \\
+                        R$^{2}$             & 0.245                                                                \\
+                        Adjusted R$^{2}$    & 0.245                                                                \\
+                        Residual Std. Error & 0.467 (df = 37803)                                                   \\
+                        F Statistic         & 2,041.220$^{***}$ (df = 6; 37803)                                    \\
+                        \hline
+                        \hline                                                                                     \\[-1.8ex]
+                        \textit{Note:}      & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+                  \end{tabular}
+            \end{table}
+            \begin{table}[!htbp] \centering
+                  \caption{(II) specification}
+                  \label{m2}
+                  \begin{tabular}{@{\extracolsep{5pt}}lc}
+                        \\[-1.8ex]\hline
+                        \hline                                                                                     \\[-1.8ex]
+                                            & \multicolumn{1}{c}{\textit{Dependent variable:}}                     \\
+                        \cline{2-2}
+                        \\[-1.8ex] & log(ahe) \\
+                        \hline                                                                                     \\[-1.8ex]
+                        yrseduc             & 0.080$^{***}$                                                        \\
+                                            & (0.001)                                                              \\
+                                            &                                                                      \\
+                        female              & 0.042                                                                \\
+                                            & (0.353)                                                              \\
+                                            &                                                                      \\
+                        age                 & 0.113$^{***}$                                                        \\
+                                            & (0.017)                                                              \\
+                                            &                                                                      \\
+                        age2                & $-$0.002$^{***}$                                                     \\
+                                            & (0.0004)                                                             \\
+                                            &                                                                      \\
+                        age3                & 0.00001$^{***}$                                                      \\
+                                            & (0.00000)                                                            \\
+                                            &                                                                      \\
+                        yrseduc:female      & 0.020$^{***}$                                                        \\
+                                            & (0.002)                                                              \\
+                                            &                                                                      \\
+                        female:age          & $-$0.025                                                             \\
+                                            & (0.026)                                                              \\
+                                            &                                                                      \\
+                        female:age2         & 0.0003                                                               \\
+                                            & (0.001)                                                              \\
+                                            &                                                                      \\
+                        female:age3         & $-$0.00000                                                           \\
+                                            & (0.00000)                                                            \\
+                                            &                                                                      \\
+                        Constant            & $-$0.452$^{**}$                                                      \\
+                                            & (0.230)                                                              \\
+                                            &                                                                      \\
+                        \hline                                                                                     \\[-1.8ex]
+                        Observations        & 37,810                                                               \\
+                        R$^{2}$             & 0.246                                                                \\
+                        Adjusted R$^{2}$    & 0.246                                                                \\
+                        Residual Std. Error & 0.467 (df = 37800)                                                   \\
+                        F Statistic         & 1,371.828$^{***}$ (df = 9; 37800)                                    \\
+                        \hline
+                        \hline                                                                                     \\[-1.8ex]
+                        \textit{Note:}      & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+                  \end{tabular}
+            \end{table}
+\end{enumerate}
+\end{document}

@@ -1,0 +1,314 @@
+\documentclass[11pt, oneside]{article}
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+\usepackage[parfill]{parskip}    			% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdftitle={Overleaf Example},
+	pdfpagemode=FullScreen,
+}
+\pgfplotsset{width=10cm,compat=1.9}
+
+\usetikzlibrary{arrows}
+
+\def\firstcircle{(90:1.75cm) circle (2.5cm)}
+\def\secondcircle{(210:1.75cm) circle (2.5cm)}
+\def\thirdcircle{(330:1.75cm) circle (2.5cm)}
+\graphicspath{ {img/} }
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\usepackage{bbm}
+\usepackage{caption,subcaption}
+\renewcommand{\r}{\rho}
+\renewcommand{\d}{\delta}
+\renewcommand{\b}{\beta}
+\newcommand{\g}{\gamma}
+\renewcommand{\o}{\overline}
+
+
+%SetFonts
+
+
+\title{Macroeconomics-2 - Assignment \#3}
+\author{Daniil Buchko - \texttt{dbuchko@nes.ru}}
+\date{November 17, 2021}
+
+\begin{document}
+	
+	\maketitle
+	
+	% ================= QUESTION 1  =================
+	\section*{Question 1}
+	\fbox{\begin{minipage}{40em}
+Consider a household with the following utility function: 
+\[
+u(c, l) = \ln (c) + a\ln (1-l)
+\]
+The household can work $ l $ hours and earn $ wl $, and has no non-labor income or initial wealth. It operates in an economy with interest rate $ r $ and has discounting factor $ \b $.	
+\begin{enumerate}[(1)]
+	\item  Suppose that the household lives only for one period (no future to discount). Find optimal consumption and labor supply. Discuss the role of the wage and parameter $ a $ in your answer
+	\item  Suppose that the household lives for two periods, and that the wages in the two periods are equal $ w_1 $ and $ w_2 $, respectively. Find an equation relating labor supply in period $ 1 $ and labor supply in period $ 2 $. Discuss the role of the wages, parameter $ a $, the interest rate, and the discounting factor in this equation.
+\end{enumerate}
+	\end{minipage}}
+\begin{enumerate}[(1)]
+	\item Household solves the following problem:
+	\[
+	\begin{dcases}
+		u(c, l) = \ln(c) + a\ln(1-l) \to \max_{c >0,~ l \in(0, 1)} \\
+		c \le wl
+	\end{dcases}
+	\]
+	In this solution we assume no ponzi scheme condition, which implies that household cant take loan of an infinite amount without paying it back. We also may claim by looking at the households' optimization task, that $ c >0 $ and $ l \in (0, 1) $. Constructing Lagrangian we get:
+	\[
+	\mathcal{L} = \ln(c) + a\ln(1-l) + \lambda \left( wl - c\right)
+	\]
+	and taking derivatives:
+	\[
+	\begin{dcases}
+		\frac{\partial \mathcal{L}}{\partial c}: \quad\quad \frac{1}{c} - \lambda =0 \\
+		\frac{\partial \mathcal{L}}{\partial l}: \quad\quad \frac{a}{1-l} -\lambda w = 0
+	\end{dcases}
+	\]
+
+ Its clear, that $ \lambda > 0 $, simply because if consumption such that $ c < wl $ we can increase utility function by increasing $ c $. Then FOCs imply:
+		\[
+		\frac{1-l}{ac} = \frac{1}{w} \implies c^{*} = \frac{(1-l)w}{a}
+		\]
+		Inserting value into the budget constraint and assuming $ a \ne 0$ yields:
+		\[
+		\frac{(1-l)w}{a} = wl \implies 1-l = al \implies l^{*} = \frac{1}{1+a} \implies c^{*} = \frac{w}{1+a}
+		\]
+		What we also see from the utility function is the following constraints:
+		\[
+		\begin{dcases}
+			0< l^{*} < 1 \\
+			c^{*} > 0
+		\end{dcases} \iff 
+			\begin{dcases}
+		0<  \frac{1}{1+a} < 1 \\
+		\frac{w}{1+a} > 0
+	\end{dcases} \implies 
+\begin{dcases}
+	a > 0 \\ w>0
+\end{dcases}
+		\]
+		If we let $ a =0 $, then the optimization task would not have a solution, since the household would chose $ l \to \infty $ to obtain $ u(c) \to \infty$ (utility function is not bounded on such constraint). Thus overall solution is the following:
+		\[
+		c^{*}(a) = \begin{dcases}
+			\frac{w}{1+a}, \quad a > 0 \text{ and } w> 0 \\
+			+\infty, \quad a = 0
+		\end{dcases}
+		\]
+		\item The households optimization problem now transforms to the following:
+		\[
+		\begin{dcases}
+			u(c, l) = \ln c_{1} + a\ln(1-l_{1}) + \b\ln(c_{2}) + a \b\ln(1 - l_{2})  \to \max_{c_{1}, c_{2}, l_{1}, l_{2}} \\
+			c_{1} + s \le w_{1}l_{1} \\
+			c_{2} \le w_{2}l_{2} + (1+r)s
+		\end{dcases}
+		\]
+		Or reformulating budget constraint yields:
+		\[
+		\begin{dcases}
+			u(c, l) = \ln c_{1} + a\ln(1-l_{1}) + \b\ln(c_{2}) + a \b\ln(1 - l_{2})  \to \max_{c_{1}, c_{2}, l_{1}, l_{2}} \\
+		c_{1} + \frac{c_{2}}{1+r} = w_{1}l_{1} + \frac{w_{2}l_{2}}{1+r}
+		\end{dcases}
+		\]
+		Assuming that $ c_{1}, c_{2} > 0$ and $ l_{1}, l_{2} \in (0, 1) $ we obtain Lagrangian:
+	\[
+	\mathcal{L} = \ln c_{1} + a\ln(1-l_{1}) + \b\ln(c_{2}) + a \b\ln(1 - l_{2}) + \lambda \left( w_{1}l_{1} + \frac{w_{2}l_{2}}{1+r} - c_{1} - \frac{c_{2}}{1+r} \right)
+	\]
+	FOCs are the following:
+	\[
+	\begin{dcases}
+		\frac{\partial \mathcal{L}}{\partial c_{1}}: \quad \frac{1}{c_{1}} - \lambda = 0 \\
+		\frac{\partial \mathcal{L}}{\partial l_{1}}: \quad \frac{a}{1-l_{1}} -\lambda w_{1} = 0 \\
+		\frac{\partial \mathcal{L}}{\partial c_{2}}: \quad \frac{\b}{c_{2}} -  \frac{\lambda }{1+r} = 0 \\
+		\frac{\partial \mathcal{L}}{\partial l_{2}}: \quad \frac{a\b}{1-l_{2}} - \frac{\lambda w_{2}}{1+r} = 0
+	\end{dcases}\]
+The system above can be rewritten to:
+\[
+\begin{dcases}
+	ac_{1} = w_{1}(1-l_{1}) \\
+	ac_{2} = w_{2}(1-l_{2})
+\end{dcases}
+\]
+And finally inserting to intertemporal budget constraint:
+\begin{align*}
+	\frac{w_{1}(1-l_{1})}{a} + \frac{w_{2}(1-l_{2})}{a(1+r)} &= w_{1}l_{1} + \frac{w_{2}l_{2}}{1+r} \\
+	\frac{w_{1} - w_{1}l_{1}(1+a)}{a} + \frac{ w_{2} - w_{2}l_{2}(1+a) }{a(1+r)} &= 0 \\
+	w_{1} + \frac{w_{2}}{1+r} &= w_{1}l_{1}(1+a) + \frac{w_{2}l_{2}(1+a)}{1+r}
+\end{align*}
+\end{enumerate}
+
+		\section*{Question 2}
+	\fbox{\begin{minipage}{40em}
+Consider an aggregate demand in a closed economy. Suppose that consumption
+linearly depends on the current disposable income, interest rate, and expected future
+disposable income. Assume that investment demand also linearly depends on interest
+rate and expected future marginal productivity of capital.
+			\begin{enumerate}[(1)]
+				\item  Express the aggregate demand explicitly in terms of government spending, taxes,
+				expected future disposable income, expected future marginal productivity of capital,
+				and interest rates. Briefly explain the meaning and the sign of each term.
+				\item  What would happen with the aggregate demand if the level of prices in the economy
+				rises (falls)? Depict this dependence on a graph.
+				\item Use the IS-LM framework to investigate how a decrease in money supply affects the aggregate demand
+				\item Use the IS-LM framework to investigate how an increase in expected future disposable income affects aggregate demand.
+			\end{enumerate}
+	\end{minipage}}
+
+Before answering every point of the task lets write down what is given. Lets denote expected future disposable income (namely $ \E_{t} [Q_{t+1} - T_{t+1}]$) as $ [Q-T]^{F} $. The form of consumption function can be written then as follows:
+\[
+C(Q-T, i,  [Q-T]^{F}) = c(Q-T) + c^{F}[Q-T]^{F} - ai
+\]
+Investment demand function lets write down as follows:
+\[
+I(i, MPK^{E}) = -bi + dMPK^{E}
+\]
+where $ a, b, c, d >0 $
+\begin{enumerate}[(1)]
+	\item We thus can write aggregate demand function as follows:
+	\[
+	Q^{d} = c(Q^{d}-T) + c^{F}[Q-T]^{F} - ai -bi + dMPK^{E} + G
+	\]
+	And moving $ Q^{d} $ to the left side implies:
+	\[
+	Q^{d} = \underbrace{\frac{-c}{1-c}}_{<0}T + \underbrace{\frac{c^{F}}{1-c}}_{>0}[Q-T]^{F} \underbrace{-\frac{a+b}{1-c}}_{<0}i +\underbrace{\frac{d}{1-c}}_{>0}MPK^{E} + \underbrace{\frac{1}{1-c}}_{>0}G
+	\]
+	Lets comment on components of multiplicator in order to describe why i think they have signs which i wrote. First of all, MPC (in our case it is $ c $) is positive and $ c\in [0, 1] $. We claim positive relation, since the more disposable income we have, the more we can consume. The same logic relates to the sign of $ c^{F} $: the more disposable income we expect in the future, the more we will consume now. Coefficients $ a $ and $ b $ are positive, but the contribution to functions has negative effect, meaning that the higher return on debt, the less we would consume and less we will spend on investments. Coefficient $ d $ is positive, since the more we expect from the future capital efficiency the more we will invest into the projects.
+	
+	 Now lets comment on signs of coefficients of demand function. Since $ c \in [0, 1] $ it becomes clear that $ -c/(1-c) < 0 $ meaning that increase of taxes will decrease the output demanded. Also $ c^{F}/(1-c) >0 $, because future expected disposable income lets us now consume more. Coefficient before nominal interest rates is negative, since increase in $ i $ decreases both consumption and investments, decreasing the value of demand function. Coefficient before $ MPK^{E} $ and $ G $ are positive, since their increase also increases the consumption and thus overall demand.
+	 \item 
+	 \item In IS-LM framework we know that $ LM $ curve is constructed in such a way that monetary market is in equilibrium for all pairs $ (i, Y) $. We know, that equilibrium is reached once demand for money equals to supply or:
+	 \[
+	 \left( \frac{M}{P}\right)^{d} := L(i, Y)  = \left(\frac{M}{P}\right)^{s}
+	 \]
+	 What we also know is that $ \partial L/\partial i < 0 $ and therefore we can conclude that by decreasing $ M $, the value of $ i $ must increase. Such changes will shift curve $ LM $ to the left and thus will shift to the left the $ AD $ curve.
+	 \item Increase in expected future future disposable income will shift the planned expenditures to the left, which will make $ IS $ curve shift to the right and therefore $ AD $ will also shift right.
+	 \begin{figure}[!hbtp]
+	 	\centering
+	 	\includegraphics[scale=0.3]{task1.jpeg}
+	 \end{figure}
+\end{enumerate}
+
+		\section*{Question 3}
+\fbox{\begin{minipage}{40em}
+	In a closed economy the equilibrium output level is bigger than the full employment level (Commentary - it is not always good to have such high level of output). The
+	government is considering different policy measures in order to decrease output and employment.  Analyze the effects of the following policies on output and its components using the IS-LM framework:
+		\begin{enumerate}[(1)]
+			\item  A decrease in government spending financed by tax
+			\item An increase in taxes
+			\item A decrease in the money supply
+		\end{enumerate}
+\end{minipage}}
+\begin{enumerate}[(1)]
+	\item If taxes decrease then the following logic applies:
+	\[
+	T\downarrow \implies (Y-T)\uparrow \implies IS \uparrow \implies Q^{SR} \uparrow~ i^{SR}\uparrow
+	\]
+	\item If taxes increase then 
+	\[
+	T\uparrow \implies (Y-T)\downarrow \implies IS \downarrow \implies Q^{SR} \downarrow i^{SR}\downarrow
+	\]
+	\item If money supply decreases, then:
+	\[
+	M^{s}\downarrow \implies \left( \frac{M}{P}\right)^{S} \downarrow \implies LM \downarrow \implies Q^{SR} \downarrow i^{SR}\uparrow
+	\]
+	\begin{figure}[!hbtp]
+		\centering
+		\includegraphics[scale=0.3]{task2.jpeg}
+	\end{figure}
+\end{enumerate}
+\clearpage
+		\section*{Question 4}
+\fbox{\begin{minipage}{40em}
+		In a closed economy the equilibrium output level is at the full employment level. The
+		government has a defficit that it tends to shrink. However, the government is concerned
+		about the possibility that the economy slides into recession. What can the government
+		and the central bank do in order to decrease the government deficit without getting into recession? Analyze using the IS-LM framework.
+\end{minipage}}
+
+In order to decrease the deficit the government can increase taxes. This will decrease consumption, shift the IS downwards and put the country into recession in the short run. In order to avoid recession, government should (asynchronously to implementing fiscal policy) increase money supply, which will shift the LM curve to the right and therefore the output will be increased. Government should be really careful in terms to what extend increase money supply in order to cancel out negative taxes effect.
+
+\begin{figure}[!hbtp]
+	\centering
+	\includegraphics[scale=0.3]{task3.jpeg}
+\end{figure}
+
+\section*{Question 5}
+\fbox{\begin{minipage}{40em}
+		Consider the following structure of an economy:
+		\begin{gather*}
+			C = 0.7(Q -T) \\
+			I = 30 -0.3i \\
+			G = 19 \quad T = 40 \quad M^{s} = 60 \quad P = 3\\
+			 M^{d} = (0.6Q -0.9i)P
+			\end{gather*}
+		Do the following:
+		\begin{enumerate}
+			\item  Find the IS curve and the Keynesian multiplier.
+			\item Find the LM curve.
+			\item  Find the equilibrium interest rate and aggregate demand.
+			\item Find the aggregate demand curve.
+			\item  Find the effects on output, the interest rate, and the price level if government expenditures increase to  $ G = 22 $
+			\item  Find the effects in the classical case (assume $ Q = 60 $)
+		\end{enumerate}
+\end{minipage}}
+	\begin{enumerate}[(1)]
+	\item IS curve can be derived in the following way:
+	\[
+	Q = \underbrace{0.7(Q-40)}_{C} + \underbrace{30 -0.3i}_{I} + \underbrace{19}_{G}
+	\]
+	Taking output to the left side, yields:
+	\[
+	(1 - 0.7)Q = -28 + 49 - 0.3i
+	\]
+	\[
+	Q = \frac{-28}{0.3} + \frac{49 - 0.3i}{0.3} = 70 - i
+	\]
+	And Keynesian multiplier is $ 1/0.3 \sim 3.33$
+	\item LM curve can be derived in the following way:
+	\[
+	\frac{M^{s}}{P}  = \frac{M^{d}}{P} \quad \iff \frac{60}{3} = 0.6Q - 0.9i
+	\]
+	Solving equation for $ i $ yields:
+	\[
+	i = \frac{1.8Q - 60}{2.7}
+	\]
+	\item Equillibrium interest rate and output:
+	\begin{gather*}
+		70 - \frac{1.8Q - 60}{2.7}  = Q^{*} = \frac{249}{4.5} \sim 55.33 \quad i^{*} \sim 14.6
+	\end{gather*}
+\item 
+	Aggregated demand function:
+	\[
+	\frac{M^{s}}{P} = \frac{M^{d}}{P} \quad \iff \quad \frac{60}{P} = 0.6Q - 0.9i
+	\]
+	Inserting IS function into $ i $:
+	\[
+	\text{ AD: }\quad\quad 60 = P( 1.5Q - 63) \implies P = \frac{60}{1.5Q - 63}
+	\]
+	And $ P^{*} = 60/19.995 $ 
+	\item Since Keynesian multiplier is $ 10/3 $, then with increase of $ \Delta G = 3 $ we can predict growth of the output by $ 10 $.  Then new equilibrium now is $ Q^{*}= 61.33$ and $ i^{*} = 56/3 $. New AD curve has the following form:
+	\[
+	P = \frac{60}{1.5Q-72}
+	\]
+	And inserting $ Q^{*} = 61.33 $ we get that $ P^* = 60/19.995 $. Thus $ \Delta P^{*} = 0  $, $ \Delta Q^{*} > 0 $, $ \Delta i^{*}  >0$
+
+	
+	
+\end{enumerate}
+	
+\end{document}  

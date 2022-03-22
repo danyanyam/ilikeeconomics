@@ -1,0 +1,489 @@
+
+\documentclass[12pt,reqno]{amsart}
+
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsthm}
+
+\theoremstyle{plain}
+\renewcommand*{\proofname}{Solution}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\s}{\sum_{i=1}^{n}}
+\newcommand{\Ve}{V^{e}}
+\newcommand{\V}{\text{Var}}
+\newcommand{\C}{\text{Cov}}
+\newcommand{\Vu}{V^{u}}
+\newcommand{\hb}{\hat\beta}
+\newcommand{\tb}{\tilde\beta}
+\newtheorem*{theorem*}{Question}
+%% this allows for theorems which are not automatically numbered
+\usepackage{lineno}
+
+%% The above lines are for formatting.  In general, you will not want to change these.
+\title{Home Assignment 3}
+\author{Daniil Buchko}
+\begin{document}
+\maketitle
+\begin{theorem*}[1]
+    \normalfont
+    :
+    \begin{enumerate}[(a)]
+        \item Comment on the effect of \textit{profmarg} on CEO salary
+        \item Does market value have a significant effect? Explain.
+        \item Interpret the coefficients on \textit{ceoten} and \textit{comten}. Are the variables
+              statistically significant? What do you make of the fact that longer tenure with the company,
+              holding the other factors fixed, is associated with a lower salary?
+    \end{enumerate}
+\end{theorem*}
+\begin{proof}
+    In the reasoning that follows we will calculate \textit{t-stat} by the following formula:
+    \[
+        t_{\hat\beta_{k}} = \frac{\hat\beta_k}{\sigma(\hat\beta_k)}
+    \]
+    \begin{enumerate}[(a)]
+        \item Since \textit{profmarg} is not statistically significant (t-statistics $ \sim 1 $ is
+              much less than $ 1.96 $) we cant really use it to describe the connections inside the data.
+        \item Since t-statistics is higher than 1.96 we can point out that market value has significant
+              positive effect. We can explain coefficient $ 0.1 $ as follows: if we increase market vakue
+              by $ 1\% $ salary statistically increases on average by $ \sim 10\% $
+        \item \textit{ceoten} and \textit{comten} have separately big t-stats which therefore implies
+              that they are significant. We can see that coefficient before \textit{comten} is negative
+              and therefore longer tenure with the company, holding the other factors fixed,
+              is associated with a lower salary. This could be explained by the lack of higher orders
+              of polynomials of \textit{comten}. Maybe in reality, there is some point in time after
+              which earnings begin to increase which could have been demostrated by higher orders of
+              \textit{comten}.
+    \end{enumerate}
+\end{proof}
+\begin{theorem*}[2]
+    % https://stats.stackexchange.com/questions/64195/how-do-i-calculate-the-variance-of-the-ols-estimator-beta-0-conditional-on
+    \normalfont
+    :
+    \begin{enumerate}[(a)]
+        \item Suppose you get an OLS estimate for $ \beta_{1} $ and corresponding t-statistics.
+              Also you get an OLS estimate for $ \gamma_{1} $ and corresponding t-statistics from the following
+              regression:
+              \[y = \gamma_0 + \gamma_1 \tilde{x} + v \]
+              where $ \tilde{x} $ is demeaned value of $ x $: $ \tilde{x} = x - \bar{x} $ and $ \bar{x} $ is the sample mean.
+              Which one of two t-statistics is larger?
+        \item  Suppose that you have performed OLS estimation and obtained the following estimate of
+              the conditional variance-covariance matrix for the parameter estimates:
+              \[
+                  Var\begin{pmatrix*}
+                      \hat\beta_{0} \\ \hat\beta_{1}
+                  \end{pmatrix*} = \begin{pmatrix*}
+                      2 & 1 \\ 1 & 3
+                  \end{pmatrix*}
+              \]
+              What is the value of $ \hat\sigma^{2}_{u} $ ?
+        \item Under the condition of part (b), for which value of $ \alpha $ does the random variable
+              $ \hat\beta_{0} + \alpha\hat\beta_{1} $
+              have minimal variance?
+    \end{enumerate}
+\end{theorem*}
+\begin{proof}
+    :
+    \begin{enumerate}[(a)]
+        \item t-statistics by definition is
+              \[ t_{\hat\beta_1} = \frac{\hat\beta_{1}}{\sigma(\hat{\beta_1})}\]
+              And estimators are represented as follows
+              \[ \hat{\beta_1} = \frac{\sum_{i=1}^{n} (x_{i} - \bar{x})(y_i - \bar{y}) }{\sum_{i=1}^{n} (x_{i} - \bar{x})^{2}}
+                  \quad\quad
+                  \hat{\gamma_1} = \frac{\sum_{i=1}^{n} (\tilde{x}_{i} - \bar{\tilde{x}})(y_i - \bar{y}) }{\sum_{i=1}^{n} (\tilde{x}_{i} - \bar{\tilde{x}})^{2}} \]
+              Now lets notice that
+              \[ \bar{\tilde{x}}  = \frac{1}{n} \sum_{i=1}^{n} \tilde{x}_i = \frac{1}{n} \sum_{i=1}^{n} (x_i - \bar{x}) = 0\]
+              Thus substitution of $ \tilde{x}_i $ yields:
+              \[
+                  \hat{\gamma}_1 =  \frac{\sum_{i=1}^{n} (x_{i} - \bar{x})(y_i - \bar{y}) }{\sum_{i=1}^{n} (x_{i} - \bar{x})^{2}} = \hat{\beta}_{1}
+              \]
+              Now since estimators are equal, their standard deviations are also equal and so are \textit{t-stats}.
+        \item
+              We will solve the problem by writing down the definitions of components of  the
+              covariance matrix, namely for $ \V (\hb_1) $ and $ \V (\hb_0) $ and $ \text{Cov}(\hb_0, \hb_1) $
+              \begin{align*}
+                  \V (\hat{\beta}_1) & = \V \left( \beta_1 + \frac{\sum_{i=1}^{n} (x_i - \bar{x})u_i}{\sum_{i=1}^{n} (x_i - \bar{x})^{2}} \right)
+                  \\ &= \frac{\sigma^{2}_u}{\sum_{i=1}^{n} (x_i - \bar{x})^{2}} = 3
+              \end{align*}
+              \begin{align*}
+                  \V (\hb_0) = \V (\bar{y} - \hb_1 \bar{x}) = \underbracket{\V (\bar{y})}_{?} + (\bar{x})^{2} \V (\hb_1)
+                  -2\bar{x} \underbracket{\text{Cov}(\bar{y}, \hb_1)}_{?}
+              \end{align*}
+              Lets begin by establishing that $ \text{Cov}(\bar{y}, \hb_1) = 0$:
+              \begin{align*}
+                  \text{Cov}(\bar{y}, \hb_1) & = \C \left[ \frac{1}{n} \sum_{i=1}^{n} y_i, ~ \frac{\sum_{i=1}^{n} (x_i - \bar{x})y_i}{\sum_{i=1}^{n} (x_i - \bar{x})^{2}} \right]  \\
+                                             & = \frac{1}{n} \frac{1}{\sum_{i=1}^{n} (x_i - \bar{x})^{2}}\C \left[ \sum_{i=1}^{n} y_i, ~ \sum_{i=1}^{n} (x_i - \bar{x})y_i \right] \\
+                                             & = \frac{1}{n} \frac{1}{\sum_{i=1}^{n} (x_i - \bar{x})^{2}} \sum_{i=1}^{n} (x_i - \bar{x}) \sum_{j=1}^{n} \C \left[ y_i, y_j \right] \\
+                                             & = \frac{1}{n} \frac{1}{\sum_{i=1}^{n} (x_i - \bar{x})^{2}} \underbracket{\sum_{i=1}^{n} (x_i - \bar{x})}_{=0} \sigma^{2}_{u} = 0
+              \end{align*}
+              Now lets find $ \V (\bar{y}) $:
+              \begin{align*}
+                  \V (\bar{y}) = \V \left[ \frac{1}{n} \sum_{i=1}^{n} y_i\right] & = \frac{1}{n^{2}}\sum_{i=1}^{n}\sum_{j=1}^{n}  \C (y_i, y_j)            \\
+                                                                                 & = \frac{1}{n^{2}}\sum_{i=1}^{n} \C (y_i, y_i) = \frac{\sigma_u^{2} }{n}
+              \end{align*}
+              And finally getting the result:
+              \[
+                  \V (\hb_0) = \frac{\sigma^{2}_u}{n} + 3(\bar{x})^{2} = 2
+              \]
+
+              Now lets proceed with \textbf{covariance}:
+              \begin{align*}
+                  \text{Cov}(\hb_0, \hb_1) = \C \left[ \bar{y} - \hb_1 \bar{x}, ~ \hb_1 \right] & = \underbracket{\C \left[ \bar{y}, \hb_1 \right]}_{=0} - \bar{x} \V (\hb_1) \\
+                                                                                                & = - 3\bar{x}  = 1 \implies \bar{x} = -\frac{1}{3}
+              \end{align*}
+              and by inserting this value back to $ \V (\hb_0) $ we get:
+              \[
+                  2 = \frac{\sigma^{2}_u}{102} + \frac{1}{3} \implies \sigma^{2}_{u} = 170
+              \]
+        \item
+              \begin{align*}
+                  \V(\hb_0 + \alpha \hb_1) & = \V (\hb_0) + 2\alpha\text{Cov}(\hb_0, \hb_1) + \alpha^{2}\V (\hb_1)
+                  \\&= 2 + 2\alpha +3\alpha^{2}
+              \end{align*}
+              which is minimal at point $ \alpha =-1/3 $
+
+    \end{enumerate}
+\end{proof}
+\begin{theorem*}[3]
+    \normalfont
+    Refer to Problem $ 5 $ in Problem Set $ 2 $. Now, use the log of the housing price as the
+    dependent variable:
+    \[\text{log}(price) = \beta_{0} + \beta_{1}sqrft + \beta_{2}bdrms + u\]
+    \begin{enumerate}[(a)]
+        \item You are interested in estimating and obtaining a confidence interval for the percentage
+              change in price when a $ 150 $-square-foot bedroom is added to a house. In decimal form, this
+              is $ \theta_{1} = 150\beta_{1} + \beta_{2}$. Use the data in \textit{hprice1.csv} to estimate $ \theta_{1} $.
+        \item Write $ \beta_{2} $ in terms of $ \theta_{1} $ and $ \beta_{1} $ and plug this into the $ \ln(price) $ equation.
+        \item Use part (ii) to obtain a standard error for $ \hat{\theta}_{1} $ and use this standard
+              error to construct a $ 95\% $ confidence interval.
+    \end{enumerate}
+\end{theorem*}
+\begin{proof}:
+    \begin{enumerate}[(a)]
+        \item
+              After doing some transformations and estimating model below we get that $ \hat\theta = 0.0858$
+        \item
+              \begin{align*}
+                  \text{log}(price) & = \beta_0 + \beta_1 sqrft + (\theta_1 - 150\beta_1)bdrms + u \\
+                  \text{log}(price) & = \beta_0 + \beta_1 (sqrft - 150 bdrms) + \theta_1 bdrms + u
+              \end{align*}
+        \item
+              Estimated standard error (using robust errors) is $ \hat\sigma(\hat\theta_1) =  0.027742 $ and confidence intervals
+              are
+              \begin{table}[!htbp] \centering
+                  \caption{confidence interval for $ \theta_1 $}
+                  \label{}
+                  \begin{tabular}{@{\extracolsep{5pt}} ccc}
+                      \\[-1.8ex]\hline
+                      \hline                    \\[-1.8ex]
+                            & 2.5 \%  & 97.5 \% \\
+                      \hline                    \\[-1.8ex]
+                      bdrms & $0.033$ & $0.139$ \\
+                      \hline                    \\[-1.8ex]
+                  \end{tabular}
+              \end{table}
+    \end{enumerate}
+\end{proof}
+\begin{theorem*}[4]
+    \normalfont
+    :
+    \begin{enumerate}[(a)]
+        \item First use the data set \textit{401ksubs.csv}, keeping only observations with
+              $ fsize = 1 $. Find the skewness measure for \textit{inc}. Do the same for $ \ln(inc) $.
+              Which variable has more skewness and therefore seems less likely to be normally distributed?
+        \item Next use \textit{bwght2.csv}. Find the skewness measures for \textit{bwght} and
+              log(\textit{bwght}). What do you conclude?
+        \item Evaluate the following statement: “The logarithmic transformation always makes a
+              positive variable look more normally distributed.”
+        \item If we are interested in the normality assumption in the context of regression, should
+              we be evaluating the unconditional distributions of y and log(\textit{y})? Explain.
+    \end{enumerate}
+\end{theorem*}
+\begin{proof}:
+    \begin{enumerate}[(a)]
+        \item By looking at normalized values of \textit{inc} we can notice that it is probably not
+              normally distributed and skewness measure will probably differ from zero.
+              \begin{figure*}[!hbtp]
+                  \includegraphics[scale=0.15]{Rplot.png}
+              \end{figure*}
+              Skewness measure value is $ 1.862259 $.
+              Then we take logarithm of \textit{inc} and get the histogram as below. Its skewness measure is
+              $ 0.3606031 $.
+              \begin{figure*}[!hbtp]
+                  \centering
+                  \includegraphics[scale=0.18]{Rplot03.png}
+              \end{figure*}
+        \item Non-logarithmic data has skewness of $ -0.6001563 $ and logarithmic has $ -2.948616 $
+        \item We have just seen that skewness measure of log transformed data was bigger than non-log
+              transformed. Moreover log transformation tends to make left-skewed distributions even more
+              left-skewed, despite being positive.
+    \end{enumerate}
+\end{proof}
+\begin{theorem*}[5]
+    \normalfont
+    In this problem set, you continue your analysis of the returns to education and the gender gap
+    in earnings. The data set for this analysis \texttt{cps99\_ps3.csv} is the full sample of
+    full-time workers from the March $ 1999 $ CPS. Estimate a regression of ln(\textit{ahe}) on
+    \textit{yrseduc}, \textit{age}, \textit{female}, and \textit{hsdipl}.
+    \begin{enumerate}[(a)]
+        \item Explain the meaning of the coefficients on \textit{yrseduc}, \textit{age}, and \textit{female}.
+        \item Explain the meaning of the root mean squared error in this regression.
+        \item Using this regression, provide a $ 95\% $ confidence interval for the gender gap in
+              earnings (controlling for \textit{age}, \textit{years} of \textit{education}, and obtaining
+              a high school diploma).
+        \item What is the estimated marginal value of $ 12 $ years of education culminating in a HS
+              diploma, relative to $ 12 $ years of education and no HS diploma? Test (at the $ 5\% $
+              significance level) the hypothesis that this marginal value is zero, against the hypothesis
+              that it is not. Is this marginal value large or small in a real-world sense? Explain.
+        \item Let $ V $ denote the marginal value of $ 12 $ years of education plus a high school
+              diploma, relative to the value of having only $ 10 $ years of education, holding constant
+              age and gender. That is, $ V = 0.2 $ means that high school graduates on average earn $ 20\% $
+              more than someone of the same age and gender but with only $ 10 $ years of education.
+              Using the regression, provide an estimate of $ V $ . Is your estimate large in a real-world sense?
+        \item Construct a $ 95\% $ confidence interval for $ V $.
+    \end{enumerate}
+\end{theorem*}
+\begin{proof} :
+    \begin{enumerate}[(a)]
+        \item By looking at the table below we can see that: \textit{yrseduc} is significantly positive
+              meaning that earnings on average increases with each additional year by $ 8 \%$. Similar
+              interpretation has \textit{age} variable: earnings increases with each additional age by $ 0.7\% $.
+              On contrast, coefficient before \textit{female} is significantly negative, meaning that
+              on average females had lower earnings than men by $ 24\% $.
+
+              \begin{table}[!htbp] \centering
+                  \caption{Results of OLS estimation}
+                  \label{}
+                  \begin{tabular}{@{\extracolsep{5pt}}lc}
+                      \\[-1.8ex]\hline
+                      \hline                                                                                \\[-1.8ex]
+                                     & \multicolumn{1}{c}{\textit{Dependent variable:}}                     \\
+                      \cline{2-2}
+                      \\[-1.8ex] & log(ahe)  \\
+                      \hline                                                                                \\[-1.8ex]
+                      yrseduc        & 0.081$^{***}$                                                        \\
+                                     & (0.001)                                                              \\
+                                     &                                                                      \\
+                      age            & 0.007$^{***}$                                                        \\
+                                     & (0.0002)                                                             \\
+                                     &                                                                      \\
+                      female         & $-$0.244$^{***}$                                                     \\
+                                     & (0.005)                                                              \\
+                                     &                                                                      \\
+                      hsdipl         & 0.127$^{***}$                                                        \\
+                                     & (0.010)                                                              \\
+                                     &                                                                      \\
+                      Constant       & 1.183$^{***}$                                                        \\
+                                     & (0.017)                                                              \\
+                                     &                                                                      \\
+                      \hline                                                                                \\[-1.8ex]
+                      \hline
+                      \hline                                                                                \\[-1.8ex]
+                      \textit{Note:} & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+                  \end{tabular}
+              \end{table}
+
+        \item $ RMSE = 0.468947 $ meaning that predicted earnings were on average $ 1.59 $ times
+              as higher (both directions).
+        \item Gender gap lies between $ -0.2536607 $ and $ -0.2345203 $.
+        \item Estimated model is once again:
+              \[\ln(ahe) = \hb_0 + \hb_1 yrseduc + \hb_2 age + \hb_3 female + \hb_4 hsdipl\]
+              Marginal effect of $ 12 $ years of education with diploma relative to just $ 12 $ years of education
+              is the the following:
+              \[
+                  \frac{12 \hb_1 + \hb_4}{12\hb_1} = \frac{1.099}{0.972}=1.13
+              \]
+              Marginal effect is zero when the following constraint holds:
+              \[\underbracket{12 \beta_1 +\beta_4}_{=\theta} = 0\]
+              Lets rewrite coefficients as in task 3: $ \beta_4 = \theta - 12 \beta_1  $
+              and estimate slightly different model:
+              \begin{align*}
+                  \ln(ahe) = \beta_0 & + \beta_1 yrseduc + \beta_2 age +                   \\
+                                     & + \beta_3 female + (\theta - 12 \beta_1)hsdipl  + u
+              \end{align*}
+              \begin{align*}
+                  \ln(ahe) = \beta_0 & + \beta_1 (yrseduc - 12 hsdipl) + \beta_2 age + \\
+                                     & +\beta_3 female + \theta hsdipl + u
+              \end{align*}
+              And the p-value for $ \hat\theta $ is 0, which means that it is significant from zero and
+              thus marginal effect is statistically different from zero.
+
+              Interpretation: percentage increase of earnings by $ 13\% $ higher for those who
+              obtained diploma versus those who didnt. This is not a huge difference in the real-world
+              scenario.
+        \item To solve this lets estimate the following constraint:
+              \[\theta = 2\beta_1 + \beta_4 \implies \beta_4 = \theta - 2\beta_1\]
+              Once again the model is then:
+              \begin{align*}
+                  \ln(ahe) = \beta_0 & + \beta_1 yrseduc + \beta_2 age +                  \\
+                                     & + \beta_3 female + (\theta - 2 \beta_1)hsdipl  + u
+              \end{align*}
+              \begin{align*}
+                  \ln(ahe) = \beta_0 & + \beta_1 (yrseduc - 2 hsdipl) + \beta_2 age + \\
+                                     & +\beta_3 female + \theta hsdipl + u
+              \end{align*}
+              After ols estimation we got that $ \hat\theta =0.29$ is positive and significant from zero.
+              Thus the 2 additional years of education and degree brings you by $ 29\% $ more earnings.
+              Difference is not big in real-world scenario.
+        \item Interval for $ V $ is: $ (0.272679, ~ 0.3070001) $
+    \end{enumerate}
+\end{proof}
+\begin{theorem*}[6]
+    \normalfont
+    Estimate a regression of ln(\textit{ahe}) on \textit{yrseduc}, \textit{age}, \textit{age2}, \textit{female}, and \textit{hsdipl}.
+    \begin{enumerate}[(a)]
+        \item What are the signs of the coefficients on age and on $ \text{age}^{2} $? In qualitative
+              terms, what does this tell you about the relationship between earnings and age?
+        \item Test (at the $ 5\% $ significance level) the hypothesis that the relation between
+              ln(\textit{ahe}) and \textit{age} (controlling for \textit{yrseduc}, \textit{female}, and
+              \textit{hsdipl}) is linear against the alternative hypothesis that it is quadratic.
+        \item Does including the term $ \text{age}^{2} $ change the estimated gender gap, in a
+              real-world way? What is the econometric reason for this change (or lack of change)?
+        \item Test (at the $ 5\% $ significance level) the hypothesis that the relation between
+              ln(\textit{ahe}) and \textit{age} (controlling for \textit{yrseduc}, \textit{female}, and
+              \textit{hsdipl}) is quadratic, against the alternative hypothesis that it is cubic.
+              (You will need to specify and estimate another regression.)
+        \item Test (at the $ 5\% $ significance level) the hypothesis that the relation between
+              ln(\textit{ahe}) and \textit{age} (controlling for \textit{yrseduc}, \textit{female}, and
+              \textit{hsdipl}) is linear, against the alternative hypothesis that it is a polynomial
+              of up to cubic degree. Based on the results for parts (b) – (d), which of the
+              specifications would you recommend using: linear in age, quadratic in age, or cubic
+              in age?
+    \end{enumerate}
+\end{theorem*}
+\begin{proof}:
+    \begin{enumerate}[(a)]
+        \item Since both coefs before \textit{age} are significant they have the following interpretation:
+              earnings increases with the age only until reaching some maximum value of increase, after
+              which they tend to decrease.
+
+              \begin{table}[!htbp] \centering
+                  \caption{OLS regression for task 6}
+                  \label{}
+                  \begin{tabular}{@{\extracolsep{5pt}}lc}
+                      \\[-1.8ex]\hline
+                      \hline                                                                                \\[-1.8ex]
+                                     & \multicolumn{1}{c}{\textit{Dependent variable:}}                     \\
+                      \cline{2-2}
+                      \\[-1.8ex] & ln(ahe)  \\
+                      \hline                                                                                \\[-1.8ex]
+                      yrseduc        & 0.081$^{***}$                                                        \\
+                                     & (0.001)                                                              \\
+                                     &                                                                      \\
+                      age            & 0.045$^{***}$                                                        \\
+                                     & (0.002)                                                              \\
+                                     &                                                                      \\
+                      age2           & $-$0.0004$^{***}$                                                    \\
+                                     & (0.00002)                                                            \\
+                                     &                                                                      \\
+                      female         & $-$0.245$^{***}$                                                     \\
+                                     & (0.005)                                                              \\
+                                     &                                                                      \\
+                      hsdipl         & 0.122$^{***}$                                                        \\
+                                     & (0.010)                                                              \\
+                                     &                                                                      \\
+                      Constant       & 0.441$^{***}$                                                        \\
+                                     & (0.043)                                                              \\
+                                     &                                                                      \\
+                      \hline                                                                                \\[-1.8ex]
+                      \hline
+                      \hline                                                                                \\[-1.8ex]
+                      \textit{Note:} & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+                  \end{tabular}
+              \end{table}
+        \item By using linear hypothesis test we calculate F-stats of $ 329.26 $ which implies
+              that model is of quadratic form.
+        \item Adding squared \textit{age} changes coefficient before \textit{female} from
+              $ -0.24409 $  to $ -0.24473 $. Econometric reason: female is positively correlated with
+              quadratic age and thus adding omitted variable influences the coefficient in this way.
+        \item We need to estimate the following model:
+              \begin{align*}
+                  \ln(ahe) = \beta_0 & + \beta_1 yrseduc + \beta_2 age +                                            \\
+                                     & + \beta_3 female + \beta_4 hsdipl + \beta_5 age^{2} + \beta_{6} age^{3}  + u
+              \end{align*}
+              and test constraint for $ \hat{\beta}_{6} = 0 $ using F statistics. Result: $ F = 18.761 $ and
+              p-value is 0, which is in favour of cubic model.
+        \item Estimating model:
+              \begin{align*}
+                  \ln(ahe) = \beta_0 & + \beta_1 yrseduc + \beta_2 age +                                            \\
+                                     & + \beta_3 female + \beta_4 hsdipl + \beta_5 age^{2} + \beta_{6} age^{3}  + u
+              \end{align*}
+              and test constraint for $ \hat{\beta}_{6} = 0 $, $ \hat{\beta}_{5} = 0 $ using F statistics. Result: $ F = 182.37 $ and
+              p-value is 0. I would definetly recommend using cubic model since tests show that it is right
+              specification and moreover RMSE is lower for cubic model.
+    \end{enumerate}
+\end{proof}
+\begin{theorem*}[7]
+    \normalfont
+    The entries in the following table are the predicted marginal percentage increases in average
+    hourly earnings, as a worker gains an additional year of age, evaluated for different ages and
+    based on three different specifications; all the estimates control for years of education,
+    gender, and whether the worker has a HS diploma. For example, the top left entry in the table
+    is the predicted difference in earnings, in percentage terms, between a worker aged $ 31 $
+    and one aged $ 30 $, controlling for years of education, gender, and a HS diploma.
+
+    \begin{enumerate}[(a)]
+        \item Fill in the table
+        \item Do the entries differ in a real-world sense going from the linear to the quadratic
+              specification? From the quadratic to the cubic?
+        \item Which row or rows of entries make the most sense to you, based on economic reasoning?
+              Explain.
+    \end{enumerate}
+
+\end{theorem*}
+
+\begin{proof}
+    :\\
+    
+    \textbf{Linear model}:
+    \[\ln y = \hb_0 + \hb_1 x \implies \Delta y = 100\% \hb_1\Delta x \]
+    thus lets estimate the following model:
+    \begin{align*}
+        \ln(ahe) = \beta_0 & + \beta_1 age + \beta_4 yrseduc  +     \\
+                           & + \beta_5 female + \beta_6 hsdipl  + u
+    \end{align*}
+    Marginal effect of age on earnings doesnt rely on age and remains constant at differnt data points:
+    \[ \text{ME}(age=30) = \text{ME}(age=45) = \text{ME}(age=60) = 100\% \hat{\beta}_1 = 0.7\% \]
+    \textbf{Quadratic model}:
+    \[\ln y = \hb_0 + \hb_1 x + \hb_2 x^{2} \implies \Delta y = 100\%(\hb_1\Delta x + \hb_2 (x_1^{2} - x_0^{2}))  \]
+    thus lets estimate the following model:
+    \begin{align*}
+        \ln(ahe) = \beta_0 & + \beta_1 age + \beta_2 age^{2} + \beta_4 yrseduc  +     \\
+                           & + \beta_5 female + \beta_6 hsdipl  + u
+    \end{align*}
+    \[
+    \text{ME}(age=30) = 1.8 \%    
+    \]
+    \[
+    \text{ME}(age=45) = 0.4 \%    
+    \]
+    \[
+    \text{ME}(age=60) = -0.8\%    
+    \]
+    \textbf{Cubic model}:
+    \[\ln y = \hb_0 + \hb_1 x + \hb_2 x^{2} +\hb_3 x^{3}\implies \Delta y = 100\%(\hb_1\Delta x + \hb_2 (x_1^{2} - x_0^{2}) +\hb_3 (x_1^{3} - x_0^{3}))  \]
+    thus lets estimate the following model:
+    \begin{align*}
+        \ln(ahe) = \beta_0 & + \beta_1 age + \beta_2 age^{2} + \beta_{3} age^{3}+ \beta_4 yrseduc  +     \\
+                           & + \beta_5 female + \beta_6 hsdipl  + u
+    \end{align*}
+    \[
+    \text{ME}(age=30) = 2\%    
+    \]
+    \[
+    \text{ME}(age=45) = 0.2\%    
+    \]
+    \[
+    \text{ME}(age=60) = -0.1\%    
+    \]
+    \\\\
+    Entries differ from linear to quadratic and from quadratic to cubic model. We can see that linear 
+    model predicts that each additional age happens to correlate with $ 0.7\% $ earnings growth, wheras
+    quadratic and cubic models demostrate bigger values of earnings growth in the early age and lower 
+    in the late age. This is perfectly ok for real-world scenario, since after 60 people tend to go on pension
+    and thus earn less on average. Quadratic form seems most appropriate for me since in Russia pensioners
+    receives extremely less when they retire.
+\end{proof}
+\end{document}

@@ -1,0 +1,228 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Do not alter this block (unless you're familiar with LaTeX
+\documentclass{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{bbm}
+\usepackage{calrsfs}
+\usepackage{booktabs} % Required for better horizontal rules in tables
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
+\usepackage{fouriernc} % Use the New Century Schoolbook font
+
+\usetikzlibrary{arrows}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\usetikzlibrary{patterns}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{fillbetween}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=blue,
+}
+\definecolor{mypink1}{rgb}{0.858, 0.188, 0.478}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\E}{\mathbbm{E}}
+ \newcommand{\ind}{\perp\!\!\!\!\perp} 
+\pagestyle{fancy}
+\pgfplotsset{my style/.append style={axis x line=middle, axis y line=
+		middle, xlabel={$x$}, ylabel={$y$}, axis equal }}
+
+
+\newenvironment{problem}[2][Задача]
+{ \begin{mdframed}[backgroundcolor=gray!20] \textbf{#1 #2.} \\}
+	{  \end{mdframed}}
+
+
+\newenvironment{solution}{\textbf{Решение:} \\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Fill in the appropriate information below
+\lhead{Даниил Бучко, MAE'23 (B)}
+\rhead{Теория вероятностей - 2021} 
+\chead{\textbf{Домашняя работа №5}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+	
+	\begin{problem}{1}
+		\begin{enumerate}
+			\item Случайная величина Х имеет гамма распределение с параметром $ a > 0 $. Случайные величины $ X $ и $ Y $ независимы и имеют гамма распределение с параметрами $ a $ и $ b $, соответственно. Докажите, что случайная величина $ X + Y $ имеет гамма распределение, и найти параметр этого распределения
+			\item Пусть $ Z\sim \mathcal{N}(0, 1) $. Докажите, что случайная величина $ X = Z^{2}/2 $ имеет гамма-распределение с параметром $ 1/2 $.
+		\end{enumerate}
+	\end{problem}
+	
+	\begin{solution}
+	\begin{enumerate}
+		\item 	$ X\ind Y \implies $ используем формулу свертки для нахождения распределения с. в. $ Z = X + Y $:
+		\begin{gather*}
+			f_{Z}(z) = \int_{0}^{z}f_{X}(x)f_{Y}(z-x)dx = \frac{1}{\Gamma (a) \Gamma (b)}\int_{0}^{z}x^{a - 1}e^{-x}(z-x)^{b-1}e^{-(z-x)}dx = \frac{e^{-z}}{\Gamma (a) \Gamma (b)}\int_{0}^{z}x^{a - 1}(z-x)^{b-1}dx \\
+			\text{пусть x = zt } \implies dx = zdt, \quad t\in [0, 1] \\
+			 \frac{e^{-z} z ^{a + b - 1}}{\Gamma (a) \Gamma (b)}  \int_{0}^{1} t^{a-1}(1-t)^{b-1}dt = e^{-z} z ^{a + b - 1}\int_{0}^{1} \frac{t^{a-1}(1-t)^{b-1}dt}{\Gamma (a) \Gamma (b)} = \frac{1}{\Gamma (a + b)} z^{a + b - 1}e^{-z} \implies Z \sim \Gamma (a + b)
+		\end{gather*}
+			 \item \[ P(X \le  x) = P(Z^{2}/ 2 \le x)  = P (Z^{2} \le 2x) = P(-\sqrt{2x} \le Z \le \sqrt{2x}) = \Phi (\sqrt{2x})- \Phi (-\sqrt{2x}) \]
+			 тогда
+			 \[
+			 \Phi(\sqrt{2x})' = \phi(\sqrt{2x})\frac{1}{\sqrt{x}} = \frac{1}{\sqrt{2\pi}}\frac{1}{\sqrt{x}}	e^{-x}
+			 \]
+			 принимая свойство гамма распределения, что $ \Gamma (1/2)  = \sqrt{2/\pi}$, получаем, что $ Z\sim \Gamma (1/2) $
+	\end{enumerate}
+	\end{solution}
+	
+		\begin{problem}{2}
+		Докажите равенство $ \mathbbm{E} \left( \mathbbm{E} (Y | X)\right) = \E(Y) $
+			\begin{enumerate}
+					\item -- двумерный дискретный случайный вектор с распределением
+					\item -- двумерный непрерывный случайный вектор с плотностью распределения
+			\end{enumerate}
+	\end{problem}
+\begin{solution}
+	\begin{enumerate}
+		\item Дискретный случай.
+		
+		По определению:
+		\begin{gather*}
+		\E(Y) = \sum_{j=1}^{m}y_{j} P(Y=y_{j}) \quad\quad \E (Y | X) = \phi(x) = \sum_{j=1}^{m} y_{j} P(Y=y_{j} | X = x)
+		\end{gather*}
+		С другой стороны, матожидание от функции от случайной величины по теореме равно:
+		\[
+		\E (\phi(X)) = \sum_{i=1}^{n} \phi(x_{i}) P(X = x_{i})
+		\]
+		Подытоживая: 
+		\begin{gather*}
+			\E \left( \E (Y | X) \right) = \sum_{i=1}^{n} \phi(x_{i}) P(X = x_{i}) = \sum_{i=1}^{n} \sum_{j=1}^{m} y_{j} P(Y=y_{j} | X = x_{i}) P(X = x_{i}) =  \sum_{j=1}^{m} y_{j} \sum_{i=1}^{n}  P(Y=y_{j} | X = x_{i}) P(X = x_{i}) \\
+			= \sum_{j=1}^{m} y_{j} P(Y = y_{j}) = \E (Y)
+		\end{gather*}
+		\item Непрерывный случай.
+		
+		По определению:
+		\begin{gather*}
+		\E(Y) = \int_{\mathbbm{R}}yf_{Y}(y)dy\quad\quad \E (Y | X) = \phi(x) = \int_{\mathbbm{R}} y f_{Y|X}(y | x) dy
+		\end{gather*}
+		
+		С другой стороны, матожидание от функции от случайной величины по теореме равно:
+		\[
+		\E (\phi(X)) = \int_{\mathbbm{R}}\phi (x)f_{X}(x)dx
+		\]
+		Подставляя, получаем:
+		\begin{gather*}
+			\E (\E (Y|X)) = \int_{\mathbbm{R}}f_{X}(x)\left(\int_{\mathbbm{R}}y f_{Y|X}(y | x) dy\right) dx = \int_{\mathbbm{R}} y \left(\int_{\mathbbm{R}} f_{Y|X}(y | x)  f_{X} dx\right) dy = \int_{\mathbbm{R}} y f_{Y}(y)dy = \E(Y)
+		\end{gather*}
+	\end{enumerate}
+\end{solution}
+
+\begin{problem}{3}
+	Проводится схема Бернулли длины $ m + n $. Пусть $ X $ -- общее число успехов в первых $ m $ испытаниях, $ Y $ -- в последних $ n $ испытаниях. Являются ли величины $ X $ и $ Y $ независимыми?
+\end{problem}
+
+\begin{gather*}
+	P(X=k) = C^{k}_{m}p^{k}q^{m-k} \quad P(Y=z) = C^{z}_{n} p^{z}q^{n-z} \\
+	Y \ind X \iff P(YX) = P(Y)P(X) \\
+	P(Y)P(X) =  C^{k}_{m}C^{z}_{n} p^{k+z}q^{n+m-z-k} 
+\end{gather*}
+
+\begin{solution}
+	Осталось понять, как выглядит $ P(XY) $. В силу того, что $ X, Y $ -- дискретные с.в., их совместное распеределение задается таблично. В ячейке $ p_{ij} $  будет находиться вероятность того, что в  первых $ m $ экспериментах было ровно $ i $ удач и в последних $ n $ -- ровно $ j $ удач. Каждую ячейку этой таблицы порождает только стечение одного благоприятного исхода, к примеру:
+	\[
+	p_{ij} = P(X=i, Y=j) = P(X=i)P(Y=j)
+	\]
+	Это значит, что событие, при котором $ X=i $, а $ Y=j $ наступает только в случае если $ X=i $ и $ Y=j $, а значит события независимые.
+\end{solution}
+
+	\begin{problem}{4}
+Точка наугад брошена на полуинтервал $ [0, 1) $. Найдите совместное распределение величин $ \xi_{1}, \xi_{2} $. Являются ли эти величины независимыми?
+\end{problem}
+
+\begin{solution}
+	
+	Заметим, что $ \xi_{i} $ - дискретные с.в., принимающие равновероятные значения в промежутке $ D = \{0, ..., 9\} $. Таким образом $ P(\xi_{i} = d) = 0.1,~ \forall  d\in D $.  Совместное распределение двух дискретных случайных величин задается таблицей:
+	\begin{figure}[!hbtp]
+		\centering
+		\includegraphics[scale=0.7]{joint.png}
+	\end{figure}
+В ячейке $ p_{ij} $ написано значение вероятности $ p_{ij} = P(\xi_{1} = i, \xi_{2} = j) $. Исходя из определения независимости случайных величин, должно соблюдаться следующее равенство:
+\[
+P(\xi_{1} = x, \xi_{2}= y) = P(\xi_{1}= x) P (\xi_{2} = y)
+\]
+Из таблицы можно видеть, что какой бы $ d \in D $ не выбрали, всё равно $ P(\xi_{i} = d) = 0.1 $ и:
+\[
+P(\xi_{1}, \xi_{2}) = P(\xi_{1}) P (\xi_{2})
+\]
+Значит величины независимы.
+
+\end{solution}
+
+\begin{problem}{5}
+	Двумерный случайный вектор $ [X, Y]' $ равномерно распределен на множестве $ M = \{ (x, y) : x \ge 0, y \ge 0, x + 2y \le 2\} $. Найдите функцию регрессии $ \phi (x) = \E (Y | X = x) $ и $ \psi (y) = \E (X | Y = y) $. 
+\end{problem}
+\begin{solution}
+	Заметим, что множество $ M $ -- компактное, с площадью $ 1 $. Легко заметить, что $ f_{X, Y}(x, y) = 1 $, если $ (x, y) \in M $ и $ f_{X, Y} (x, y) = 0 $ в остальных точках. Тогда по определению
+	 \begin{gather*}
+	  \phi(x) = \E (Y | X)  = \int_{\mathbbm{R}} y f_{Y|X}(y | x) dy \\
+	f_{X}(x) = \int_{\mathbbm{R}} f_{X, Y}(x, y) dy = \int_{0}^{1-x/2}dy = \frac{2-x}{2} \quad \implies \quad
+	f_{Y | X} (x, y) = \frac{f_{X, Y}(x, y)}{f_{X}(x)} = \frac{2}{2-x}, ~x\in M \\
+	\E (Y|X) = \frac{2}{2-x}\int_{0}^{1} ydy = \frac{1}{2-x}, ~x\in M \text{ и 0 всюду кроме } M.
+	\end{gather*}
+	Проведем аналогичные рассуждения для $ \psi (y) = \E(X | Y =y) $:
+	 \begin{gather*}
+	\psi(y) = \E (X | Y)  = \int_{\mathbbm{R}} x f_{X|Y}(x | y) dx \\
+	f_{Y}(y) = \int_{\mathbbm{R}} f_{X, Y}(x, y) dx = \int_{0}^{2-2y}dx = 2-2y \quad \implies \quad
+	f_{Y | X} (x, y) = \frac{f_{X, Y}(x, y)}{f_{X}(x)} = \frac{1}{2-2y}, ~x\in M \\
+	\E (X|Y) = \frac{1}{2-2y}\int_{0}^{2} xdx = \frac{1}{1-y}, ~y\in M \text{ и 0 всюду кроме } M.
+	\end{gather*}
+\end{solution}
+
+\begin{problem}{6}
+На отрезке $ [0, 1] $ случайно выбирается точка $ X $. Затем на отрезке $ [0, X] $ случайно выбирается точка $ Y $.
+\begin{enumerate}
+	\item Найдите совместное распределение случайных величин $ X $ и $ Y $
+	\item Найдите $ \E (Y) $
+\end{enumerate}
+\end{problem}
+
+\begin{solution}
+	
+	Очевидно, что возможное пространство исходов положений точки $ (x, y) $ (где первая координата -- реализация случаной величины $ X $, а вторая -- с.в $ Y $) -- это множество $ M $, такое что:
+	\[
+	M = \{ (x, y): 1\ge x \ge 0, y\ge 0, y\le x \}
+	\]
+	Множество $ M $ - треугольник с площадью $ 1/2 $. Тогда $ f_{X, Y}(x, y) = 2 $, если $ (x, y) \in M $ и 0 всюду кроме $ M $.
+	По определению:
+	\begin{gather*}
+	\E (Y) = \int_{R} y f_{Y}(y)dy \quad f_{Y}(y) = \int_{R} f_{Y|X}(y)f_{X}(x) dx \quad f_{Y|X}(y) = \frac{f_{X, Y}(x, y)}{f_{X}(x)} = 2,~ (x, y)\in M \\
+	f_{Y}(y) = \int_{y}^{1}2dx = 2(1-y) \implies 2\int_{0}^{1} y(1-y) dy=2 (y^2/2 - y^3/3)|^{1}_{0} =  \frac{1}{3} 
+	\end{gather*}
+\end{solution}
+
+\begin{problem}{7}
+Плотность совместного распределения случайных величин $ X $ и $ Y $ есть
+\[
+f(x, y) = \frac{e^{-y/x}e^{-x}}{x}
+\]
+найти $ \E(Y|X=x) $
+\end{problem}
+
+\begin{solution}
+	
+	По определению:
+	\begin{gather*}
+	\E (Y | X) = \phi(x) = \int_{\mathbbm{R}} y f_{Y|X}(y | x) dy \quad f_{Y|X}(x, y) = \frac{f_{X, Y}(x, y)}{f_{X}(x)} \quad f_{X}(x) = \int_{R} f_{X, Y} (x, y) dy \\
+	f_{X}(x) = \frac{e^{-x}}{x}\int_{R} e^{-y/x}dy = -\frac{e^{-x}}{x}\left( xe^{-y/x} \right) = e^{-x}, x \ge 0 \quad f_{Y|X}(x, y) = \frac{f_{X, Y}(x, y)}{f_{X}(x)} = \frac{e^{-y/x}}{x} \\ 
+	\E (Y | X)  = \int_{\mathbbm{R}} y f_{Y|X}(y | x) dy = \frac{1}{x} \int_{0}^{\infty} ye^{-y/x}dy = x, \quad x\ge 0
+	\end{gather*}
+\end{solution}
+	
+\end{document}

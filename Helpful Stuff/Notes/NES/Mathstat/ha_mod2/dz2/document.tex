@@ -1,0 +1,136 @@
+\documentclass[11pt, oneside]{article}
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+\usepackage[parfill]{parskip}    			% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdftitle={Overleaf Example},
+	pdfpagemode=FullScreen,
+}
+\pgfplotsset{width=10cm,compat=1.9}
+
+\usetikzlibrary{arrows}
+
+\def\firstcircle{(90:1.75cm) circle (2.5cm)}
+\def\secondcircle{(210:1.75cm) circle (2.5cm)}
+\def\thirdcircle{(330:1.75cm) circle (2.5cm)}
+\graphicspath{ {img/} }
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\usepackage{bbm}
+\usepackage{caption,subcaption}
+\renewcommand{\r}{\rho}
+\renewcommand{\d}{\delta}
+\renewcommand{\b}{\beta}
+\newcommand{\g}{\gamma}
+\renewcommand{\t}{\theta}
+\renewcommand{\o}{\overline}
+
+
+%SetFonts
+
+
+\title{Probability-2 - Assignment \#2}
+\author{Daniil Buchko - \texttt{dbuchko@nes.ru}}
+\date{November 17, 2021}
+
+\begin{document}
+	
+	\maketitle
+	
+	% ================= QUESTION 1  =================
+	\section*{Question 1}
+	\fbox{\begin{minipage}{40em}
+		Suppose that you have a random sample $ X_{1}, \dots, X_{n} $ from a distribution with the density
+		\[
+		f(x) = \begin{dcases}
+			\frac{1}{\t^{2}}xe^{-x/\t}, \quad 0 \le x < \infty \\
+			0 \quad \text{ else }
+		\end{dcases}
+		\]
+		\begin{enumerate}[(a)]
+			\item  Construct the Maximum Likelihood estimator $ \hat\t_{ML} $
+			\item  Compute Fisher information for your estimator. Compute the variance of $ \hat\t_{ML} $
+			\item Using the result of the previous step, design a test for the hypothesis $ H_{0}: \t \le \t_{0} $ against $ H_{1}: \t > \t_{0} $
+		\end{enumerate}
+	\end{minipage}}
+
+\begin{enumerate}[(a)]
+	\item Defining likelihood function:
+	\[
+	\mathcal{L} = \prod_{i=1}^{n} \frac{1}{\t^{2}}x_{i}e^{-x_{i}/\t} \to \max_{\t}
+	\]
+	Loglikelihood function:
+	\[
+	l = -2n\ln\t + \sum_{i=1}^{n} \ln x_{i} - \frac{x_{i}}{\t} \to \max_{\t}
+	\]
+	Finding derivatives:
+	\begin{gather*}
+		\frac{\partial l }{\partial \t}: \quad \frac{-2n}{\hat\t} + \sum_{i=1}^{n}\frac{x_{i}}{\hat\t^{2}} = 0 \\
+		 \hat\t_{ML} = \overline{X}/2
+	\end{gather*}
+\item \begin{gather*}
+	\ln f(x, \t) = -2\ln \t + \ln x - \frac{x}{\t} \\
+	\frac{\partial \ln f(x, \t)}{\partial \t} = \frac{-2}{\t} + \frac{x}{\t^{2}} \implies \frac{\partial \ln^{2} f(x, \t)}{\partial \t^{2}} = \frac{2}{\t^{2}}-\frac{2x}{\t^{3}}\\
+	I(\t) = - \E_{\t} \left[  \frac{\partial \ln^{2} f(x, \t)}{\partial \t^{2}}\right] = \frac{2}{\t^{2}} - \frac{2}{\t^{3}} \E(X) = \frac{2}{\t^{2}}
+\end{gather*}
+It is clear that $ Var(\hat\t)  = \t^{2}/2n$
+\item Using the asympotical normality of $ \hat\t_{ML} $ we can write that
+\[
+\P\left( \frac{\overline{X}}{2}  > \underbrace{A\frac{\sigma}{\sqrt{n}} + \t_{0}}_{c}\right) = 1 - \Phi(A) \implies A = \frac{c - \t_{0}}{\sigma/\sqrt{n}}
+\]
+And thus we may claim that
+\[
+\P\left( \frac{\overline{X}}{2}  > c \right) = 1 - \Phi\left( \frac{c - \t_{0}}{\sigma/\sqrt{n}} \right)
+\]
+where $ c $ depends on the significance level.
+Thus we reject $ H_{0} $ if $ \overline{X}/2 >c $ and not reject otherwise.
+\end{enumerate}
+
+	\section*{Question 2}
+\fbox{\begin{minipage}{40em}
+		Suppose that you have a random sample from a normal distribution $ \mathcal{N}(\mu, \sigma^{2}) $ where $ \mu $ and $ \sigma $ are parameters
+\end{minipage}}
+
+\begin{enumerate}[(a)]
+	\item If we know $ \sigma = 1 $ and:
+	\[
+	\begin{dcases}
+		H: ~0 \quad\quad \mu = 1 \\
+		H: ~1 \quad\quad \mu > 1
+	\end{dcases}
+	\]
+	\[
+	\P\left( \overline{X}  > \underbrace{\frac{A}{\sqrt{n}} + \mu}_{c}\right) = 1 - \Phi(A) 
+	\]
+	\[
+	\overline{X} > \frac{z_{a}}{\sqrt{n}} + 1
+	\]
+\item Power function:
+\[
+\gamma (\mu) = \P \left( \overline{X} > \frac{z_{a}}{\sqrt{n}} +1 \right) = \P \left( \frac{\overline{X} - \mu}{1/\sqrt{n}} > \sqrt{n} \left[\frac{z_{a}}{\sqrt{n}} + 1 -\mu\right] \right) \implies 1- \Phi \left( z_{a} + \sqrt{n} - \mu\sqrt{n}\right)
+\]
+\end{enumerate}
+
+\section*{Question 4}
+\fbox{\begin{minipage}{40em}
+Suppose that your friend has collected some data in hope to reject a certain hypothesis $ H_0 $ at the conventional confidence level 5\%. However, the data did not let him to reject
+it with the p-value of 11\%. Then he collected another sample (that is independent from the first
+one), obtained the p-value of 4\%, and reported that $ H_0 $ is rejected at the 5\% level.
+If you think of the procedure that he implemented, what is the p-value that should be have been
+reported? Explain.
+\end{minipage}}
+
+In order to avoid doing such a mistake we need to determine the proper sample size before doing the trial. We can do Power analysis, which is done before the experiment and tells us how many replicates we need in order to do have a relatively high probability of correctly rejecting the null hypothesis.
+\end{document}  

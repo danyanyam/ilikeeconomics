@@ -1,0 +1,298 @@
+\documentclass[11pt, oneside]{article}
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+\usepackage[parfill]{parskip}    			% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdftitle={Overleaf Example},
+	pdfpagemode=FullScreen,
+}
+\pgfplotsset{width=10cm,compat=1.9}
+
+\usetikzlibrary{arrows}
+
+\def\firstcircle{(90:1.75cm) circle (2.5cm)}
+\def\secondcircle{(210:1.75cm) circle (2.5cm)}
+\def\thirdcircle{(330:1.75cm) circle (2.5cm)}
+\graphicspath{ {img/} }
+\newcommand{\E}{\mathbb{E}}
+\usepackage{bbm}
+\usepackage{caption,subcaption}
+\renewcommand{\r}{\rho}
+\renewcommand{\d}{\delta}
+\renewcommand{\b}{\beta}
+
+%SetFonts
+
+
+\title{Macroeconomics-2 - Assignment \#2}
+\author{Daniil Buchko - \texttt{dbuchko@nes.ru}}
+\date{November 17, 2021}
+
+\begin{document}
+	
+\maketitle
+
+% ================= QUESTION 1  =================
+\section*{Question 1}
+\fbox{\begin{minipage}{40em}
+Assume an individual who lives for infinite periods in a discrete time model. He has concave utility, earns an income of $ y $ each period. The subjective discount factor is equal to $ \beta =  1 / (1+\rho) $
+and real interest rate is equal to $ r $. Draw the consumption path of this individual for each of the following cases:
+\begin{enumerate}[(1)]
+	\item $ r_{1} = r_{2} = r_{3} = \dots = \rho $
+	\item $ r_{1} = r_{2} = r_{3} = \dots < \rho $
+	\item $ r_{1} < \rho  $ and $ r_{2} = r_{3} = \dots = \rho $
+	\item $ r_{1} = r_{5} = r_{6} = \dots = \rho  $ and $ r_{2} = r_{3} = r_{4} < \rho $
+	\item $ r_{1} = r_{3} = r_{5} = \dots < \rho  $ and $ r_{2} = r_{4} = r_{6} = \dots = \rho  $
+\end{enumerate}
+\end{minipage}}
+
+Before solving every point of the task, lets derive the maximization task and its solution. Individual solves the following task, by choosing values of $ c_{t} $:
+\[
+\begin{dcases}
+	U(c) = \sum_{t=1}^{\infty} \frac{u(c_{t})}{(1+\r)^{t-1}} \to \max_{\{c_{t}\}_{t=1}^{\infty}}  \\
+	\sum_{t=1}^{\infty}  \frac{c_{t}}{\prod_{i=1}^{t-1} (1+r_{i})} = 	\sum_{t=1}^{\infty}  \frac{y_{t}}{\prod_{i=1}^{t-1} (1+r_{i})}
+\end{dcases}
+\]
+Lagrangian is the following:
+\[
+	\mathcal{L} = \sum_{t=1}^{\infty} \frac{u(c_{t})}{(1+\r)^{t-1}} + \lambda \left( \sum_{t=1}^{\infty}  \frac{y_{t}}{\prod_{i=1}^{t-1} (1+r_{i})} -  	\sum_{t=1}^{\infty}  \frac{c_{t}}{\prod_{i=1}^{t-1} (1+r_{i})}\right)
+\]
+Taking derivatives yields:
+\[
+	\begin{dcases}
+		\frac{\partial \mathcal{L}}{\partial c_{t}} = 0: \quad \frac{u'(c_{t})}{(1+\r)^{t-1}} =  \frac{\lambda}{\prod_{i=1}^{t-1} (1+r_{i})} \quad\quad \forall t = 1\dots \\
+		\frac{\partial \mathcal{L}}{\partial c_{t+1}} = 0: \quad \frac{u'(c_{t+1})}{(1+\r)^{t}} =  \frac{\lambda}{\prod_{i=1}^{t} (1+r_{i})} \quad\quad \forall t = 1\dots \\
+	\end{dcases}
+\]
+Which is the \textbf{EE}:
+\[
+	 \frac{u'(c_{t})}{u'(c_{t+1})} = \frac{1+r_{t}}{1 + \r} \quad\quad \forall t = 1\dots
+\]
+\begin{enumerate}
+	\item $ r_{1} = r_{2} = r_{3} = \dots = \rho$ 
+		\[
+			r_{t} = \r \implies u'(c_{t}) = u'(c_{t+1}) \implies c_{t} = c_{t+1} \quad\forall t = 1\dots
+		\]
+
+	\item $ r_{1} = r_{2} = r_{3} = \dots < \rho$
+		\[
+			r_{t} < \r \implies u'(c_{t}) < u'(c_{t+1}) 
+		\]
+	Considering the concavity of utility function we get:
+		\[
+			c_{t} > c_{t+1} \quad\forall t = 1 \dots
+		\]
+	\item $ r_{1} < \rho  $ and $ r_{2} = r_{3} = \dots = \rho $
+		\[
+			r_{1} < \r \implies u'(c_{1}) < u'(c_{2}) \implies c_{1} > c_{2} = c_{3} = \dots
+		\]
+	\item $ r_{1} = r_{5} = r_{6} = \dots = \rho  $ and $ r_{2} = r_{3} = r_{4} < \rho $
+		\[
+			\begin{dcases}
+				r_{2} = r_{3} = r_{4} < \r \\
+				r_{5} = r_{6} = \dots
+			\end{dcases} \implies c_{2} > c_{3} > c_{4} > c_{5} = c_{6} = \dots
+		\]
+		and also applying that $ r_{1} = \r $:
+		\[
+			c_{1} = c_{2} > c_{3} > c_{4} > c_{5} = c_{6} = \dots
+		\]
+	\item $ r_{1} = r_{3} = r_{5} = \dots < \rho  $ and $ r_{2} = r_{4} = r_{6} = \dots = \rho  $
+	\[
+	\begin{dcases}
+		u'(c_{2t - 1}) < u'(c_{2t}) \\ 
+		u'(c_{2t}) = u'(c_{2t+1})
+	\end{dcases} \implies c_{1}>c_{2} = c_{3} > c_{4} = c_{5} > \dots
+	\]
+	
+\end{enumerate}
+% ================= END QUESTION 1  =================
+
+\clearpage
+\section*{Question 4}
+\fbox{\begin{minipage}{40em}
+		Consider two-period model of consumption. Let the utility function of an individual be
+\end{minipage}}
+\begin{enumerate}[(1)] 
+	\item $ y_{1} = 20, y_{2} = 90 $. Borrowing at $ r_{b} = 150\%$, saving at $ 50\% $.
+	In order to solve the consumer problem we should find the maximum of utility function for two cases and compare their values:
+	\[
+	\begin{dcases}
+		\max \sqrt{c_{1}} + \sqrt{c_{2}} \\
+		c_{1} + \frac{c_{2}}{1+1.5} = 20 + \frac{90}{1+1.5}, \quad \text{ if } c_{1} \ge 20 \\
+		c_{1} + \frac{c_{2}}{1+0.5} = 20 + \frac{90}{1+0.5}, \quad \text{ if } c_{1} \le 20
+	\end{dcases} 
+	\]
+	\begin{enumerate}[(a)]
+		\item Case $ c_{1} \ge Y_{1} $
+		\[
+		\mathcal{L} = \sqrt{c_{1}} + \sqrt{c_{2}} + \lambda_{1} \left( 20 + \frac{90}{2.5} - c_{1} - \frac{c_{2}}{2.5}  \right) + \lambda_{2}(c_{1} - 20)
+		\]
+		FOCs:
+		\[
+		\begin{dcases}
+			\frac{\partial \mathcal{L}}{\partial c_{1}} = 0: \quad \frac{1}{2\sqrt{c_{1}}} - \lambda_{1} + \lambda_{2} = 0
+			\\
+			\frac{\partial \mathcal{L}}{\partial c_{2}} = 0: \quad  
+			\frac{1}{2\sqrt{c_{2}}} - \lambda_{1} / 2.5 = 0 \\
+			\lambda_{2}[c_{1} - 20] = 0
+		\end{dcases} \text{ assuming } c_{1} > 20\implies \sqrt{\frac{c_{2}}{c_{1}}} = 2.5 \implies c_{2} = 6.25c_{1}
+		\]
+		Inserting to the budget constraint yields:
+		\[
+		3.5c_{1} = 56 \implies c_{1} = 16 < Y_{1} = 20
+		\]
+		We got $ c_{1} = 16 $, assuming that $ c_{1} > 20 $, therefore what we got is not a maximum. The only case left is $ c_{1} = 20  \implies c_{2} = 90$. Value of utility function at the maximum is $ U(20, 90)  = \sqrt{20} + \sqrt{90}$.
+		\item Case $ c_{1} \le Y_{1} $:
+		FOCs:
+		\[
+		\begin{dcases}
+			\frac{\partial \mathcal{L}}{\partial c_{1}} = 0: \quad \frac{1}{2\sqrt{c_{1}}} - \lambda_{1} - \lambda_{2}  = 0
+			\\
+			\frac{\partial \mathcal{L}}{\partial c_{2}} = 0: \quad  
+			\frac{1}{2\sqrt{c_{2}}} - \lambda_{1} / 1.5 = 0
+		\end{dcases}  \text{ assuming } c_{1} < 20 \implies \sqrt{\frac{c_{2}}{c_{1}}} = 1.5 \implies c_{2} = 2.25c_{1}
+		\]
+		Inserting to the budget constraint yields:
+		\[
+		2.5c_{1} = 80  \implies c_{1} = 32 > Y_{1} = 20
+		\]
+		What we got is not a maximum. The only thing is left is $ c_{1} = 20 $, $ c_{2} = 90 $.
+	\end{enumerate}
+\item $ r_{b} = r_{s} = 0.5 $.
+	\[
+\begin{dcases}
+	\max \sqrt{c_{1}} + \sqrt{c_{2}} \\
+	c_{1} + \frac{c_{2}}{1+1.5} = 56
+\end{dcases} 
+\]
+\[
+\mathcal{L} = \sqrt{c_{1}} + \sqrt{c_{2}} + \lambda \left( 56 - c_{1} - \frac{c_{2}}{2.5} \right)
+\]
+\[
+	\begin{dcases}
+			\frac{\partial \mathcal{L}}{\partial c_{1}}:\quad \frac{1}{2\sqrt{c_{1}}} = \lambda \\
+			\frac{\partial \mathcal{L}}{\partial c_{2}}:\quad \frac{1}{2\sqrt{c_{2}}} = \frac{\lambda}{2.5}
+	\end{dcases} \implies c_{2} = 6.25 c_{1} \implies c_{2} = 100, c_{1} = 16, \quad s = Y_{1} - c_{1} = 4
+\]
+\item $ r_{b} = r_{s} = 0.5, y_{1} = 30, y_{2} = 90$.
+Using results from the previous question $ c_{2} = 2.25 c_{1} $
+\[
+2.5c_{1} = 66 \implies c_{1} = 26.4 \quad c_{2} = 165
+\]
+MPC is the following:
+\[
+c_{1} = \frac{Y_{1}}{2.5} + 14.4 \implies c_{1}'(Y_{1}) = 0.4
+\]
+\item 
+
+\end{enumerate}
+
+\clearpage
+\section*{Question 5}
+\fbox{\begin{minipage}{40em}
+Two individuals who are optimizing their consumption path over an infinite horizon have different
+utility functions.
+While the utility of individual $ u $ is given by:
+\[
+U(C) = \ln c_{1} + \frac{\ln c_{2}}{1+\r} + \frac{\ln c_{3}}{(1+\r)^{2}} + \dots = \sum_{t=1}^{\infty} \frac{\ln c_{t}}{(1+\r)^{t-1}}
+\]
+the utility of individual $ v $ is given by
+\[
+V(C) = \sqrt[3]{c_{1}} + \frac{\sqrt[3]{c_{2}}}{1 + \r} + \frac{\sqrt[3]{c_{3}}}{(1 + \r)^{2}} + \dots =  \sum_{t=1}^{\infty} \frac{\sqrt[3]{c_{t}}}{(1+\r)^{t-1}}
+\]
+Individuals $ u $ and $ v $ have the same income path $ \{y_{t}\}_{t=1}^{\infty} $. Moreover, they have the same time
+preferences and face the same interest rate.\\
+\begin{enumerate}[(1)]
+	\item Show that both utility functions satisfy the standard assumptions assumed in our model.
+	\item Find out the relationship between consumption in two subsequent periods for both individuals.
+	\item Could it be that both individuals have the same consumption path? Explain
+	\item Assume that the interest rate $ r $ is higher than $ \r $.
+	\begin{enumerate}[(a)]
+		\item How does the consumption path look like?
+		\item Draw the consumption path of both individuals and compare them.
+	\end{enumerate}
+	\item Assume that individual $ u $ now knows that her income will increase by amount $ x $ starting from period $ 3 $.
+	\begin{enumerate}[(a)]
+		\item How does the consumption path of individual u change?
+		\item Does you answer to the previous section depend on the whether $ r ><= p $?
+		\item Draw all possible cases
+	\end{enumerate}
+\end{enumerate}
+\end{minipage}}
+
+
+\begin{enumerate}[(1)]
+	\item 	Standart assumptions about the utility function:
+	\begin{enumerate}[(a)]
+		\item 	Non-decreasing by $ c_{t} $ and concavity with respect to $ c_{t} $. Function $ U(.) $ is concave iff $ U''(.) < 0 $:
+		\[
+		\frac{\partial U(C)}{\partial c_{t}} =  \frac{1}{c_{t}(1+\r)^{t-1}} > 0 \quad\quad \frac{(\partial U(C))^{2}}{\partial^{2} c_{t}} = -\frac{1}{c_{t}^{2}(1+\r)^{t-1}} < 0 \quad \forall t = 1 \dots
+		\]
+		\[
+		\frac{\partial V(C)}{\partial c_{t}} =  \frac{1}{3\sqrt[3]{c_{t}^{2}}(1+\r)^{t-1}} > 0 \quad\quad \frac{(\partial U(C))^{2}}{\partial^{2} c_{t}} = -\frac{2}{9c_{t}^{5/3}(1+\r)^{t-1}} < 0 \quad \forall t = 1 \dots
+		\]
+	\end{enumerate}
+	\item We need to solve the optimization problem:
+	\begin{enumerate}[(a)]
+		\item For agent $ u $:
+		\[
+		\begin{dcases}
+		\sum_{t=1}^{\infty} \frac{\ln c_{t}}{(1+\r)^{t-1}} \to \max_{c_{t}} \\
+			\sum_{t=1}^{\infty}  \frac{c_{t}}{\prod_{i=1}^{t-1} (1+r_{i})} = 	\sum_{t=1}^{\infty}  \frac{y_{t}}{\prod_{i=1}^{t-1} (1+r_{i})}
+	\end{dcases}
+		\]
+		Since the task is fully equivalent to the agent's task of question 1, we can use the \textbf{EE} from there:
+		\[
+		\frac{u'(c_{t})}{u'(c_{t+1})} = \frac{1+r_{t}}{1+\r} \quad\implies\quad \frac{c_{t+1}}{c_{t}} = \frac{1+r_{t}}{1 + \r}
+		\]
+		\item For agent $ v $:
+				\[
+		\begin{dcases}
+			\sum_{t=1}^{\infty} \frac{\sqrt[3]{c_{t}}}{(1+\r)^{t-1}} \to \max_{c_{t}} \\
+			\sum_{t=1}^{\infty}  \frac{c_{t}}{\prod_{i=1}^{t-1} (1+r_{i})} = 	\sum_{t=1}^{\infty}  \frac{y_{t}}{\prod_{i=1}^{t-1} (1+r_{i})}
+		\end{dcases}
+		\]
+		and, again, using the \textbf{EE}:
+		\[
+		\frac{u'(c_{t})}{u'(c_{t+1})} = \frac{1+r_{t}}{1+\r} \quad\implies\quad \frac{c_{t+1}}{c_{t}} = \sqrt[2]{\left(\frac{1+r_{t}}{1 + \r}\right)^{3}}
+		\]
+	\end{enumerate}
+	\item Since both agents receive the sane value of income, difference in consumption is fully determined by \textbf{EE}. So, if \textbf{EE} is identical for all agents for every value of $ t $, then consumers will have the same consumption path, or mathematically:
+	\begin{align*}
+		\forall t=1, 2,\dots \quad\quad \frac{1+r_{t}}{1+\r}  &= \left(\frac{1+r_{t}}{1 + \r}\right)^{3/2} \\
+		1 &= \left(\frac{1+r_{t}}{1 + \r}\right)^{1/2} \\
+		1+\r &= 1 + r_{t}  \iff \r = r_{t}
+	\end{align*}
+So if both consumers face $ r_{t} = \r $, then they will have the same consumption path.
+\item Assuming that $ r_{t} > \r $
+\begin{enumerate}[(a)]
+	\item Both eulers equations (thanks to concavity of functions $ u(c_{t}) $ and $ v(c_{t}) $) yield that next period consumption is higher than the present one, or:
+	\[
+	r_{t} > \r \implies c_{t+1} >c_{t}
+	\]
+	But for the $ u $ and $ v $ growth of consumption gain is different: $ v $'s agent consumption is increasing faster:
+	\[
+	\underbrace{c_{t+1} = c_{t}\frac{1+r_{t}}{1+\r}}_{\text{Agent } u} \quad\quad \underbrace{c_{t+1} = c_{t}\left(\frac{1+r_{t}}{1+\r}\right)^{3/2}}_{\text{Agent } v}
+	\]
+\end{enumerate}
+\item
+\begin{enumerate}[(a)]
+	\item  Since the $ y_{t} $ does not affect the Euler Equation, the $ c_{t+1} $ to $ c_{t} $ ratio will not change. But still the absolute value for $ c_{t} $ will be increased since more income is available.
+	\item yes, if $ r_{t} > \r $, then consumption is increasing.
+\end{enumerate}
+
+\end{enumerate}
+\end{document}  

@@ -1,0 +1,332 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Do not alter this block (unless you're familiar with LaTeX
+\documentclass{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{bbm}
+\usepackage{calrsfs}
+\usepackage{booktabs} % Required for better horizontal rules in tables
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
+\usepackage{fouriernc} % Use the New Century Schoolbook font
+
+\usetikzlibrary{arrows}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\usetikzlibrary{patterns}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{fillbetween}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=blue,
+}
+\definecolor{mypink1}{rgb}{0.858, 0.188, 0.478}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\pagestyle{fancy}
+\pgfplotsset{my style/.append style={axis x line=middle, axis y line=
+		middle, xlabel={$x$}, ylabel={$y$}, axis equal }}
+
+
+\newenvironment{problem}[2][Задача]
+{ \begin{mdframed}[backgroundcolor=gray!20] \textbf{#1 #2.} \\}
+	{  \end{mdframed}}
+
+
+\newenvironment{solution}{\textbf{Решение:} \\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Fill in the appropriate information below
+\lhead{Даниил Бучко, MAE'23 (B)}
+\rhead{Теория вероятностей - 2021} 
+\chead{\textbf{Домашняя работа №2}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+	
+\begin{problem}{1}
+	
+	Пусть на пространстве элементарных исходов $ \Omega $ с сигма-алгеброй событий $ \mathcal{F} $ задана конечно аддитивная вероятность $ P $, т.е. вместо аксиомы счетной аддитивности выполнена аксиома конечной аддитивности: если $ A_{1}\dots A_{n}\in \mathcal{F} $  и $ A_{1}A_{j} = \emptyset, i\ne j$ то $ P\left(\bigcup_{i=1}^{n}A_{i}\right) =  \sum_{i=1}^{n}P(A_{i})$.  Докажите, что если $ P $ непрерывна в нуле (см. лекцию 3), то она счетно аддитивна
+	
+\end{problem}
+
+\begin{solution}
+	Требуется доказать, что выполняется следующее равенство: 
+	\[P\left(\bigcup_{i=1}^{\infty}A_{i}\right) =  \sum_{i=1}^{\infty}P(A_{i})\]
+	По условию имеем, что $ \{A_{n}\} $ -- последовательность событий с пустым пересечением, а значит можно переписать бесконечное объединение событий последовательности в следующем виде:
+	\[
+	P\left(\bigcup_{i=1}^{\infty}A_{i}\right) =  P\left(\bigcup_{i=1}^{n}A_{i}\right) + P\left(\bigcup_{i=n+1}^{\infty}A_{i}\right)
+	\]
+	применяя сигма-аддитивность, и рассматривая бесконечное объединение событий от $ n+1 $ как отдельное множество, получим:
+	\begin{align*}
+	\lim_{n\to\infty} P\left(\bigcup_{i=1}^{n}A_{i}\right)   = \lim_{n\to\infty} \left\{P\left(\bigcup_{i=1}^{\infty}A_{i}\right) - \underbrace{P\left(\bigcup_{i=n+1}^{\infty}A_{i}\right) }_{\to 0}\right\} = \lim_{n\to\infty} P\left(\bigcup_{i=1}^{\infty}A_{i}\right) =  \sum_{i=1}^{\infty}P(A_{i})
+	\end{align*}
+	Поясним переходы выше. Заметим, что  $B_{n} = \bigcup_{i=n+1}^{\infty}A_{i}  $  -- последовательность непересекающихся, вложенных событий. Из этого следует по аксиоме о непрерывности, что $ P(B_{n}) $ стремится к нолю, при $ n\to\infty $.
+\end{solution}
+	
+	
+
+\begin{problem}{2}
+	В коробке 40 конфет M\&M’s, 12 красного цвета, 8 желтого цвета, 9 коричневого
+	цвета и 11 зеленого цвета. Случайным образом (неупорядоченно и без возвращения)
+	выбираются 9 конфет. Найдите вероятность того, что в выборке будет
+	\begin{enumerate}
+		\itemsep0em 
+		\item три красных конфеты
+		\item две красных, три желтых, четыре зеленых конфеты
+	\end{enumerate}
+\end{problem}
+
+\begin{solution}
+	\begin{enumerate}
+		\item 	$ A $ -- событие, при котором в выборке ровно 3 красных конфеты \\
+		$ C_{40}^{9} $ -- количество способов взять 9 конфет (неупорядоченно и без возвращения) \\
+		$ C_{12}^{3} $ -- количество способов выбрать 3 красных конфеты из 12 возможных \\
+		$ C_{28}^{6} $ -- количество способов взять 6 НЕ красных конфет 
+		\[P(A) = \frac{C_{12}^{3}C_{28}^{6}}{C_{40}^{9}} \sim 0.303 \]
+		\item $ B $ -- событие, при котором в выборке ровно 2 красных, 3 желтых, 4 зеленых конфеты\\
+		$ C_{40}^{9} $ -- количество способов взять 9 конфет (неупорядоченно и без возвращения) \\
+		$ C_{12}^{2} $ -- количество способов взять 2 красных конфеты \\
+		$ C_{8}^{3} $ -- количество способов взять 3 желтых конфеты \\
+		$ C_{11}^{4} $ -- количество способов взять 4 зеленых конфеты \\
+		\[ P(B) = \frac{C_{12}^{2}C_{8}^{3}C_{11}^{4}}{C_{40}^{9}} \sim 0.004 \]
+		
+	\end{enumerate}
+	
+	
+\end{solution}
+
+
+\begin{problem}{3}
+	Есть три специальных игральных кубика: с числами 1,4,4,4,4,4 на гранях, с числами 2,2,2,5,5,5 на гранях с числами 3,3,3,3,3,6 на гранях. Два игрока, $ A $ и $ B $, играют в следующую игру: $ B$ выбирает один кубик из трех, $ A $ выбирает один кубик из двух оставшихся; затем игроки подбрасывают свои кубики, и выигрывает тот, у кого выпало больше очков. Игроки выбирают кубики не случайно, а с целью повысить вероятность выигрыша.
+	\begin{enumerate}
+		\itemsep0em 
+		\item  Кто из игроков имеет больший шанс выиграть?
+		\item  Найдите вероятность того, что выиграет $ B $.
+	\end{enumerate}
+\end{problem}
+
+\begin{solution}
+	Чтобы понять, как именно игроки будут выбирать кубики и есть ли у них доминирующие выигрышные стратегии, необходимо просчитать вероятность победы второго игрока в зависимости от выбранного кубика в ответ на выбор кубика первым игроком. Обозначим событием $ W_{i}^{A} $  -- победные исходы, которые приносит выбор $ i $-го кубика игроку $ A $. Кроме того: $ A_{i} $ -- номер кубика, выбранный игроком $ A $ и $ B_{i} $ -- номер кубика, выбранный игроком $ B $. Посчитаем вероятности победы второго игрока в ответ на выбор каждого из кубиков первым игроком. \\
+	
+	Для начала, подчеркнем очевидные вещи. Если первый игрок взял $ i $-ый кубик, то этот кубик становится недоступным для выбора второму игроку. Рассмотрим поочередно ситуации, в которых первый игрок берет каждый из кубиков.
+	\begin{enumerate}
+		\item Случай $ B_{I} $ (первый игрок взял кубик типа $ I $). В ответ на эту стратегию второй игрок может выбрать либо второй кубик, либо третий. Вероятность победы игрока $ A $ для каждой из стратегий соответственно равны:
+		\begin{align*}
+		P\left(W_{II}^{A} | B_{I}\right) = \frac{1}{6}\frac{6}{6} + \frac{5}{6}\frac{3}{6} = \frac{21}{36}\\
+		P\left(W_{III}^{A} | B_{I}\right) = \frac{1}{6}\frac{6}{6} + \frac{5}{6}\frac{1}{6} = \frac{11}{36}
+		\end{align*}
+		Кратко поясню, откуда берутся эти числа. Рассмотрим случай $ P\left(W_{II}^{A} | B_{I}\right) $. У игрока $ B $ при бросании кубика $ I $ возможны выпадения двух чисел: либо 1, либо 4. Если выпала единица (что происходит с вероятностью $ 1/6 $), то игрок $ A $ выиграет, при условии, что на кубике $ II $ выпало число большее, чем единица (что происходит с вероятностью $ 1 $). \\ Кроме единицы у $ B $ могла выпасть $ 4 $ (с вероятностью $ 5/6 $), победить которую игроку $ A $  при помощи второго кубика можно было в 3-х из 6-х исходов. 
+		\item Случай $ B_{II} $ (первый игрок взял кубик типа $ II $).  В ответ на эту стратегию второй игрок может выбрать либо первый кубик, либо третий. Вероятность победы игрока $ A $ для каждой из стратегий соответственно равны:
+		\begin{align*}
+		P\left(W_{I}^{A} | B_{II}\right) &= \frac{3}{6}\frac{5}{6}  = \frac{15}{36}\\
+		P\left(W_{III}^{A} | B_{II}\right) &= \frac{3}{6}\frac{6}{6} + \frac{3}{6}\frac{1}{6} = \frac{21}{36}
+		\end{align*}
+		\item И наконец рассмотрим финальный случай $ B_{III} $ (первый игрок взял кубик типа $ III $). В ответ на эту стратегию второй игрок может выбрать либо первый кубик, либо второй. Вероятность победы игрока $ A $ для каждой из стратегий соответственно равны:
+		\begin{align*}
+		P\left(W_{I}^{A} | B_{III}\right) &= \frac{5}{6}\frac{5}{6}  = \frac{25}{36}\\
+		P\left(W_{II}^{A} | B_{III}\right) &= \frac{5}{6}\frac{3}{6} = \frac{15}{36}
+		\end{align*}
+	\end{enumerate}
+Аггрегируя полученные результаты, сделаем таблицу с различными вероятностями на победу игрока $ A $  в зависимости от выбора кубика игроком $ B $:
+\begin{table}[hbtp!]
+	\centering 
+	\begin{tabular}{l c c c } 
+		\toprule 
+		& \multicolumn{3}{c}{\textbf{A}} \\ 
+		\cmidrule(l){2-4} 
+		\textbf{B} & I & II & III \\
+		\midrule
+		I & x & \color{mypink1}$21/36$ & $ 11/36 $\\ 
+		II & $ 15/36 $ & x & \color{mypink1}$ 21/36 $ \\
+		III &  $25/36 $ & $ 15/36 $ & x \\ 
+		\bottomrule 
+	\end{tabular}
+	\caption{Вероятности выиграть игроку $ A $ в зависимости от выбранного кубика} 
+	\label{table}
+\end{table}
+
+Проанализируем полученные результаты из таблицы \ref{table}. В первую очередь, заметим, что игра с кубиками -- это игра с нулевой суммой, а значит вероятности победить первому игроку могли быть получены из таблицы выше, вычитанием из единицы этих результатов. Поскольку игра последовательная, то равновесные исходы определяет второй игрок $ A $. \textcolor{mypink1}{Розовым}  цветом я выделил все возможные исходы игры, исходя из предпосылки, что агенты выбирают кубики, максимизируя вероятность собственной победы. Игрок $ B $ точно не выберет в свой ход кубик $ III $, потому что в таком случае игрок $ A $ точно выберет первый кубик. Таким образом, кубики будут выбираться либо в последовательности $ I \to II $, либо $ II \to I $. В любом из случаев, чаще побеждать будет второй игрок с вероятностью $ 21/36 $. Игрок $ B $ будет выигрывать с вероятностью $ 1 - 21/36 = 15/36 $.
+
+
+
+\end{solution}
+
+
+\begin{problem}{4}
+	Вероятность того, что письмо находится в письменном столе, равна $ p $, причем с
+	равной вероятностью оно может находиться в любом из восьми ящиков стола. Было
+	просмотрено $ 7 $ ящиков и в них письмо не было обнаружено. Чему равна вероятность того, что письмо находится в восьмом ящике?
+\end{problem}
+
+\begin{solution}
+	Пусть событие $ A $ - письмо находится в столе, событие $ B_{i} $ -- письмо находится в $ i $-ом ящике, и событие $ \bar{B_i} $ -- письмо не находится в $ i $-ом ящике. Понятно, что если письмо не находится в столе, то вероятность его нахождения в любом из ящиков равна нолю. С другой стороны, если письмо находится в столе, то вероятность его нахождения в $ i $-ом ящике составляет $ 1/8 $. Таким образом, искомая вероятность вычисляется следующим образом:
+	\begin{align*}
+	P\left(B_{8} | \bar{B}_{1}\dots \bar{B}_{7}\right) =  1 - P\left(\bar{B}_{8} | \bar{B}_{1}\dots \bar{B}_{7}\right) = 1 -  \frac{P(\bar{B}_{1}\dots \bar{B}_{8})}{P(\bar{B}_{1}\dots \bar{B}_{7})}\\
+	1 - \frac{1-p}{p/8 + 1-p} = \frac{p/8 + 1-p - 1 + p}{p/8 + 1-p} = \frac{p}{8-7p}\\
+	\end{align*}
+\end{solution}
+
+
+\begin{problem}{5}
+	В квадрате $ Q = \{ (x,y): 0\le x,y \le 1\}  $ случайно выбирается точка с координатами $ (\xi, \eta) $. Для каждого вещественного числа $ u $ найдите вероятности $ P(G(\xi, \eta) \le u) $, если:
+	\begin{enumerate}
+		\item $ G(\xi, \eta) = \min\{\xi, \eta\} $
+		\item $ G(\xi, \eta) = \max\{\xi, \eta\} $
+		\item $ G(\xi, \eta) = \xi + \eta$
+	\end{enumerate}
+\end{problem}
+\begin{solution}
+		\begin{minipage}{0.5\textwidth}
+			\underline{Случай первый}, $ G(\xi, \eta) = \min\{\xi, \eta\} $. В задаче просят посчитать вероятность $ P( \min\{\xi, \eta\} \le u) $. Геометрически, функция $ G(\xi, \eta) = u$ представляет собой множество точек, разделяющее области, соответсвующие рисунку справа. Таким образом, искомая вероятность может быть вычислена как отношени площади заштрихованной области к площади единичного квадрата, или: 
+			\begin{align*}
+				P( \min\{\xi, \eta\} \le u) = 1 - P( \min\{\xi, \eta\} > u) &= 1 - (1-u)^2\\
+				u(2 - u) &= 2u-u^2
+			\end{align*}
+			
+		\end{minipage}
+			\begin{minipage}{0.5\textwidth}
+			\begin{tikzpicture}
+			\begin{axis}
+			[
+			width=3.5in,
+			clip=false,
+			axis lines=middle,
+			xmin=0,
+			xmax=1.3,
+			ymin=0,
+			ymax=1.3,
+			xtick={\empty},
+			ytick={\empty},
+			xlabel=$x$,
+			ylabel=$y$,
+			xlabel style={at={(ticklabel* cs:0.98)},anchor=north west},
+			ylabel style={at={(ticklabel* cs:0.98)},anchor=south west},
+			]
+			\addplot [name path = B,domain = 0:1,samples = 2] {1};
+
+			\path[draw,pattern=horizontal lines] (0,0) -- (0,1) -- (0.25,1) -- (0.25,0.25) -- (1,0.25) -- (1, 0) ;
+			\node at (0.35,0.12) [fill=white]{$ P( \min\{\xi, \eta\} < u)  $};
+			\node at (0.65,0.65) [fill=white]{$ P( \min\{\xi, \eta\} > u)  $};
+			\draw  (axis cs:{1,0}) -- (axis cs:{1,1});
+
+			
+			\draw (-0.05,1) node {$ 1 $};
+			\draw (0.46,0.3) node {$ \min\{x, y\} = u $};
+			\draw (1,-0.09) node {$ 1 $};
+			\draw (1.05,0.25) node {$ u $};
+			\draw (0.25,1.05) node {$ u $};
+						
+			\draw (-0.05, -0.09) node {$ 0 $};
+			\end{axis}
+			\label{min}
+			\end{tikzpicture}
+		\end{minipage}
+	\begin{minipage}{0.5\textwidth}
+		\begin{tikzpicture}
+		\begin{axis}
+		[
+		width=3.5in,
+		clip=false,
+		axis lines=middle,
+		xmin=0,
+		xmax=1.3,
+		ymin=0,
+		ymax=1.3,
+		xtick={\empty},
+		ytick={\empty},
+		xlabel=$x$,
+		ylabel=$y$,
+		xlabel style={at={(ticklabel* cs:0.98)},anchor=north west},
+		ylabel style={at={(ticklabel* cs:0.98)},anchor=south west},
+		]
+		\addplot [name path = B,domain = 0:1,samples = 2] {1};
+		
+		\path[draw,pattern=horizontal lines] (0,0.7) -- (0.7,0.7) -- (0.7,0) -- (0, 0) ;
+		\node at (0.35,0.22) [fill=white]{$ P( \max\{\xi, \eta\} < u)  $};
+		\node at (0.72,0.85) [fill=white]{$ P( \max\{\xi, \eta\} > u)  $};
+		\draw  (axis cs:{1,0}) -- (axis cs:{1,1});
+		
+		
+		\draw (-0.05,1) node {$ 1 $};
+		\draw (0.22,0.76) node {$ \max\{x, y\} = u $};
+		\draw (1,-0.09) node {$ 1 $};
+		\draw (-0.05,0.7) node {$ u $};
+		\draw (0.7,-0.05) node {$ u $};
+		
+		\draw (-0.05, -0.09) node {$ 0 $};
+		\end{axis}
+		\end{tikzpicture}
+	\end{minipage}
+			\begin{minipage}{0.5\textwidth}
+				\underline{Случай второй}, $  G(\xi, \eta) = \max\{\xi, \eta\} $. Аналогичным образом определяем искомую вероятность, как площадь образуемую множеством точек $ \{ (x, y)| \max\{\xi, \eta\} \le u \} $ (площадь заштрихованного квадрата)
+	\[
+	P( \max\{\xi, \eta\} \le u) = u^2
+	\]
+\end{minipage}
+		\begin{minipage}{0.5\textwidth}
+	\underline{Случай третий}, $ G(\xi, \eta) = \xi + \eta $. Для начала немного преобразуем искомую вероятность:
+	\[
+	P(\xi + \eta \le u) = P(\eta \le u - \xi)
+	\]
+	Из полученного преобразования становится понятным, что искомая вероятность -- площадь под функцией $ u - \xi$ (рисунок справа). Аналитически её можно представить в следующем виде:
+	\[
+	P(\xi + \eta \le u) = 
+	\begin{cases} u^2/2, &  u \le 1 \\ 
+	1 - (2-u)^2/2, & u > 1 
+	\end{cases}
+	\]
+	Вероятность получилась кусочно-заданной, потому что при $ u\le 1 $ мы рассматриваем площадь треугольника, а при $ u > 1 $ -- площадь фигуры, напоминающей трапецию.
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+	\begin{tikzpicture}
+	\begin{axis}
+	[
+	width=3.5in,
+	clip=false,
+	axis lines=middle,
+	xmin=0,
+	xmax=1.3,
+	ymin=0,
+	ymax=1.3,
+	xtick={\empty},
+	ytick={\empty},
+	xlabel=$x$,
+	ylabel=$y$,
+	xlabel style={at={(ticklabel* cs:0.98)},anchor=north west},
+	ylabel style={at={(ticklabel* cs:0.98)},anchor=south west},
+	]
+	\addplot [name path = B,domain = 0:1,samples = 2] {1};
+	
+	\path[draw,pattern=horizontal lines] (0,0.8) -- (0.8,0) -- (0, 0) ;
+	\node at (0.35,0.12) [fill=white]{$ P(\xi + \eta < u)  $};
+	\node at (0.65,0.65) [fill=white]{$ P(\xi + \eta > u)  $};
+	\draw  (axis cs:{1,0}) -- (axis cs:{1,1});
+	
+	
+	\draw (-0.05,1) node {$ 1 $};
+	\draw (0.46,0.4) node[rotate=-40]{$\xi + \eta = u $};
+	\draw (1,-0.09) node {$ 1 $};
+	\draw (1.05,0.25) node {$ u $};
+	\draw (0.25,1.05) node {$ u $};
+	
+	\draw (-0.05, -0.09) node {$ 0 $};
+	\end{axis}
+	\end{tikzpicture}
+\end{minipage}
+
+\end{solution}
+
+\end{document}
